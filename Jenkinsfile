@@ -1,10 +1,12 @@
 node{
     stage('git clone'){
+        updateGitlabCommitStatus name: 'jenkins', state: 'pending'
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], browser: [$class: 'GitLab', repoUrl: 'http://212.129.149.40'], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '3', url: 'http://212.129.149.40/171250507_IIICEStseB/frontend-iiicestseb']]])
         echo '=== git clone end ==='
     }
 
     stage('yarn build'){
+        updateGitlabCommitStatus name: 'jenkins', state: 'running'
         sh encoding: 'UTF-8', label: '', returnStdout: true, script: '''cd /var/lib/jenkins/workspace/frontend
 bash /etc/shell/env.sh
 /usr/local/bin/yarn install
@@ -25,6 +27,7 @@ pwd
 tar -zxvf frontend.tar.gz
 rm -rf frontend.tar.gz
 rm -rf ../frontend.tar.gz''', execTimeout: 5000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/*.tar.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+        updateGitlabCommitStatus name: 'jenkins', state: 'success'
         echo '=== depoly end ==='
         }
 
