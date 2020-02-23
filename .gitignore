@@ -1,19 +1,34 @@
+# nodejs modules
+node_modules/
+
+# binary files
+*.bin
+
+# Generated files
+bin/
+
+# Log Files
+*.log
+
+# Intellij
+*.iml
+.idea/
+
+# Visual Studio 201x cache/options directory
+.vs/
+.vscode/
+
+# MacOS
+__MACOSX/
 .DS_Store
-node_modules
-/dist
 
-# local env files
-.env.local
-.env.*.local
-
-# Log files
+# Vue
+/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Editor directories and files
-.idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
