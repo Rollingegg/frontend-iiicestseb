@@ -1,8 +1,12 @@
-import db from './localstorage';// '@/utils/localstorage';
+import db from './localstorage'; // '@/utils/localstorage';
 
 import axios from 'axios';
 
-import {message, Modal, notification} from 'ant-design-vue';
+import {
+    message,
+    Modal,
+    notification
+} from 'ant-design-vue';
 import moment from 'moment';
 import store from '../store';
 
