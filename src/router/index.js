@@ -5,6 +5,7 @@ import Router from 'vue-router';
 
 // import pages, @=src
 import LoginView from '@/views/login/Common';
+import Home from '@/views/Home.vue';
 
 // import utils
 import db from '@/utils/localstorage';
@@ -30,6 +31,20 @@ Vue.use(Router);
 
 let constRouter = [
     {
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/about',
+        name: 'About',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import(/* webpackChunkName: "about" */ '../views/About.vue')
+    },
+    {
         path: '/login',
         name: '登录页',
         component: LoginView
@@ -45,7 +60,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search'];
+const whiteList = ['/login', '/search', '/', '/about'];
 
 let asyncRouter;
 
