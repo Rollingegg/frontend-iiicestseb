@@ -5,17 +5,17 @@ node{
         echo '=== git clone end ==='
     }
 
-    stage('npm run build'){
+    stage('yarn run build'){
         try{
         updateGitlabCommitStatus name: 'jenkins', state: 'running'
         sh encoding: 'UTF-8', label: '', returnStdout: true, script: '''cd /var/lib/jenkins/workspace/frontend
-bash /etc/shell/env.sh
-/usr/local/bin/npm install
-/usr/local/bin/npm run build
+source /etc/shell/env.sh
+/usr/local/bin/yarn install
+/usr/local/bin/yarn run build
 cd dist
 tar -zcvf frontend.tar.gz *
 cd ../'''
-        echo '=== npm build end ==='
+        echo '=== yarn build end ==='
         }
         catch(exc){
             updateGitlabCommitStatus name: 'jenkins', state: 'failure'
