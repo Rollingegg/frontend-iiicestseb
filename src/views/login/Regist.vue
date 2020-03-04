@@ -29,45 +29,7 @@
                 <a-input size="large" type="password" autocomplete="false" placeholder="确认密码"
                          v-decorator="['password2',{rules: [{ required: true, message: '至少6位密码' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"></a-input>
             </a-form-item>
-            <!--
-            <a-form-item
-              fieldDecoratorId="mobile"
-              :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }">
-              <a-input size="large" placeholder="11 位手机号">
-                <a-select slot="addonBefore" size="large" defaultValue="+86">
-                  <a-select-option value="+86">+86</a-select-option>
-                  <a-select-option value="+87">+87</a-select-option>
-                </a-select>
-              </a-input>
-            </a-form-item>
-            <a-input-group size="large" compact>
-                  <a-select style="width: 20%" size="large" defaultValue="+86">
-                    <a-select-option value="+86">+86</a-select-option>
-                    <a-select-option value="+87">+87</a-select-option>
-                  </a-select>
-                  <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-                </a-input-group>
 
-            <a-row :gutter="16">
-              <a-col class="gutter-row" :span="16">
-                <a-form-item
-                  fieldDecoratorId="captcha"
-                  :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}">
-                  <a-input size="large" type="text" placeholder="验证码">
-                    <a-icon slot="prefix" type='mail' :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                  </a-input>
-                </a-form-item>
-              </a-col>
-              <a-col class="gutter-row" :span="8">
-                <a-button
-                  class="getCaptcha"
-                  size="large"
-                  :disabled="state.smsSendBtn"
-                  @click.stop.prevent="getCaptcha"
-                  v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
-              </a-col>
-            </a-row>
-      -->
             <a-form-item>
                 <a-button
                     size="large"
@@ -112,7 +74,6 @@
         components: {},
         data () {
             return {
-                form: null,
                 username: '',
                 password: '',
                 state: {
@@ -204,10 +165,6 @@
                 }
             },
 
-            // handlePhoneCheck (rule, value, callback) {
-            //   callback()
-            // },
-
             handlePasswordInputClick () {
                 if (!this.isMobile()) {
                     this.state.passwordLevelChecked = true;
@@ -231,26 +188,7 @@
                     }
                 });
             },
-            // getCaptcha (e) {
-            //   e.preventDefault()
-            //   let that = this
-            //
-            //   this.form.validateFields(['mobile'], {force: true},
-            //     (err, values) => {
-            //       if (!err) {
-            //         this.state.smsSendBtn = true
-            //
-            //         let interval = window.setInterval(() => {
-            //           if (that.state.time-- <= 0) {
-            //             that.state.time = 60
-            //             that.state.smsSendBtn = false
-            //             window.clearInterval(interval)
-            //           }
-            //         }, 1000)
-            //       }
-            //     }
-            //   )
-            // },
+
             returnLogin () {
                 this.$emit('regist', 'Login');
             }

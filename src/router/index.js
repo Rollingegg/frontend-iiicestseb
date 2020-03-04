@@ -5,7 +5,7 @@ import Router from 'vue-router';
 
 // import pages, @=src
 import LoginView from '@/views/login/Common';
-import Home from '@/views/Home.vue';
+import Home from '@/views/Home';
 
 // import utils
 import db from '@/utils/localstorage';
@@ -31,7 +31,7 @@ Vue.use(Router);
 
 let constRouter = [
     {
-        path: '/',
+        path: '/home',
         name: 'Home',
         component: Home
     },
@@ -48,11 +48,6 @@ let constRouter = [
         path: '/login',
         name: '登录页',
         component: LoginView
-    },
-    {
-        path: '/index',
-        name: '首页',
-        redirect: '/search'
     }
 ];
 
@@ -60,7 +55,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search', '/', '/about'];
+const whiteList = ['/login', '/search', '/home', '/about'];
 
 let asyncRouter;
 
@@ -74,6 +69,7 @@ router.beforeEach((to, from, next) => {
     // 检测白名单
     if (whiteList.indexOf(to.path) !== -1) {
         next();
+        return;
     }
 
     let token = db.get('USER_TOKEN');
