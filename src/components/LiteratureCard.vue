@@ -59,7 +59,7 @@ export default {
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
 }
-.item {
+.item  {
   /* height: 100%; */
 }
 .el-col {

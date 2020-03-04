@@ -5,7 +5,7 @@ import Router from 'vue-router';
 
 // import pages, @=src
 import LoginView from '@/views/login/Common';
-import Home from '@/views/Home';
+import HomePageView from '@/views/home/Home';
 
 // import utils
 import db from '@/utils/localstorage';
@@ -31,23 +31,19 @@ Vue.use(Router);
 
 let constRouter = [
     {
-        path: '/home',
-        name: 'Home',
-        component: Home
-    },
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "about" */ '../views/About.vue')
-    },
-    {
         path: '/login',
         name: '登录页',
         component: LoginView
+    },
+    {
+        path: '/search',
+        name: 'home',
+        component: HomePageView
+    },
+    {
+        path: '/index',
+        name: '首页',
+        redirect: '/search'
     }
 ];
 
@@ -55,7 +51,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search', '/home', '/about'];
+const whiteList = ['/login', '/search', '/index'];
 
 let asyncRouter;
 
@@ -100,7 +96,10 @@ router.beforeEach((to, from, next) => {
 function go (to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
     router.addRoutes(asyncRouter);
-    next({...to, replace: true});
+    next({
+        ...to,
+        replace: true
+    });
 }
 
 function save (name, data) {
