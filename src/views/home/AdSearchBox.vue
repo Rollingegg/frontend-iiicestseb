@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top:20px">
     <a-button type="primary" @click="showDrawer">
       高级搜索
     </a-button>
@@ -11,7 +11,7 @@
       :visible="visible"
     >
     <ps />
-      <div
+      <!-- <div
         :style="{
           position: 'absolute',
           bottom: 0,
@@ -33,7 +33,7 @@
         <a-button @click="onClose" type="primary">
           Submit
         </a-button>
-      </div>
+      </div> -->
     </a-drawer>
   </div>
 </template>
