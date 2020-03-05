@@ -52,8 +52,8 @@ export default {
   computed: {
     ...mapState({
       // multipage: state => state.setting.multipage,
-      user: state => state.account.user,
-      setUser: 'account/setUser'
+      username: state => state.account.username,
+      setUsername: 'account/setUsername'
     }),
     copyright () {
       return this.$store.state.setting.copyright;
@@ -88,13 +88,9 @@ export default {
         '周末要不要去看电影？'
       ];
       let index = Math.floor(Math.random() * welcomeArr.length);
-      return `${time}，${this.user.name}，${welcomeArr[index]}`;
+      return `${time}，${this.username}，${welcomeArr[index]}`;
     },
     initData () {
-      this.setUser({
-        naem: '弟弟',
-        pwd: '123456'
-      });
     }
   },
   mounted () {
