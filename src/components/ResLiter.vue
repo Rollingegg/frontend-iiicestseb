@@ -6,7 +6,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
-          :page-sizes="[50, 100, 150, 200]"
+          :page-sizes="[10, 20, 50, 100, 200, 500]"
           :page-size="size"
           layout="total, sizes, prev, pager, next, jumper"
           :total="artList.length"
@@ -17,13 +17,13 @@
     </el-row>
 
     <el-table :data="tableData" stripe style="width: 100%" size="small">
-      <!-- <el-table-column type="selection" width="50" align="center"></el-table-column> -->
+      <!-- <el-table-column type="selection" width="50" align="center" @selection-change="handleSelectionChange"></el-table-column> -->
       <el-table-column prop="title" label="题名" width align="center"></el-table-column>
       <el-table-column prop="authors" label="作者" width align="center"></el-table-column>
       <el-table-column prop="affiliations" label="来源" width align="center"></el-table-column>
       <el-table-column prop="date" label="发表时间" width="90" align="center"></el-table-column>
       <el-table-column prop="ref" label="被引" width="90" align="center"></el-table-column>
-      <el-table-column label="操作" v-if="isAdmin">
+      <el-table-column label="操作" width="180" align="center" v-if="isAdmin">
         <template slot-scope="scope">
           <el-button size="mini" @click="showEditView(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -37,7 +37,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
-          :page-sizes="[50, 100, 150, 200]"
+          :page-sizes="[10, 20, 50, 100, 200, 500]"
           :page-size="size"
           layout="total, sizes, prev, pager, next, jumper"
           :total="artList.length"
@@ -59,26 +59,27 @@ export default {
   data: function () {
     return {
       currentPage: 1,
-      size: 50
+      size: 10
     };
   },
   computed: {
     // totalRecords: this.artList.length,
     tableData: {
       get: function () {
-      // const tableList = JSON.parse(JSON.stringify(this.artlist));
-      console.log(this.artList);
-      const tablePush = [];
-      this.artList.forEach((item, index) => {
-        if (this.size * (this.currentPage - 1) <= index && index <= this.size * this.currentPage - 1) {
-          tablePush.push(item);
-        }
-      });
-      return tablePush;
-    },
-    set: function () {
-
-    }
+        // const tableList = JSON.parse(JSON.stringify(this.artlist));
+        console.log(this.artList);
+        const tablePush = [];
+        this.artList.forEach((item, index) => {
+          if (
+            this.size * (this.currentPage - 1) <= index &&
+            index <= this.size * this.currentPage - 1
+          ) {
+            tablePush.push(item);
+          }
+        });
+        return tablePush;
+      },
+      set: function () {}
     }
   },
   props: {
@@ -114,6 +115,12 @@ export default {
     jump2file () {
       console.log('hhh');
     },
+    showEditView (index, row) {
+      console.log(index, row);
+    },
+    handleDelete (index, row) {
+      console.log(index, row);
+    },
     // 页数改变事件
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`);
@@ -136,11 +143,6 @@ export default {
         }
       });
       return tablePush;
-    },
-    mounted () {
-      // 初始化数据
-      console.log(this.tableData);
-      this.tableData = this.paging(this.size, this.index);
     }
   }
 };
