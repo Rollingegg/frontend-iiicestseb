@@ -1,5 +1,4 @@
 <template>
-  <el-container>
     <el-header class="homeHeader">
       <div class="title">OASIS</div>
         <IMenu></IMenu>
@@ -30,12 +29,6 @@
       </div>
     </el-header>
 
-      <el-row style="margin-top:10px">
-          <el-col :span="24" style="text-align:center">
-              <div style="font-size: 20px;">{{welcomeMessage}}</div>
-          </el-col>
-      </el-row>
-  </el-container>
 </template>
 
 <script>
@@ -44,16 +37,15 @@ export default {
   name: 'GlobalNav',
   data () {
       return {
-          welcomeMessage: ''
+
       };
   },
+  computed: {
+    hasLogin () {
+      return this.user.name === 'admin';
+    }
+  },
   props: {
-    hasLogin: {
-      type: Boolean,
-      default () {
-        return false;
-      }
-    },
     user: {
       type: Object,
       default () {
@@ -65,26 +57,6 @@ export default {
     }
   },
   methods: {
-      welcome () {
-      const date = new Date();
-      const hour = date.getHours();
-      let time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')));
-      let welcomeArr = [
-        '喝杯咖啡休息下吧☕',
-        '要不要和朋友打局LOL',
-        '要不要和朋友打局王者荣耀',
-        '几天没见又更好看了呢😍',
-        '今天又写了几个Bug🐞呢',
-        '今天在群里吹水了吗',
-        '今天吃了什么好吃的呢',
-        '今天您微笑了吗😊',
-        '今天帮助别人解决问题了吗',
-        '准备吃些什么呢',
-        '周末要不要去看电影？'
-      ];
-      let index = Math.floor((Math.random() * welcomeArr.length));
-      return `${time}，${this.user.name}，${welcomeArr[index]}`;
-    },
     commandHandler (cmd) {
       console.log(cmd);
     },
@@ -98,9 +70,6 @@ export default {
   },
   components: {
       IMenu
-  },
-  mounted () {
-    this.welcomeMessage = this.welcome();
   }
 };
 </script>

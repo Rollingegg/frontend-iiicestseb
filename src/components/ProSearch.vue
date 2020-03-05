@@ -175,7 +175,7 @@
  */
 export default {
     name: 'ProSearch',
-    data () {
+    data: function () {
         return {
             ok1: true,
             ok2: false,

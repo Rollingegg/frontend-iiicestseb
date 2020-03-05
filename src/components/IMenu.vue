@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    naem: 'IMenu',
+    name: 'IMenu',
      data () {
     return {
       activeIndex: '1'

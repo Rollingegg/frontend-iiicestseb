@@ -6,6 +6,8 @@ import Router from 'vue-router';
 // import pages, @=src
 import LoginView from '@/views/login/Common';
 import HomePageView from '@/views/home/Home';
+// import ResLiter from '@/components/ResLiter';
+// import LiteratureCard from '@/components/LiteratureCard';
 
 // import utils
 import db from '@/utils/localstorage';
@@ -39,6 +41,16 @@ let constRouter = [
         path: '/search',
         name: 'home',
         component: HomePageView
+        // children: [
+        //     {
+        //         path: '/test/1',
+        //         component: ResLiter
+        //     },
+        //     {
+        //         path: '/test/2',
+        //         component: LiteratureCard
+        //     }
+        // ]
     },
     {
         path: '/index',
