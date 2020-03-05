@@ -103,7 +103,7 @@
                                     setTimeout(() => {
                                         this.loading = false;
                                     }, 500);
-                                    this.$router.push('/search');
+                                    this.$router.push('/searchInput');
                                 } else {
                                     this.$message.error('用户名或者密码错误');
                                     setTimeout(() => {
@@ -128,7 +128,7 @@
                 this.$emit('regist', 'Regist');
             },
             noRegist () {
-                this.$router.push('/search');
+                this.$router.push('/searchInput');
             },
             getCaptcha () {
                 this.$message.warning('暂未开发');
@@ -141,8 +141,7 @@
                 // setExpireTime: 'account/setExpireTime',
                 // setPermissions: 'account/setPermissions',
                 // setRoles: 'account/setRoles',
-                setUsername: 'account/setUsername',
-                setUserID: 'account/setUserID',
+                setUser: 'account/setUser',
                 // setTheme: 'setting/setTheme',
                 // setLayout: 'setting/setLayout',
                 // setMultipage: 'setting/setMultipage',
@@ -153,8 +152,7 @@
             saveLoginData (data) {
                 // this.setToken(data.token);
                 // this.setExpireTime(data.exipreTime);
-                this.setUsername(data.username);
-                this.setUserID(data.id);
+                this.setUser(data);
                 // this.setPermissions(data.permissions);
                 // this.setRoles(data.roles);
                 // this.setTheme(data.config.theme);

@@ -52,8 +52,7 @@ export default {
   computed: {
     ...mapState({
       // multipage: state => state.setting.multipage,
-      username: state => state.account.username,
-      setUsername: 'account/setUsername'
+      user: state => state.account.user
     }),
     copyright () {
       return this.$store.state.setting.copyright;
@@ -88,7 +87,8 @@ export default {
         '周末要不要去看电影？'
       ];
       let index = Math.floor(Math.random() * welcomeArr.length);
-      return `${time}，${this.username}，${welcomeArr[index]}`;
+      // todo:这里username为空时值居然为0
+      return `${time}，${this.user.username | '游客'}，${welcomeArr[index]}`;
     },
     initData () {
     }
