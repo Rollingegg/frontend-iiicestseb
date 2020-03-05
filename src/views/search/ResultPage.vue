@@ -68,4 +68,7 @@ export default {
 </script>
 
 <style>
+.el-container {
+  background: url("../../../static/img/Large-Triangles.svg");
+}
 </style>

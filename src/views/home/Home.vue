@@ -88,7 +88,8 @@ export default {
         '周末要不要去看电影？'
       ];
       let index = Math.floor(Math.random() * welcomeArr.length);
-      return `${time}，${this.user.name}，${welcomeArr[index]}`;
+      if (this.user) { return `${time}，${this.user.username}，${welcomeArr[index]}`; }
+      return `${time}，游客，${welcomeArr[index]}`;
     },
     initData () {
       this.setUser({

@@ -69,7 +69,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search'];
+const whiteList = ['/login', '/search', '/searchRes'];
 
 let asyncRouter;
 
