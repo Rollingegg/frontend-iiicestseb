@@ -1,10 +1,30 @@
 <template>
-  <div class="container">
-      <global-nav />
-      <search-box />
-      <res-lister />
-    <global-footer :copyright="copyright" style="margin-bottom:0"/>
-  </div>
+  <!-- <div class="container"> -->
+  <el-container>
+    <global-nav />
+    <el-main>
+      <el-row style="margin-top:10px">
+        <el-col :span="24" style="text-align:center">
+          <div style="font-size: 20px;color: #ffffff">{{welcomeMessage}}</div>
+        </el-col>
+      </el-row>
+      <search-box style="margin-top:60px" />
+      <!-- <res-lister /> -->
+      <!-- <router-view></router-view> -->
+      <a-row type="flex" justify="center" align="middle">
+        <a-col :span="12">
+          <Card style="margin: 10% 20%" />
+        </a-col>
+        <a-col :span="12">
+          <Card style="margin: 10% 20%" />
+        </a-col>
+      </a-row>
+    </el-main>
+    <el-footer>
+      <global-footer :copyright="copyright" style="margin-bottom:0" />
+    </el-footer>
+  </el-container>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -12,26 +32,88 @@ import GlobalFooter from '../common/GlobalFooter';
 import ResLister from '@/components/ResLiter';
 import GlobalNav from '../common/GlobalNavigator';
 import SearchBox from './SearchBox';
+import Card from '@/components/ArtCard';
+import {mapState} from 'vuex';
 export default {
-    name: 'Home',
-    components: {
-        ResLister,
-        GlobalFooter,
-        GlobalNav,
-        SearchBox
-    },
-    data () {
-        return {
-            copyright: 'OASIS/2020'
-        };
-    },
-    props: {
-    },
-    methods: {
+  name: 'Home',
+  components: {
+    ResLister,
+    GlobalFooter,
+    GlobalNav,
+    SearchBox,
+    Card
+  },
+  data () {
+    return {
+      // copyright: 'OASIS/2020',
+      welcomeMessage: ''
+    };
+  },
+  computed: {
+    ...mapState({
+      // multipage: state => state.setting.multipage,
+      user: state => state.account.user,
+      setUser: 'account/setUser'
+    }),
+    copyright () {
+      return this.$store.state.setting.copyright;
     }
+  },
+  props: {},
+  methods: {
+    welcome () {
+      const date = new Date();
+      const hour = date.getHours();
+      let time =
+        hour < 6
+          ? '早上好'
+          : hour <= 11
+          ? '上午好'
+          : hour <= 13
+          ? '中午好'
+          : hour <= 18
+          ? '下午好'
+          : '晚上好';
+      let welcomeArr = [
+        '喝杯咖啡休息下吧☕',
+        '要不要和朋友打局LOL',
+        '要不要和朋友打局王者荣耀',
+        '几天没见又更好看了呢😍',
+        '今天又写了几个Bug🐞呢',
+        '今天在群里吹水了吗',
+        '今天吃了什么好吃的呢',
+        '今天您微笑了吗😊',
+        '今天帮助别人解决问题了吗',
+        '准备吃些什么呢',
+        '周末要不要去看电影？'
+      ];
+      let index = Math.floor(Math.random() * welcomeArr.length);
+      return `${time}，${this.user.name}，${welcomeArr[index]}`;
+    },
+    initData () {
+      this.setUser({
+        naem: '弟弟',
+        pwd: '123456'
+      });
+    }
+  },
+  mounted () {
+    this.welcomeMessage = this.welcome();
+  }
 };
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background: #f0f2f5 url("../../../static/img/Large-Triangles.svg") no-repeat
+    center 110px;
+  background-size: 100%;
+}
+.el-container {
+  background: url("../../../static/img/Large-Triangles.svg");
+}
 </style>
