@@ -16,11 +16,11 @@
       </el-col>-->
     </el-row>
 
-    <el-table :data="tableData" stripe style="width: 100%" size="small">
+    <el-table :data="tableData" stripe style="width: 100%" size="small" @row-click="jump2file">
       <!-- <el-table-column type="selection" width="50" align="center" @selection-change="handleSelectionChange"></el-table-column> -->
-      <el-table-column prop="title" label="题名" width align="center"></el-table-column>
-      <el-table-column prop="authors" label="作者" width align="center"></el-table-column>
-      <el-table-column prop="affiliations" label="来源" width align="center"></el-table-column>
+      <el-table-column prop="title" label="题名" width align="center" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="authors" label="作者" width align="center" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="affiliations" label="来源" width align="center" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="date" label="发表时间" width="90" align="center"></el-table-column>
       <el-table-column prop="ref" label="被引" width="90" align="center"></el-table-column>
       <el-table-column label="操作" width="180" align="center" v-if="isAdmin">
@@ -112,8 +112,8 @@ export default {
     }
   },
   methods: {
-    jump2file () {
-      console.log('hhh');
+    jump2file (row) {
+      console.log(row);
     },
     showEditView (index, row) {
       console.log(index, row);

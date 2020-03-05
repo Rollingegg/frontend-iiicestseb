@@ -71,11 +71,11 @@ export default {
           label: '关键词'
         },
         {
-          label: '出版机构'
-        },
-        {
           label: 'DOI'
         }
+        // {
+        //   label: '出版机构'
+        // }
       ]
     };
   },
