@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:20px">
+  <div>
     <a-button type="primary" @click="showDrawer">
       高级搜索
     </a-button>

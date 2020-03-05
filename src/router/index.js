@@ -6,6 +6,7 @@ import Router from 'vue-router';
 // import pages, @=src
 import LoginView from '@/views/login/Common';
 import HomePageView from '@/views/home/Home';
+import SearchPageView from '@/views/search/ResultPage';
 // import ResLiter from '@/components/ResLiter';
 // import LiteratureCard from '@/components/LiteratureCard';
 
@@ -56,6 +57,11 @@ let constRouter = [
         path: '/index',
         name: '首页',
         redirect: '/search'
+    },
+    {
+        path: '/searchRes',
+        name: '搜索结果',
+        component: SearchPageView
     }
 ];
 
@@ -63,7 +69,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search', '/index'];
+const whiteList = ['/login', '/search', '/index', '/searchRes'];
 
 let asyncRouter;
 
