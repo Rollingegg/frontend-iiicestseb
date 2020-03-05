@@ -5,8 +5,7 @@ import Router from 'vue-router';
 
 // import pages, @=src
 import LoginView from '@/views/login/Common';
-import HomePageView from '@/views/home/Home';
-import SearchPageView from '@/views/search/ResultPage';
+import searchInputView from '@/views/searchInput/SearchInput';
 // import ResLiter from '@/components/ResLiter';
 // import LiteratureCard from '@/components/LiteratureCard';
 
@@ -39,29 +38,14 @@ let constRouter = [
         component: LoginView
     },
     {
-        path: '/search',
-        name: 'home',
-        component: HomePageView
-        // children: [
-        //     {
-        //         path: '/test/1',
-        //         component: ResLiter
-        //     },
-        //     {
-        //         path: '/test/2',
-        //         component: LiteratureCard
-        //     }
-        // ]
+        path: '/searchInput',
+        name: '搜索框页',
+        component: searchInputView
     },
     {
         path: '/index',
         name: '首页',
-        redirect: '/search'
-    },
-    {
-        path: '/searchRes',
-        name: '搜索结果',
-        component: SearchPageView
+        redirect: '/searchInput'
     }
 ];
 
@@ -69,7 +53,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/search', '/searchRes'];
+const whiteList = ['/login', '/searchInput'];
 
 let asyncRouter;
 
@@ -87,7 +71,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // let token = get('USER_TOKEN');
-    let user = get('USERNAME');
+    let user = get('USER');
     let userRouter = get('USER_ROUTER');
     if (/* token.length && */ user) {
         if (!asyncRouter) {
@@ -99,7 +83,7 @@ router.beforeEach((to, from, next) => {
                     icon: 'none',
                     redirect: '/index',
                     children: [{
-                        path: '/home',
+                        path: '/searchInput',
                         name: '系统主页',
                         component: 'HomePageView',
                         icon: 'home',
@@ -174,7 +158,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else {
-        next('/index');
+        next('/login');
     }
 });
 

@@ -52,8 +52,7 @@ export default {
   computed: {
     ...mapState({
       // multipage: state => state.setting.multipage,
-      user: state => state.account.user,
-      setUser: 'account/setUser'
+      user: state => state.account.user
     }),
     copyright () {
       return this.$store.state.setting.copyright;
@@ -92,10 +91,6 @@ export default {
       return `${time}，游客，${welcomeArr[index]}`;
     },
     initData () {
-      this.setUser({
-        naem: '弟弟',
-        pwd: '123456'
-      });
     }
   },
   mounted () {
