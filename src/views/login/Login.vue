@@ -4,14 +4,13 @@
             <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;" :activeKey="activeKey"
                     @change="handleTabsChange">
                 <a-tab-pane tab="账户密码登录" key="1">
-                    <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon
-                             style="margin-bottom: 24px;"></a-alert>
                     <a-form-item>
                         <a-input size="large"
-                                 v-decorator="['name',{rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]">
+                                 v-decorator="['username',{rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]">
                             <a-icon slot="prefix" type="user"></a-icon>
                         </a-input>
                     </a-form-item>
+
                     <a-form-item>
                         <a-input size="large" type="password"
                                  v-decorator="['password',{rules: [{ required: true, message: '请输入密码', whitespace: true}]}]">
@@ -70,7 +69,6 @@
         data () {
             return {
                 loading: false,
-                error: '',
                 activeKey: '1'
             };
         },
@@ -90,21 +88,28 @@
             doLogin () {
                 if (this.activeKey === '1') {
                     // 用户名密码登录
-                    this.form.validateFields(['name', 'password'], (errors, values) => {
+                    this.form.validateFields(['username', 'password'], (errors, values) => {
                         if (!errors) {
                             this.loading = true;
-                            let name = this.form.getFieldValue('name');
-                            let password = this.form.getFieldValue('password');
-                            this.$post('login', {
+                            let name = values.username;
+                            let password = values.password;
+                            this.$postJson('user/login', {
                                 username: name,
                                 password: password
                             }).then((r) => {
-                                let data = r.data.data;
-                                this.saveLoginData(data);
-                                setTimeout(() => {
-                                    this.loading = false;
-                                }, 500);
-                                this.$router.push('/');
+                                if (r.data.status) {
+                                    let data = r.data.result;
+                                    this.saveLoginData(data);
+                                    setTimeout(() => {
+                                        this.loading = false;
+                                    }, 500);
+                                    this.$router.push('/search');
+                                } else {
+                                    this.$message.error('用户名或者密码错误');
+                                    setTimeout(() => {
+                                        this.loading = false;
+                                    }, 500);
+                                }
                             }).catch((e) => {
                                 console.error(e);
                                 setTimeout(() => {
@@ -132,30 +137,32 @@
                 this.activeKey = val;
             },
             ...mapMutations({
-                setToken: 'account/setToken',
-                setExpireTime: 'account/setExpireTime',
-                setPermissions: 'account/setPermissions',
-                setRoles: 'account/setRoles',
-                setUser: 'account/setUser',
-                setTheme: 'setting/setTheme',
-                setLayout: 'setting/setLayout',
-                setMultipage: 'setting/setMultipage',
-                fixSiderbar: 'setting/fixSiderbar',
-                fixHeader: 'setting/fixHeader',
+                // setToken: 'account/setToken',
+                // setExpireTime: 'account/setExpireTime',
+                // setPermissions: 'account/setPermissions',
+                // setRoles: 'account/setRoles',
+                setUsername: 'account/setUsername',
+                setUserID: 'account/setUserID',
+                // setTheme: 'setting/setTheme',
+                // setLayout: 'setting/setLayout',
+                // setMultipage: 'setting/setMultipage',
+                // fixSiderbar: 'setting/fixSiderbar',
+                // fixHeader: 'setting/fixHeader',
                 setColor: 'setting/setColor'
             }),
             saveLoginData (data) {
-                this.setToken(data.token);
-                this.setExpireTime(data.exipreTime);
-                this.setUser(data.user);
-                this.setPermissions(data.permissions);
-                this.setRoles(data.roles);
-                this.setTheme(data.config.theme);
-                this.setLayout(data.config.layout);
-                this.setMultipage(data.config.multiPage === '1');
-                this.fixSiderbar(data.config.fixSiderbar === '1');
-                this.fixHeader(data.config.fixHeader === '1');
-                this.setColor(data.config.color);
+                // this.setToken(data.token);
+                // this.setExpireTime(data.exipreTime);
+                this.setUsername(data.username);
+                this.setUserID(data.id);
+                // this.setPermissions(data.permissions);
+                // this.setRoles(data.roles);
+                // this.setTheme(data.config.theme);
+                // this.setLayout(data.config.layout);
+                // this.setMultipage(data.config.multiPage === '1');
+                // this.fixSiderbar(data.config.fixSiderbar === '1');
+                // this.fixHeader(data.config.fixHeader === '1');
+                // this.setColor(data.config.color);
             }
         }
     };

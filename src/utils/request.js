@@ -87,6 +87,13 @@ BACKEND_REQUEST.interceptors.response.use((config) => {
 });
 
 const request = {
+    postJson (url, params) {
+        return BACKEND_REQUEST.post(url, params, {
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        });
+    },
     post (url, params) {
         return BACKEND_REQUEST.post(url, params, {
             transformRequest: [(params) => {
