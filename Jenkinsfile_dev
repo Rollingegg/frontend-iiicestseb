@@ -11,7 +11,7 @@ node{
         sh encoding: 'UTF-8', label: '', returnStdout: true, script: '''cd /var/lib/jenkins/workspace/frontend_dev
 bash /etc/shell/env.sh
 /usr/local/bin/yarn install
-/usr/local/bin/yarn run build
+/usr/local/bin/yarn build:dev
 cd dist
 tar -zcvf frontend_dev.tar.gz *
 cd ../'''
