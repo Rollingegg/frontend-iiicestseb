@@ -1,5 +1,12 @@
 <template>
     <div>
+        <el-dialog :visible.sync="detailVisible" center>
+            <template slot="title"><h1>文献详情</h1></template>
+            <template slot="footer">
+                <el-link target="_blank" icon="el-icon-download">下载</el-link>
+            </template>
+            <art-detail/>
+        </el-dialog>
         <el-row type="flex" justify="center">
             <el-col :span="16">
                 <el-pagination
@@ -12,12 +19,8 @@
                     :total="artList.length"
                 ></el-pagination>
             </el-col>
-            <!-- <el-col :span="18">
-            </el-col>-->
         </el-row>
-
         <el-table :data="tableData" stripe style="width: 100%" size="small" @row-click="jump2file">
-            <!-- <el-table-column type="selection" width="50" align="center" @selection-change="handleSelectionChange"></el-table-column> -->
             <el-table-column prop="title" label="题名" width align="center" :show-overflow-tooltip="true"
                              :formatter="setTitle"></el-table-column>
             <el-table-column prop="authors" label="作者" width align="center" :show-overflow-tooltip="true"
@@ -48,18 +51,13 @@
                     :total="artList.length"
                 ></el-pagination>
             </el-col>
-            <!-- <el-col :span="18">
-            </el-col>-->
         </el-row>
     </div>
 </template>
 
 <script>
-    /**
-     1. vue中pros数据流是单向的，比如说这里传入的artList不能再赋值
-     2. computed的值默认没有setter
-     */
-    import db from '../utils/localstorage';
+    import db from '../../utils/localstorage';
+    import ArtDetail from '@/components/ArticleDetail';
 
     export default {
         beforeCreate () {
@@ -77,10 +75,11 @@
         data: function () {
             return {
                 currentPage: 1,
-                size: 10
+                size: 10,
+                detailVisible: false,
+                currentIndex: 0
             };
         },
-
         computed: {
             tableData: {
                 get: function () {
@@ -137,8 +136,9 @@
             setRef (row) {
                 return row.referenceCount;
             },
-            jump2file (row) {
+            jump2file (row, event, col) {
                 console.log(row);
+                this.detailVisible = true;
             },
             showEditView (index, row) {
                 console.log(index, row);
@@ -169,6 +169,9 @@
                 });
                 return tablePush;
             }
+        },
+        components: {
+            ArtDetail
         }
     };
 </script>
@@ -176,5 +179,9 @@
 <style>
     .el-table__column:hover {
         cursor: pointer;
+    }
+
+    .el-pagination__total {
+        color: cornsilk;
     }
 </style>

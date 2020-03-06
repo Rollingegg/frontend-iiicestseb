@@ -24,28 +24,6 @@
         <ad-search-box style="margin-top:20px"/>
     </div>
 </template>
-
-<style>
-    .my-autocomplete {
-        width: 70%;
-    }
-
-    .my-autocomplete li {
-        line-height: normal;
-        padding: 7px;
-    }
-
-    .my-autocomplete li .name {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    .my-autocomplete li .icon {
-        color: #b4b4b4;
-        margin-right: 5px;
-    }
-</style>
-
 <script>
     import AdSearchBox from './AdSearchBox';
     import db from '../../utils/localstorage';
@@ -172,3 +150,23 @@
         }
     };
 </script>
+<style>
+    .my-autocomplete {
+        width: 70%;
+    }
+
+    .my-autocomplete li {
+        line-height: normal;
+        padding: 7px;
+    }
+
+    .my-autocomplete li .name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .my-autocomplete li .icon {
+        color: #b4b4b4;
+        margin-right: 5px;
+    }
+</style>

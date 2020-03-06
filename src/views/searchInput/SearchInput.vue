@@ -10,13 +10,13 @@
 
             <search-box style="margin-top:60px"/>
 
-            <a-row type="flex" justify="center" align="middle">
-                <a-col :span="12">
-                    <Card style="margin: 10% 20%"/>
+            <a-row type="flex" justify="center" style="margin-top:50px">
+                <a-col :span="10">
+                    <Card :title="heatAuthors"/>
                 </a-col>
 
-                <a-col :span="12">
-                    <Card style="margin: 10% 20%"/>
+                <a-col :span="10">
+                    <Card :title="heatWords"/>
                 </a-col>
             </a-row>
 
@@ -29,17 +29,18 @@
 
 <script>
     import GlobalFooter from '../common/GlobalFooter';
-    import ResLister from '@/components/ResLiter';
     import GlobalNav from '../common/GlobalNavigator';
     import SearchBox from './SearchBox';
     import Card from '@/components/ArtCard';
     import {mapState} from 'vuex';
     import db from '../../utils/localstorage';
 
+    const heatAuthors = '发表论文数作者排行';
+    const heatWords = '文献关键词热度排行';
+
     export default {
         name: 'Home',
         components: {
-            ResLister,
             GlobalFooter,
             GlobalNav,
             SearchBox,
@@ -47,7 +48,9 @@
         },
         data () {
             return {
-                welcomeMessage: ''
+                welcomeMessage: '',
+                heatAuthors: heatAuthors,
+                heatWords: heatWords
             };
         },
         computed: {
@@ -67,15 +70,11 @@
                 const date = new Date();
                 const hour = date.getHours();
                 let time =
-                    hour < 6
-                        ? '早上好'
-                        : hour <= 11
-                        ? '上午好'
-                        : hour <= 13
-                            ? '中午好'
-                            : hour <= 18
-                                ? '下午好'
-                                : '晚上好';
+                    hour < 6 ? '早上好'
+                        : hour <= 11 ? '上午好'
+                        : hour <= 13 ? '中午好'
+                        : hour <= 18 ? '下午好'
+                        : '晚上好';
                 let welcomeArr = [
                     '喝杯咖啡休息下吧☕',
                     '要不要和朋友打局LOL',

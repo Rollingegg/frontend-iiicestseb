@@ -8,7 +8,7 @@
                     <el-header>
                     </el-header>
                     <el-main>
-                        <res-lister></res-lister>  <!--:artList="resList"-->
+                        <res-lister></res-lister>
                     </el-main>
                     <el-footer></el-footer>
                 </el-container>
@@ -24,7 +24,7 @@
     import GlobalNav from '../common/GlobalNavigator';
     import GlobalFooter from '../common/GlobalFooter';
     import SearchBox from '../searchInput/SearchBox';
-    import ResLister from '@/components/ResLiter';
+    import ResLister from './ResLiter';
 
     export default {
         name: 'ResPage',
