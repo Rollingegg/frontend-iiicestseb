@@ -11,12 +11,12 @@
       <search-box style="margin-top:60px" />
       <!-- <res-lister /> -->
       <!-- <router-view></router-view> -->
-      <a-row type="flex" justify="center" align="middle">
-        <a-col :span="12">
-          <Card style="margin: 10% 20%" />
+      <a-row type="flex" justify="center" style="margin-top:50px">
+        <a-col :span="10">
+          <Card :title="heatAuthors" />
         </a-col>
-        <a-col :span="12">
-          <Card style="margin: 10% 20%" />
+        <a-col :span="10">
+          <Card :title="heatWords"/>
         </a-col>
       </a-row>
     </el-main>
@@ -34,6 +34,8 @@ import GlobalNav from '../common/GlobalNavigator';
 import SearchBox from './SearchBox';
 import Card from '@/components/ArtCard';
 import {mapState} from 'vuex';
+const heatAuthors = '发表论文数作者排行';
+const heatWords = '文献关键词热度排行';
 export default {
   name: 'Home',
   components: {
@@ -46,7 +48,9 @@ export default {
   data () {
     return {
       // copyright: 'OASIS/2020',
-      welcomeMessage: ''
+      welcomeMessage: '',
+      heatAuthors: heatAuthors,
+      heatWords: heatWords
     };
   },
   computed: {

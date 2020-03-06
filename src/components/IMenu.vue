@@ -37,7 +37,7 @@ export default {
     isAdmin: {
       type: Boolean,
       default () {
-        return false;
+        return true;
       }
     }
   },

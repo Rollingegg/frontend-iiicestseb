@@ -149,7 +149,10 @@ export default {
 </script>
 
 <style>
-.el-table__column:hover {
+.el-table__row:hover {
   cursor: pointer;
+}
+.el-pagination__total{
+  color:cornsilk;
 }
 </style>
