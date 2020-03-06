@@ -7,6 +7,7 @@ import store from './store';
 
 import db from './utils/localstorage';
 import request from './utils/request';
+import userfulFunctions from './utils/usefulFunction';
 import './utils/install';
 
 import VueApexCharts from 'vue-apexcharts';
@@ -37,6 +38,7 @@ Vue.prototype.$delete = request.delete;
 Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
+Vue.prototype.$isEmpty = userfulFunctions.isEmpty;
 
 /* eslint-disable no-new */
 new Vue({

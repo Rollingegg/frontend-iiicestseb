@@ -40,7 +40,7 @@ let constRouter = [
     },
     {
         path: '/searchInput',
-        name: '搜索框页',
+        name: '搜索输入页',
         component: searchInputView
     },
     {
@@ -50,7 +50,7 @@ let constRouter = [
     },
     {
         path: '/searchRes',
-        name: '搜索框页',
+        name: '搜索结果页',
         component: searchResultView
     }
 
@@ -91,7 +91,7 @@ router.beforeEach((to, from, next) => {
                     redirect: '/index',
                     children: [{
                         path: '/searchInput',
-                        name: '系统主页',
+                        name: '搜索主页',
                         component: 'HomePageView',
                         icon: 'home',
                         meta: {closeable: false, isShow: true}

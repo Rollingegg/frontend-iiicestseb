@@ -138,7 +138,7 @@ const request = {
                 }
             }
         }
-        return BACKEND_REQUEST.get(`${url}${_params}`);
+        return BACKEND_REQUEST.get(`${url}${_params.substr(0, _params.length - 1)}`);
     },
     delete (url, params) {
         let _params;
