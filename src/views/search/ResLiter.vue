@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-dialog :visible.sync="detailVisible" center>
+      <template slot="title"><h1>文献详情</h1></template>
+      <template slot="footer"><el-link target="_blank" icon="el-icon-download">下载</el-link></template>
+      <art-detail />
+    </el-dialog>
     <el-row type="flex" justify="center">
       <el-col :span="16">
         <el-pagination
@@ -50,6 +55,7 @@
 </template>
 
 <script>
+import ArtDetail from '@/components/ArticleDetail';
 /**
   1. vue中pros数据流是单向的，比如说这里传入的artList不能再赋值
   2. computed的值默认没有setter
@@ -59,7 +65,9 @@ export default {
   data: function () {
     return {
       currentPage: 1,
-      size: 10
+      size: 10,
+      detailVisible: false,
+      currentIndex: 0
     };
   },
   computed: {
@@ -112,8 +120,10 @@ export default {
     }
   },
   methods: {
-    jump2file (row) {
+    jump2file (row, event, col) {
       console.log(row);
+      this.detailVisible = true;
+      // this.currentRow=row.index;
     },
     showEditView (index, row) {
       console.log(index, row);
@@ -144,6 +154,9 @@ export default {
       });
       return tablePush;
     }
+  },
+  components: {
+    ArtDetail
   }
 };
 </script>

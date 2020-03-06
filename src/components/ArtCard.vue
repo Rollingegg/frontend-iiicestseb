@@ -1,6 +1,6 @@
 <template>
   <a-card hoverable :loading="loading" :title="title" style="width: 500px">
-    <div class="demo-infinite-container" :infinite-scroll-distance="10">
+    <div class="info-infinite-container" :infinite-scroll-distance="10">
       <a-list
         itemLayout="horizontal"
         :dataSource="authorList"
@@ -9,7 +9,7 @@
       >
         <a-list-item slot="renderItem" slot-scope="item" key="item.name">
           <a-list-item-meta :description="item.affiliationName">
-            <a-button slot="title" @click="queryAuthor">{{item.name}}</a-button>
+            <a-button type="text" slot="title" @click="queryAuthor">{{item.name}}</a-button>
             <a-avatar slot="avatar" icon="user" />
           </a-list-item-meta>
           <span>
@@ -25,7 +25,7 @@
       >
         <a-list-item slot="renderItem" slot-scope="item" key="item.word">
           <a-list-item-meta>
-            <a-button type="primary" slot="title" @click="queryAuthor">{{item.word}}</a-button>
+            <a-button type="text" slot="title" @click="queryAuthor">{{item.word}}</a-button>
             <a-avatar slot="avatar">W</a-avatar>
           </a-list-item-meta>
           <span>
@@ -98,40 +98,16 @@ export default {
   methods: {
     queryAuthor (val) {
       console.log(val.toElement.textContent);
-    },
-    getData (callback) {
-      // reqwest({
-      //   url: fakeDataUrl,
-      //   type: 'json',
-      //   method: 'get',
-      //   contentType: 'application/json',
-      //   success: (res) => {
-      //     callback(res);
-      //   }
-      // });
     }
-    // onLoadMore () {
-    //   this.loadingMore = true;
-    //   this.getData((res) => {
-    //     this.data = this.data.concat(res.results);
-    //     this.loadingMore = false;
-    //     this.$nextTick(() => {
-    //       window.dispatchEvent(new Event('resize'));
-    //     });
-    //   });
-    // }
   }
 };
 </script>
 
 <style>
-.demo-loadmore-list {
-  min-height: 350px;
-}
 .ant-card-head-title {
   font-size: 24px;
 }
-.demo-infinite-container {
+.info-infinite-container {
   border: 1px solid #e8e8e8;
   border-radius: 4px;
   overflow: auto;

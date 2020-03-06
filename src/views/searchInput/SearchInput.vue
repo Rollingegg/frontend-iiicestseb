@@ -29,7 +29,6 @@
 
 <script>
 import GlobalFooter from '../common/GlobalFooter';
-import ResLister from '@/components/ResLiter';
 import GlobalNav from '../common/GlobalNavigator';
 import SearchBox from './SearchBox';
 import Card from '@/components/ArtCard';
@@ -39,7 +38,6 @@ const heatWords = '文献关键词热度排行';
 export default {
   name: 'Home',
   components: {
-    ResLister,
     GlobalFooter,
     GlobalNav,
     SearchBox,

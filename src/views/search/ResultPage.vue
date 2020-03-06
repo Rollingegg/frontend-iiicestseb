@@ -25,7 +25,7 @@
 import GlobalNav from '../common/GlobalNavigator';
 import GlobalFooter from '../common/GlobalFooter';
 import SearchBox from '../searchInput/SearchBox';
-import ResLister from '@/components/ResLiter';
+import ResLister from './ResLiter';
 export default {
   name: 'ResPage',
   data: function () {
