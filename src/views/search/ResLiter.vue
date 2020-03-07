@@ -1,13 +1,46 @@
 <template>
     <div>
-        <el-dialog :visible.sync="detailVisible" center distroy-on-close>
+        <el-dialog :visible.sync="detailVisible" center>
             <template slot="title">
-                <h1>文献详情</h1>
+                <h1 style="font-size:26px">{{currentRow.paperTitle}}</h1>
             </template>
             <template slot="footer">
-                <el-link target="_blank" icon="el-icon-download" v-bind:href="pdf_link">下载</el-link>
+                <el-link target="_blank" icon="el-icon-download" v-bind:href="pdf_link">文献传递</el-link>
             </template>
-            <art-detail :items="detailData"></art-detail>
+            <!-- <art-detail :items="detailData"></art-detail> -->
+            <el-row class="info-row">
+                <el-col :span="2">作者</el-col>
+                <el-col :span="22"><el-button size="mini" round type="info" v-for="(item, index) in currentRow.authorInfoList" :key="index" class="info-button">{{item.name}}</el-button></el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">机构</el-col>
+                <el-col :span="22"><el-button size="mini" round type="info" v-for="(item, index) in currentRow.authorInfoList" :key="index" class="info-button">{{item.affiliationName}}</el-button></el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">刊物</el-col>
+                <el-col :span="22">{{currentRow.publicationTitle}}</el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">关键词</el-col>
+                <el-col :span="22"><el-button size="mini" round type="info" v-for="(item, index) in currentRow.termList" :key="index" class="info-button">{{item.word}}</el-button></el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">会议</el-col>
+                <el-col :span="22">{{String(currentRow.conferenceName).toUpperCase()}}</el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">DOI</el-col>
+                <el-col :span="22">{{currentRow.doi}}</el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="12"><span style="margin-right:12px">发表时间</span>{{String(currentRow.publicationYear).substr(0,10)}}</el-col>
+                <el-col :span="12"><span style="margin-right:12px">被引次数</span>{{currentRow.referenceCount}}</el-col>
+            </el-row>
+            <el-row class="info-row">
+                <el-col :span="2">摘要</el-col>
+                <el-col :span="22" style="background-color: #D3DCE6;">{{currentRow.paperAbstract}}</el-col>
+            </el-row>
+
         </el-dialog>
         <el-row type="flex" justify="center">
             <el-col :span="16">
@@ -26,7 +59,7 @@
             <el-table-column
                 prop="title"
                 label="题名"
-                width
+                min-width="400"
                 align="center"
                 :show-overflow-tooltip="true"
                 :formatter="setTitle"
@@ -34,23 +67,23 @@
             <el-table-column
                 prop="authors"
                 label="作者"
-                width
+                min-width="400"
                 align="center"
                 :show-overflow-tooltip="true"
                 :formatter="setAuthor"
             ></el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 prop="affiliations"
                 label="来源"
                 width
                 align="center"
                 :show-overflow-tooltip="true"
                 :formatter="setAffiliations"
-            ></el-table-column>
+            ></el-table-column> -->
             <el-table-column
                 prop="date"
                 label="发表时间"
-                width="90"
+                width
                 align="center"
                 :show-overflow-tooltip="true"
                 :formatter="setDate"
@@ -58,7 +91,7 @@
             <el-table-column
                 prop="ref"
                 label="被引"
-                width="90"
+                width
                 align="center"
                 :show-overflow-tooltip="true"
                 :formatter="setRef"
@@ -185,7 +218,13 @@
             isAdmin: {
                 type: Boolean,
                 default () {
-                    return true;
+                    return false;
+                }
+            },
+            filter: {
+                type: Object,
+                default () {
+                    return {};
                 }
             }
         },
@@ -212,7 +251,7 @@
                 return author.substr(0, author.length - 2);
             },
             setDate (row) {
-                return row.publicationYear;
+                return row.publicationYear.substr(0, 4);
             },
             setRef (row) {
                 return row.referenceCount;
@@ -281,5 +320,19 @@
 
     .el-pagination__jump {
         color: cornsilk;
+    }
+    .el-tooltip{
+        font: bold 14px blue;
+    }
+    .el-dialog{
+        width: 66.7%;
+    }
+    .info-row{
+        margin-bottom: 16px;
+        font-size: 16px;
+    }
+    .info-button{
+        margin-bottom: 4px;
+        margin-left: 10px;
     }
 </style>

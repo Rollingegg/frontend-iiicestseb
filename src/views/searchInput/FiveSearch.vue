@@ -7,7 +7,7 @@
     <el-row type="flex" justify="center" style="margin-top:50px">
         <el-col :span="12">
     <el-button round type="primary" @click="reset" >重置</el-button>
-    <el-button round type="warning" @click="search" style="margin-top:50px">高级检索</el-button>
+    <el-button :loading="loading" round type="warning" @click="search" style="margin-top:50px">高级检索</el-button>
         </el-col>
     </el-row>
   </div>
@@ -19,6 +19,7 @@ export default {
   name: 'fsearch',
   data () {
     return {
+      loading: false,
       items: [
         {
           label: '篇名',
@@ -52,6 +53,7 @@ export default {
     search () {
       console.log(this.items);
       if (this.items[0].val !== '' || this.items[1].val !== '' || this.items[2].val !== '' || this.items[3].val !== '' || this.items[4].val !== '') {
+        this.loading = true;
         this.$get('search/advanced', {
             paper_title: this.items[0].val,
             author_name: this.items[1].val,
@@ -61,6 +63,9 @@ export default {
         }).then((r) => {
             if (r.data.status) {
                 db.save('RESULT', r.data.result);
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
                 this.$router.push('/searchRes');
             } else {
                 this.$message({

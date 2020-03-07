@@ -6,13 +6,15 @@
             v-model="state"
             :fetch-suggestions="searchSuggest"
             placeholder="开始您的学术探索之旅"
+            highlight-first-item
             clearable
+            @change="doSearch(getSelect(),state)"
         >
             <el-select v-model="select" slot="prepend" style="width: 105px">
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
-            <el-button slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)">搜索</el-button>
+            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)">搜索</el-button>
 
             <template slot-scope="{ item }">
                 <div class="name">
@@ -32,6 +34,7 @@
         name: 'SearchBox',
         data: function () {
             return {
+                loading: false,
                 recommends: [],
                 state: '',
                 select: '全选',
@@ -76,12 +79,16 @@
             },
             doSearch (queryType, queryString) {
                 if (this.state !== '') {
+                    this.loading = true;
                     this.$get('search/simple', {
                         type: queryType,
                         keyword: queryString
                     }).then((r) => {
                         if (r.data.status) {
                             db.save('RESULT', r.data.result);
+                            setTimeout(() => {
+                                this.loading = false;
+                            }, 500);
                             this.$router.push('/searchRes');
                         } else {
                             this.$message({
