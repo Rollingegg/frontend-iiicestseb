@@ -1,5 +1,5 @@
 <template>
-    <a-card hoverable :loading="loading" :title="title" style="width: 500px">
+    <a-card :loading="loading" :title="title" style="width: 500px">
         <div class="info-infinite-container" :infinite-scroll-distance="10">
             <a-list
                 itemLayout="horizontal"
