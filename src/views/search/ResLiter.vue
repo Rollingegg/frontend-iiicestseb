@@ -7,7 +7,6 @@
             <template slot="footer">
                 <el-link target="_blank" icon="el-icon-download" v-bind:href="pdf_link">文献传递</el-link>
             </template>
-            <!-- <art-detail :items="detailData"></art-detail> -->
             <el-row class="info-row">
                 <el-col :span="2">作者</el-col>
                 <el-col :span="22"><el-button size="mini" round type="info" v-for="(item, index) in currentRow.authorInfoList" :key="index" class="info-button">{{item.name}}</el-button></el-col>
@@ -122,7 +121,6 @@
 
 <script>
     import db from '../../utils/localstorage';
-    import ArtDetail from '@/components/ArticleDetail';
 
     export default {
         beforeCreate () {
@@ -143,8 +141,7 @@
                 size: 10,
                 detailVisible: false,
                 currentRow: {},
-                authorStr: '',
-                affiliationStr: ''
+                artList: db.get('RESULT')
             };
         },
         computed: {
@@ -164,46 +161,6 @@
                     return tablePush;
                 },
                 set: function () {
-                }
-            },
-            detailData: {
-                get () {
-                    return [
-                        {
-                            type: '论文标题',
-                            cont: this.currentRow.paperTitle
-                        },
-                        {
-                            type: '作者',
-                            cont: this.authorStr
-                        },
-                        {
-                            type: '机构',
-                            cont: this.affiliationStr
-                        },
-                        {
-                            type: '摘要',
-                            cont: this.currentRow.paperAbstract
-                        },
-                        {
-                            type: '关键词',
-                            cont: this.currentRow.authorKeywords
-                        },
-                        {
-                            type: '出版刊物名称',
-                            cont: this.currentRow.publicationTitle
-                        },
-                        {
-                            type: '会议名称',
-                            cont: this.currentRow.conferenceName
-                        },
-                        {
-                            type: 'DOI',
-                            cont: this.currentRow.doi
-                        }
-                    ];
-                },
-                set () {
                 }
             },
             pdf_link: {
@@ -260,17 +217,6 @@
             jump2file (row, event, col) {
                 this.detailVisible = true;
                 this.currentRow = row;
-                let authorList = row.authorInfoList;
-                let author = '';
-                let affiliation = '';
-                authorList.forEach(value => {
-                    author += value.name;
-                    author += '; ';
-                    affiliation += value.affiliationName;
-                    affiliation += '; ';
-                });
-                this.authorStr = author.substr(0, author.length - 2); // 作者
-                this.affiliationStr = affiliation.substr(0, affiliation.length - 2); // 机构
             },
             showEditView (index, row) {
                 console.log(index, row);
@@ -301,9 +247,6 @@
                 });
                 return tablePush;
             }
-        },
-        components: {
-            ArtDetail
         }
     };
 </script>
