@@ -8,6 +8,7 @@
                     <el-header>
                     </el-header>
                     <el-main>
+                        <search-box/>
                         <res-lister></res-lister>
                     </el-main>
                     <el-footer></el-footer>

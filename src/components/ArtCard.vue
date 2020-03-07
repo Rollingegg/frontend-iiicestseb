@@ -5,8 +5,7 @@
         itemLayout="horizontal"
         :dataSource="authorList"
         loadMore
-        v-if="String(title).indexOf('作者')!==-1"
-      >
+        v-if="String(title).indexOf('作者')!==-1">
         <a-list-item slot="renderItem" slot-scope="item" key="item.name">
           <a-list-item-meta :description="item.affiliationName">
             <a-button type="text" slot="title" @click="queryAuthor">{{item.name}}</a-button>
@@ -25,7 +24,7 @@
       >
         <a-list-item slot="renderItem" slot-scope="item" key="item.word">
           <a-list-item-meta>
-            <a-button type="text" slot="title" @click="queryAuthor">{{item.word}}</a-button>
+            <a-button type="primary" slot="title" @click="queryAuthor">{{item.word}}</a-button>
             <a-avatar slot="avatar">W</a-avatar>
           </a-list-item-meta>
           <span>

@@ -103,15 +103,6 @@
 </script>
 
 <style lang="less" scoped>
-    .container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: auto;
-        background: #f0f2f5 url("../../../static/img/Large-Triangles.svg") no-repeat center 110px;
-        background-size: 100%;
-    }
-
     .el-container {
         background: url("../../../static/img/Large-Triangles.svg");
     }
