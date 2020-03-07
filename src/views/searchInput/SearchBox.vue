@@ -12,7 +12,7 @@
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
-            <el-button slot="append" type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
+            <el-button slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)">搜索</el-button>
 
             <template slot-scope="{ item }">
                 <div class="name">
@@ -68,18 +68,17 @@
                         return 'paper_title';
                     case '摘要' :
                         return 'paper_abstract';
-                    case '关键词':
+                    case '机构':
                         return 'affiliation_name';
                     case 'DOI':
                         return 'doi';
                 }
             },
-            doSearch () {
+            doSearch (queryType, queryString) {
                 if (this.state !== '') {
-                    let queryString = this.getSelect();
                     this.$get('search/simple', {
-                        type: queryString,
-                        keyword: this.state
+                        type: queryType,
+                        keyword: queryString
                     }).then((r) => {
                         if (r.data.status) {
                             db.save('RESULT', r.data.result);
