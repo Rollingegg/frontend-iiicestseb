@@ -5,7 +5,7 @@
                 <h1 style="font-size:26px">{{currentRow.paperTitle}}</h1>
             </template>
             <template slot="footer">
-                <el-link target="_blank" icon="el-icon-download" v-bind:href="pdf_link">文献传递</el-link>
+                <el-link target="_blank" icon="el-icon-download" v-bind:href="pdf_link" style="font-size:26px">文献传递</el-link>
             </template>
             <el-row class="info-row">
                 <el-col :span="2">作者</el-col>

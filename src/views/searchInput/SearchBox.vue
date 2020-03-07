@@ -8,7 +8,7 @@
             placeholder="开始您的学术探索之旅"
             highlight-first-item
             clearable
-            @change="doSearch(getSelect(),state)"
+            @keyup.enter.native ="doSearch(getSelect(),state)"
         >
             <el-select v-model="select" slot="prepend" style="width: 105px">
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
