@@ -109,8 +109,9 @@ export default {
       currentPage: 1,
       size: 10,
       detailVisible: false,
-      currentIndex: 0,
-      pdf_link: ''
+      currentRow: {},
+      authorStr: '',
+      affiliationStr: ''
     };
   },
   computed: {
@@ -136,42 +137,45 @@ export default {
         return [
           {
             type: '论文标题',
-            cont: '基于北斗定位系统'
+            cont: this.currentRow.paperTitle
           },
           {
             type: '作者',
-            cont: '班亚 袁静 刘洪静 王锐'
+            cont: this.authorStr
           },
           {
             type: '机构',
-            cont: '重庆市计量质量检测研究院'
+            cont: this.affiliationStr
           },
           {
             type: '摘要',
-            cont:
-              '随着我国现代工业迅猛发展,大量危化品被投入到化工企业的生产和使用中,一定程度上增大了危化品事故发生的概率。危险化学品具有极大的危险性和破坏性,因此及时高效的危化品安全监管显得尤为重要。将我国北斗卫星导航系统应用于安全监管意义重大,其具有精度高、全天候等优点,相关技术及应用近年来快速发展,已经在桥梁、地灾、大坝等的安全监测领域得到了广泛的应用。本文基于危化品企业应急管理的调查分析,融合大数据思维,探'
+            cont: this.currentRow.paperAbstract
           },
           {
             type: '关键词',
-            cont: '北斗卫星导航系统 ; 危险化学品 ; 大数据 ; 安全监管 ; 应急管理'
+            cont: this.currentRow.authorKeywords
           },
           {
             type: '出版刊物名称',
-            cont: '第十一届中国卫星导航年会论文集——S01 卫星导航行业应用'
+            cont: this.currentRow.publicationTitle
           },
           {
             type: '会议名称',
-            cont: '第十一届中国卫星导航年会'
+            cont: this.currentRow.conferenceName
           },
           {
             type: 'DOI',
-            cont: '10.26914/c.cnkihy.2020.001057'
+            cont: this.currentRow.doi
           }
         ];
       },
-      set () {
-
-      }
+      set () {}
+    },
+    pdf_link: {
+      get () {
+        return this.currentRow.pdfLink;
+      },
+      set () {}
     }
   },
   props: {
@@ -214,7 +218,7 @@ export default {
     jump2file (row, event, col) {
       console.log(row);
       this.detailVisible = true;
-      this.detailData[0].cont = row.paperTitle; // 标题
+      this.currentRow = row;
       let authorList = row.authorInfoList;
       let author = '';
       let affiliation = '';
@@ -224,14 +228,8 @@ export default {
         affiliation += value.affiliationName;
         affiliation += '; ';
       });
-      this.detailData[1].cont = author.substr(0, author.length - 2); // 作者
-      this.detailData[2].cont = affiliation.substr(0, affiliation.length - 2); // 机构
-      this.detailData[3].cont = row.paperAbstract; // 摘要
-      this.detailData[4].cont = row.authorKeywords; // 关键词
-      this.detailData[5].cont = row.publicationTitle; // 出版刊物名称
-      this.detailData[6].cont = row.conferenceName; // 会议名称
-      this.detailData[7].cont = row.doi; // DOI
-      this.pdf_link = row.pdfLink;
+      this.authorStr = author.substr(0, author.length - 2); // 作者
+      this.affiliationStr = affiliation.substr(0, affiliation.length - 2); // 机构
     },
     showEditView (index, row) {
       console.log(index, row);
