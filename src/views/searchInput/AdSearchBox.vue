@@ -14,7 +14,8 @@
     </div>
 </template>
 <script>
-    import ps from '@/components/ProSearch';
+    // import ps from '@/components/ProSearch';
+    import ps from './FiveSearch';
 
     export default {
         name: 'AdSearchBox',
