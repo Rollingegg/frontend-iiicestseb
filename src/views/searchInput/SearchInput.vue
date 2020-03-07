@@ -31,7 +31,7 @@
     import GlobalFooter from '../common/GlobalFooter';
     import GlobalNav from '../common/GlobalNavigator';
     import SearchBox from './SearchBox';
-    import Card from '@/components/ArtCard';
+    import Card from './HotCard';
     import {mapState} from 'vuex';
     import db from '../../utils/localstorage';
 
