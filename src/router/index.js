@@ -158,7 +158,6 @@ router.beforeEach((to, from, next) => {
                 }); */
             } else {
                 asyncRouter = userRouter;
-                console.log(userRouter);
                 go(to, next);
             }
         } else {

@@ -219,7 +219,6 @@
             },
             /* 查看详情 */
             jump2file (row, event, col) {
-                console.log(row);
                 this.detailVisible = true;
                 this.currentRow = row;
                 let authorList = row.authorInfoList;

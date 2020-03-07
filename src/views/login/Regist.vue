@@ -190,7 +190,6 @@
                     }
                 });
             },
-
             returnLogin () {
                 this.$emit('regist', 'Login');
             }

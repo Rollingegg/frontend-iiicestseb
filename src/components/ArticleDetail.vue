@@ -1,5 +1,5 @@
 <template>
-  <el-collapse v-model="activeNames" @change="handleChange">
+  <el-collapse v-model="activeNames">
     <el-collapse-item v-for="(item, index) in items" :key="index" :title="item.type" :name="index+1">
       <div >{{item.cont}}</div>
     </el-collapse-item>
@@ -58,11 +58,6 @@ export default {
           }
         ];
       }
-    }
-  },
-  methods: {
-    handleChange (val) {
-      console.log(val);
     }
   }
 };
