@@ -65,7 +65,7 @@
                     case '作者':
                         return 'author_name';
                     case '标题' :
-                        return 'paper_titile';
+                        return 'paper_title';
                     case '摘要' :
                         return 'paper_abstract';
                     case '机构':
