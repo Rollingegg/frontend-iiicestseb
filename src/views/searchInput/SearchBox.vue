@@ -90,7 +90,11 @@
                             setTimeout(() => {
                                 this.loading = false;
                             }, 500);
-                            this.$router.push('/searchRes');
+                            if (this.$router.app.$route.path !== '/searchRes') {
+                                this.$router.push('/searchRes');
+                            } else {
+                                this.$emit('refresh');
+                            }
                         } else {
                             this.$message({
                                 showClose: true,

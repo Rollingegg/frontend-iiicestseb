@@ -38,7 +38,7 @@
         </el-aside>
         <el-container>
           <el-main>
-            <search-box />
+            <search-box v-on:refresh="reset"/>
             <res-lister ref="resultTable"></res-lister>
           </el-main>
           <el-footer></el-footer>
@@ -92,7 +92,16 @@ export default {
         this.$refs.resultTable.artList = newList;
       },
       reset () {
+          console.log(db.get('RESULT'));
+          if (db.get('RESULT').length > 0) {
           this.$refs.resultTable.artList = db.get('RESULT');
+          } else {
+              this.$message({
+                        showClose: true,
+                        message: '搜索记录为空',
+                        type: 'warning'
+            });
+          }
       }
   }
 };
