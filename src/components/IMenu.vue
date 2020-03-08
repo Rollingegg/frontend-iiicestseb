@@ -53,11 +53,7 @@
                                 this.$router.push('/searchInput');
                     }
                 } else {
-                this.$message({
-                        showClose: true,
-                        message: '功能敬请期待',
-                        type: 'warning'
-                });
+                    this.$emit('expectedWarning', 'warning');
                 }
             }
         }

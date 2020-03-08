@@ -1,5 +1,7 @@
 <template>
     <div style="margin-top: 15px;padding:0 15%">
+        <el-row type="flex" justify="space-between">
+            <el-col :span="20">
         <el-autocomplete
             style="width:100%"
             popper-class="my-autocomplete"
@@ -14,7 +16,7 @@
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
-            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)">搜索</el-button>
+            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)"></el-button>
 
             <template slot-scope="{ item }">
                 <div class="name">
@@ -23,7 +25,11 @@
                 </div>
             </template>
         </el-autocomplete>
-        <ad-search-box style="margin-top:20px"/>
+            </el-col>
+            <el-col :span="3">
+        <ad-search-box />
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
