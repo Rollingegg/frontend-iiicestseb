@@ -257,11 +257,11 @@
     }
 
     .el-pagination__total {
-        color: cornsilk;
+        color: cornsilk !important;
     }
 
     .el-pagination__jump {
-        color: cornsilk;
+        color: cornsilk !important;
     }
     .el-tooltip{
         font: bold 14px blue;
@@ -273,7 +273,8 @@
         margin-bottom: 16px;
         font-size: 16px;
     }
-    .info-button{
+    /* 组合定位 */
+    .el-button.info-button{
         margin-bottom: 4px;
         margin-left: 10px;
     }

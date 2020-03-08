@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-input clearable placeholder="请输入内容" v-for="(item, index) in items" :key="index" v-model="item.val" v-show="item.shown">
-      <template slot="prepend">{{item.label}}</template>
+      <div style="width:50px" slot="prepend">{{item.label}}</div>
       <el-button slot="append" icon="el-icon-remove" @click="remove(index)"></el-button>
     </el-input>
     <el-row type="flex" justify="center" style="margin-top:50px">
@@ -81,7 +81,11 @@ export default {
                 setTimeout(() => {
                     this.loading = false;
                 }, 500);
-                this.$router.push('/searchRes');
+                if (this.$router.app.$route.path !== '/searchRes') {
+                    this.$router.push('/searchRes');
+                } else {
+                    this.$emit('refresh');
+                }
             } else {
                 this.$message({
                     showClose: true,
@@ -116,8 +120,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-input-group__prepend{
-    width: 100px;
+<style>
+.label-prepend{
+    width: 100px !important;
 }
 </style>

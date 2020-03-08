@@ -58,7 +58,7 @@
             handleUserClick (command) {
                 // this[command]();
                 if (command === 'logout') {
-                    this.doLogin();
+                    this.logout();
                 } else {
                 this.$message({
                         showClose: true,

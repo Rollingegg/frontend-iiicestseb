@@ -80,6 +80,15 @@ export default {
   },
   methods: {
       handleFilter () {
+          console.log(this.startYear);
+          console.log(this.endYear);
+          if (this.endYear < this.startYear) {
+              this.$message({
+                        showClose: true,
+                        message: '请选择正确的年份范围',
+                        type: 'warning'
+            });
+          } else {
           let newList = [];
           let artList = db.get('RESULT');
           for (let i = 0; i < artList.length; i++) {
@@ -90,6 +99,12 @@ export default {
               }
           }
         this.$refs.resultTable.artList = newList;
+        this.$message({
+          message: '筛选完成',
+          showClose: true,
+          type: 'success'
+        });
+          }
       },
       reset () {
           console.log(db.get('RESULT'));
@@ -110,6 +125,11 @@ export default {
 <style>
 #main {
   background: url("../../../static/img/Large-Triangles.svg");
+}
+.el-main{
+
+  min-height: calc(100vh - 120px)
+
 }
 .clearfix:before,
 .clearfix:after {

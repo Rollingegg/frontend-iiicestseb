@@ -10,9 +10,10 @@
             placeholder="开始您的学术探索之旅"
             highlight-first-item
             clearable
+            class="input-with-select"
             @keyup.enter.native ="doSearch(getSelect(),state)"
         >
-            <el-select v-model="select" slot="prepend" style="width: 105px">
+            <el-select v-model="select" slot="prepend" >
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
@@ -27,7 +28,7 @@
         </el-autocomplete>
             </el-col>
             <el-col :span="3">
-        <ad-search-box />
+        <ad-search-box v-on:refresh="refresh"/>
             </el-col>
         </el-row>
     </div>
@@ -58,10 +59,13 @@
                         label: '摘要'
                     },
                     {
-                        label: '关键词'
+                        label: '机构'
                     },
                     {
                         label: 'DOI'
+                    },
+                    {
+                        label: '关键词'
                     }]
             };
         },
@@ -81,6 +85,8 @@
                         return 'affiliation_name';
                     case 'DOI':
                         return 'doi';
+                    case '关键词':
+                        return 'term';
                 }
             },
             doSearch (queryType, queryString) {
@@ -156,6 +162,9 @@
             },
             handleIconClick (ev) {
                 console.log(ev);
+            },
+            refresh () {
+                this.$emit('refresh');
             }
         },
         mounted () {
@@ -185,5 +194,9 @@
     .my-autocomplete li .icon {
         color: #b4b4b4;
         margin-right: 5px;
+    }
+    .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+    width:80px
     }
 </style>

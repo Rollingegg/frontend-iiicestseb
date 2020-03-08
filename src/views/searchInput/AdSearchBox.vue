@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="primary" round size="large" @click="showDrawer">
+        <el-button type="text" round size="large" @click="showDrawer" style="color:cornsilk">
             高级检索
         </el-button>
         <a-drawer
@@ -9,7 +9,7 @@
             :closable="false"
             @close="onClose"
             :visible="visible">
-            <ps/>
+            <ps v-on:refresh="refresh"/>
         </a-drawer>
     </div>
 </template>
@@ -30,6 +30,10 @@
             },
             onClose () {
                 this.visible = false;
+            },
+            refresh () {
+                this.$emit('refresh');
+                this.visible = false;
             }
         },
         components: {
@@ -37,3 +41,9 @@
         }
     };
 </script>
+<style>
+.el-button.el-button--text:hover{
+    color: blue;
+    text-decoration-line: underline;
+}
+</style>

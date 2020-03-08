@@ -21,7 +21,7 @@
                 v-else-if="String(title).indexOf('关键词')!==-1">
                 <a-list-item slot="renderItem" slot-scope="item" key="item.word">
                     <a-list-item-meta>
-                        <a-button type="primary" slot="title" @click="searchByAffiliation">{{item.word}}</a-button>
+                        <a-button type="primary" slot="title" @click="searchByTerm">{{item.word}}</a-button>
                     </a-list-item-meta>
                     <span>关键词热度<h2 id="p-hot">{{item.hot}}</h2></span>
                 </a-list-item>
@@ -78,11 +78,12 @@
             searchByAuthor (button) {
                 this.doSearch('author_name', button.toElement.textContent);
             },
-            searchByAffiliation (button) {
-                this.doSearch('paper_abstract', button.toElement.textContent);
+            searchByTerm (button) {
+                this.doSearch('term', button.toElement.textContent);
             },
             doSearch (queryType, queryString) {
                 if (this.state !== '') {
+                    db.save('SEARCH_WORD', queryString);
                     this.$get('search/simple', {
                         type: queryType,
                         keyword: queryString
