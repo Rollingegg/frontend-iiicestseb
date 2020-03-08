@@ -37,6 +37,7 @@
 
 <style lang="less" scoped>
     .el-container {
+        height: 100vh;
         background: url("../../../static/img/Large-Triangles.svg");
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container id="main">
     <global-nav></global-nav>
     <el-main>
       <el-container>
@@ -41,7 +41,7 @@
             <search-box v-on:refresh="reset"/>
             <res-lister ref="resultTable"></res-lister>
           </el-main>
-          <el-footer></el-footer>
+          <el-footer ></el-footer>
         </el-container>
       </el-container>
     </el-main>
@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style>
-.el-container {
+#main {
   background: url("../../../static/img/Large-Triangles.svg");
 }
 .clearfix:before,

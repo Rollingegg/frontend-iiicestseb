@@ -116,7 +116,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .el-input-group__prepend{
     width: 100px;
 }
