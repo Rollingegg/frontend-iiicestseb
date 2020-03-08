@@ -53,7 +53,7 @@
                         this.$router.push('/');
                     }
                 } else if (key === '4') {
-                    window.open('https://www.cnki.net');
+                    window.open('https://ieeexplore.ieee.org/');
                 } else if (key === 'upload') {
                     this.$router.push('/upload');
                 } else {

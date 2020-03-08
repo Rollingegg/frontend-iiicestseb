@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="text" round size="large" @click="showDrawer" style="color:cornsilk">
+        <el-button plain size="large" @click="showDrawer">
             高级检索
         </el-button>
         <a-drawer
@@ -42,8 +42,4 @@
     };
 </script>
 <style>
-.el-button.el-button--text:hover{
-    color: blue;
-    text-decoration-line: underline;
-}
 </style>

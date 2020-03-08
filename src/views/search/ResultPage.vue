@@ -63,7 +63,7 @@ export default {
   data: function () {
     return {
       resList: [],
-      startYear: '1970',
+      startYear: '2000',
       endYear: '2020'
     };
   },

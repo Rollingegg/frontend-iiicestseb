@@ -90,7 +90,7 @@
                         title: '会议编号',
                         dataIndex: 'conferenceId'
                     }, {
-                        title: 'pdf连接',
+                        title: 'pdf链接',
                         dataIndex: 'pdfLink',
                         customRender: (text) => {
                             if (text.length > 30) {
@@ -123,7 +123,7 @@
                         title: '引用数',
                         dataIndex: 'referenceCount'
                     }, {
-                        title: '什么数',
+                        title: '被引数',
                         dataIndex: 'citationCount'
                     }, {
                         title: '发布时间',
