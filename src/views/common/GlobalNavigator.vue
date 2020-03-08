@@ -1,7 +1,7 @@
 <template>
     <el-header class="homeHeader">
         <a class="title" href="/">OASIS</a>
-        <IMenu></IMenu>
+        <IMenu v-on:expectedWarning="handleUserClick(command)"></IMenu>
         <div v-if="hasLogin">
             <el-button
                 icon="el-icon-bell"
@@ -56,7 +56,16 @@
                 this.$router.push({name: '登录页', params: {regist: 'Regist'}});
             },
             handleUserClick (command) {
-                this[command]();
+                // this[command]();
+                if (command === 'logout') {
+                    this.doLogin();
+                } else {
+                this.$message({
+                        showClose: true,
+                        message: '功能敬请期待',
+                        type: 'warning'
+                });
+                }
             },
             logout () {
                 this.$router.push('/login');

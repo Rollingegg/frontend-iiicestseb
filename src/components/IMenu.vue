@@ -48,12 +48,17 @@
         },
         methods: {
             handleSelect (key, keyPath) {
-                if (key === '4') {
+                if (key === '1') {
+                    if (this.$router.app.$route.path !== '/searchInput') {
+                        this.$router.push('/');
+                    }
+                } else if (key === '4') {
                     window.open('https://www.cnki.net');
                 } else if (key === 'upload') {
                     this.$router.push('/upload');
+                } else {
+                    this.$emit('expectedWarning', 'warning');
                 }
-                console.log(key);
             }
         }
     };

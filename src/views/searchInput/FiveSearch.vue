@@ -15,6 +15,7 @@
 
 <script>
 import db from '../../utils/localstorage';
+const limit = 200;
 export default {
   name: 'fsearch',
   data () {
@@ -45,21 +46,35 @@ export default {
           label: 'DOI',
           val: '',
           shown: true
+        },
+        {
+          label: '关键词',
+          val: '',
+          shown: true
         }
       ]
     };
   },
   methods: {
     search () {
-      console.log(this.items);
-      if (this.items[0].val !== '' || this.items[1].val !== '' || this.items[2].val !== '' || this.items[3].val !== '' || this.items[4].val !== '') {
+    //   console.log(this.items);
+        let isValid = false;
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i] !== '') {
+                isValid = true;
+                break;
+            }
+        }
+      if (isValid) {
         this.loading = true;
         this.$get('search/advanced', {
             paper_title: this.items[0].val,
             author_name: this.items[1].val,
             affiliation_name: this.items[2].val,
             paper_abstract: this.items[3].val,
-            doi: this.items[4].val
+            doi: this.items[4].val,
+            term: this.items[5].val,
+            limit: limit
         }).then((r) => {
             if (r.data.status) {
                 db.save('RESULT', r.data.result);

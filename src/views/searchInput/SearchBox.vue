@@ -1,5 +1,7 @@
 <template>
     <div style="margin-top: 15px;padding:0 15%">
+        <el-row type="flex" justify="space-between">
+            <el-col :span="20">
         <el-autocomplete
             style="width:100%"
             popper-class="my-autocomplete"
@@ -8,13 +10,13 @@
             placeholder="开始您的学术探索之旅"
             highlight-first-item
             clearable
-            @change="doSearch(getSelect(),state)"
+            @keyup.enter.native ="doSearch(getSelect(),state)"
         >
             <el-select v-model="select" slot="prepend" style="width: 105px">
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
-            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)">搜索</el-button>
+            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)"></el-button>
 
             <template slot-scope="{ item }">
                 <div class="name">
@@ -23,7 +25,11 @@
                 </div>
             </template>
         </el-autocomplete>
-        <ad-search-box style="margin-top:20px"/>
+            </el-col>
+            <el-col :span="3">
+        <ad-search-box />
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
@@ -36,7 +42,7 @@
             return {
                 loading: false,
                 recommends: [],
-                state: '',
+                state: String(db.get('SEARCH_WORD')) === '[object Object]' ? '' : db.get('SEARCH_WORD'),
                 select: '全选',
                 items: [
                     {
@@ -80,6 +86,7 @@
             doSearch (queryType, queryString) {
                 if (this.state !== '') {
                     this.loading = true;
+                    db.save('SEARCH_WORD', queryString);
                     this.$get('search/simple', {
                         type: queryType,
                         keyword: queryString
@@ -89,7 +96,11 @@
                             setTimeout(() => {
                                 this.loading = false;
                             }, 500);
-                            this.$router.push('/searchRes');
+                            if (this.$router.app.$route.path !== '/searchRes') {
+                                this.$router.push('/searchRes');
+                            } else {
+                                this.$emit('refresh');
+                            }
                         } else {
                             this.$message({
                                 showClose: true,
@@ -130,14 +141,14 @@
             // TODO: 1.推荐，或者考虑删除
             loadAll () {
                 return [
-                    {id: 1, value: '新型冠状病毒'},
-                    {id: 2, value: '新冠肺炎'},
-                    {id: 3, value: '文献综述'},
-                    {id: 4, value: '外文文献'},
-                    {id: 5, value: '人工智能'},
-                    {id: 6, value: '大数据'},
-                    {id: 7, value: '区块链'},
-                    {id: 8, value: '自动化测试'}
+                    {id: 1, value: 'Literature Review'},
+                    {id: 2, value: 'Artificial Intelligence'},
+                    {id: 3, value: 'Big Data'},
+                    {id: 4, value: 'Block Chain'},
+                    {id: 5, value: 'Cloud Computing'},
+                    {id: 6, value: 'Automatic Software Testing'},
+                    {id: 7, value: 'Nanjing University'},
+                    {id: 8, value: 'Python'}
                 ];
             },
             handleSelect (item) {

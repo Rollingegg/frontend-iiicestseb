@@ -1,8 +1,8 @@
 <template>
     <div>
-        <a-button type="primary" @click="showDrawer">
-            高级搜索
-        </a-button>
+        <el-button type="primary" round size="large" @click="showDrawer">
+            高级检索
+        </el-button>
         <a-drawer
             title="输入检索条件"
             width=520
