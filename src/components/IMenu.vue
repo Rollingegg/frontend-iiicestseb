@@ -48,6 +48,17 @@
         methods: {
             handleSelect (key, keyPath) {
                 console.log(key, keyPath);
+                if (key === '1') {
+                    if (this.$router.app.$route.path !== '/searchInput') {
+                                this.$router.push('/searchInput');
+                    }
+                } else {
+                this.$message({
+                        showClose: true,
+                        message: '功能敬请期待',
+                        type: 'warning'
+                });
+                }
             }
         }
     };
