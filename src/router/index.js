@@ -7,7 +7,7 @@ import Router from 'vue-router';
 import LoginView from '@/views/login/Common';
 import searchInputView from '@/views/searchInput/SearchInput';
 import searchResultView from '@/views/search/ResultPage';
-import manageView from '@/views/manage/Upload';
+import uploadView from '@/views/manage/Upload';
 // import ResLiter from '@/components/ResLiter';
 // import LiteratureCard from '@/components/LiteratureCard';
 
@@ -55,9 +55,9 @@ let constRouter = [
         component: searchResultView
     },
     {
-        path: '/manage',
+        path: '/upload',
         name: '文献管理页',
-        component: manageView
+        component: uploadView
     }
 
 ];
@@ -66,7 +66,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/searchInput', '/searchRes', '/manage'];
+const whiteList = ['/login', '/searchInput', '/searchRes'];
 
 let asyncRouter;
 

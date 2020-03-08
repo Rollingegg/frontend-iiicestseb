@@ -20,9 +20,10 @@
             <template slot="title">后台管理</template>
             <el-menu-item index="3-1">文献管理</el-menu-item>
             <el-menu-item index="3-2">用户管理</el-menu-item>
+            <el-menu-item index="upload">上传数据</el-menu-item>
         </el-submenu>
         <el-menu-item index="4">
-          <a href="https://www.cnki.net" target="_blank">帮助</a>
+            <div>帮助</div>
         </el-menu-item>
     </el-menu>
 </template>
@@ -47,7 +48,12 @@
         },
         methods: {
             handleSelect (key, keyPath) {
-                console.log(key, keyPath);
+                if (key === '4') {
+                    window.open('https://www.cnki.net');
+                } else if (key === 'upload') {
+                    this.$router.push('/upload');
+                }
+                console.log(key);
             }
         }
     };

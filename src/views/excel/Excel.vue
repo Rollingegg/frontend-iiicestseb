@@ -9,21 +9,18 @@
                 :beforeUpload="beforeUpload">
                 <a-button>
                     <a-icon type="upload"/>
-                    选择.xlsx文件
+                    选择.csv文件
                 </a-button>
             </a-upload>
             <div class="button-area">
                 <a-button type="primary" @click="downloadTemplate" style="margin-right: .5rem">
                     模板下载
                 </a-button>
-                <a-button @click="exportExcel" style="margin-right: .5rem">
-                    导出Excel
-                </a-button>
                 <a-button
                     @click="handleUpload"
                     :disabled="fileList.length === 0"
                     :loading="uploading">
-                    {{uploading ? '导入中' : '导入Excel' }}
+                    {{uploading ? '导入中' : '导入csv' }}
                 </a-button>
             </div>
         </div>
@@ -76,33 +73,84 @@
         },
         computed: {
             columns () {
-                return [{
-                    title: '字段1',
-                    dataIndex: 'field1'
-                }, {
-                    title: '字段2',
-                    dataIndex: 'field2'
-                }, {
-                    title: '字段3',
-                    dataIndex: 'field3'
-                }, {
-                    title: '导入时间',
-                    dataIndex: 'createTime'
-                }];
+                return [
+                    {
+                        title: '发布标题',
+                        dataIndex: 'publicationTitle',
+                        customRender: (text) => {
+                            if (text.length > 10) {
+                                text = text.substring(0, 8) + '...';
+                            }
+                            return text;
+                        }
+                    }, {
+                        title: '发布编号',
+                        dataIndex: 'publisherId'
+                    }, {
+                        title: '会议编号',
+                        dataIndex: 'conferenceId'
+                    }, {
+                        title: 'pdf连接',
+                        dataIndex: 'pdfLink',
+                        customRender: (text) => {
+                            if (text.length > 30) {
+                                text = text.substring(0, 28) + '...';
+                            }
+                            return text;
+                        }
+                    }, {
+                        title: 'doi',
+                        dataIndex: 'doi'
+                    }, {
+                        title: '标题',
+                        dataIndex: 'paperTitle',
+                        customRender: (text) => {
+                            if (text.length > 30) {
+                                text = text.substring(0, 28) + '...';
+                            }
+                            return text;
+                        }
+                    }, {
+                        title: '摘要',
+                        dataIndex: 'paperAbstract',
+                        customRender: (text) => {
+                            if (text.length > 30) {
+                                text = text.substring(0, 28) + '...';
+                            }
+                            return text;
+                        }
+                    }, {
+                        title: '引用数',
+                        dataIndex: 'referenceCount'
+                    }, {
+                        title: '什么数',
+                        dataIndex: 'citationCount'
+                    }, {
+                        title: '发布时间',
+                        dataIndex: 'publicationYear',
+                        customRender: (text) => {
+                            return text.substr(0, 4);
+                        }
+                    }, {
+                        title: '开始页',
+                        dataIndex: 'startPage'
+                    }, {
+                        title: '终了页',
+                        dataIndex: 'endPage'
+                    }, {
+                        title: '认定机构',
+                        dataIndex: 'documentIdentifier'
+                    }];
             }
         },
         mounted () {
-            this.fetch();
         },
         methods: {
             handleClose () {
                 this.importResultVisible = false;
             },
             downloadTemplate () {
-                this.$download('test/template', {}, '导入模板.xlsx');
-            },
-            exportExcel () {
-                this.$export('test/export');
+                window.open(process.env.BASE_API + '/statistics/StandardCSV');
             },
             handleRemove (file) {
                 if (this.uploading) {
@@ -115,7 +163,16 @@
                 this.fileList = newFileList;
             },
             beforeUpload (file) {
-                this.fileList = [...this.fileList, file];
+                const isCSV = file.type === 'application/vnd.ms-excel';
+                if (!isCSV) {
+                    this.$message({
+                        showClose: true,
+                        message: 'CSV ONLY!',
+                        type: 'warning'
+                    });
+                } else {
+                    this.fileList = [...this.fileList, file];
+                }
                 return false;
             },
             handleUpload () {
@@ -123,17 +180,24 @@
                 const formData = new FormData();
                 formData.append('file', fileList[0]);
                 this.uploading = true;
-                this.$upload('test/import', formData).then((r) => {
-                    let data = r.data.data;
-                    if (data.data.length) {
+                let timeStart = new Date();
+                this.$upload('statistics/uploadCSV', formData).then((r) => {
+                    this.times = (new Date() - timeStart) / 1000;
+                    if (r.data.status) {
+                        this.errors = r.data.result.errors;
+                        this.importData = r.data.result.papers;
+                        this.importResultVisible = true;
                         this.fetch();
+                    } else {
+                        this.importData = [];
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: 'warning'
+                        });
                     }
-                    this.importData = data.data;
-                    this.errors = data.error;
-                    this.times = data.time / 1000;
                     this.uploading = false;
                     this.fileList = [];
-                    this.importResultVisible = true;
                 }).catch((r) => {
                     console.error(r);
                     this.uploading = false;
@@ -142,29 +206,12 @@
             },
             handleTableChange (pagination, filters, sorter) {
                 this.paginationInfo = pagination;
-                this.fetch();
+                // this.fetch();
             },
             fetch (params = {}) {
                 this.loading = true;
-                if (this.paginationInfo) {
-                    this.$refs.TableInfo.pagination.current = this.paginationInfo.current;
-                    this.$refs.TableInfo.pagination.pageSize = this.paginationInfo.pageSize;
-                    params.pageSize = this.paginationInfo.pageSize;
-                    params.pageNum = this.paginationInfo.current;
-                } else {
-                    params.pageSize = this.pagination.defaultPageSize;
-                    params.pageNum = this.pagination.defaultCurrent;
-                }
-                this.$get('test', {
-                    ...params
-                }).then((r) => {
-                    let data = r.data;
-                    const pagination = {...this.pagination};
-                    pagination.total = data.total;
-                    this.loading = false;
-                    this.dataSource = data.rows;
-                    this.pagination = pagination;
-                });
+                this.loading = false;
+                this.dataSource = this.importData;
             }
         }
     };
