@@ -8,7 +8,7 @@
                 v-if="String(title).indexOf('作者')!==-1">
                 <a-list-item slot="renderItem" slot-scope="item" key="item.name">
                     <a-list-item-meta :description="item.affiliationName">
-                        <a-button type="text" slot="title" @click="searchByAuthor">{{item.name}}</a-button>
+                        <a-button type="primary" slot="title" @click="searchByAuthor">{{item.name}}</a-button>
                         <a-avatar slot="avatar" icon="user"/>
                     </a-list-item-meta>
                     <span>发表文章数<h2 id="p-num">{{item.publishNum}}</h2></span>
@@ -21,7 +21,7 @@
                 v-else-if="String(title).indexOf('关键词')!==-1">
                 <a-list-item slot="renderItem" slot-scope="item" key="item.word">
                     <a-list-item-meta>
-                        <a-button type="primary" slot="title" @click="searchByTerm">{{item.word}}</a-button>
+                        <a-button type="primary" size="large" slot="title" @click="searchByTerm">{{item.word}}</a-button>
                     </a-list-item-meta>
                     <span>关键词热度<h2 id="p-hot">{{item.hot}}</h2></span>
                 </a-list-item>
@@ -32,12 +32,12 @@
 
 <script>
     import db from '../../utils/localstorage';
-
+    const limit = 6;
     export default {
         name: 'Card',
         created () {
             this.$get('statistics/hotTerms', {
-                num: 6
+                num: limit
             }).then((r) => {
                 if (r.data.status) {
                     this.wordList = r.data.result;
@@ -48,7 +48,7 @@
                 this.wordList = {};
             });
             this.$get('/statistics/maxPublishAuthor', {
-                num: 6
+                num: limit
             }).then((r) => {
                 if (r.data.status) {
                     this.authorList = r.data.result;

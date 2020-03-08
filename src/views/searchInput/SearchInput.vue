@@ -11,11 +11,11 @@
             <search-box style="margin-top:60px"/>
 
             <a-row type="flex" justify="center" style="margin-top:50px">
-                <a-col :span="10">
+                <a-col :span="12" style="padding: 0 80px">
                     <Card :title="heatAuthors"/>
                 </a-col>
 
-                <a-col :span="10">
+                <a-col :span="12" style="padding: 0 80px">
                     <Card :title="heatWords"/>
                 </a-col>
             </a-row>
