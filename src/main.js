@@ -10,7 +10,6 @@ import request from './utils/request';
 import userfulFunctions from './utils/usefulFunction';
 import './utils/install';
 
-import VueApexCharts from 'vue-apexcharts';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import ElementUI from 'element-ui';
@@ -19,10 +18,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false;
 Vue.use(Antd);
 Vue.use(db);
-Vue.use(VueApexCharts);
 Vue.use(ElementUI);
-
-Vue.component('apexchart', VueApexCharts);
 
 Vue.use({
     install (Vue) {
