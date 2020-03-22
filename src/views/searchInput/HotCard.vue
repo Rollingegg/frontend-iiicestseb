@@ -1,5 +1,5 @@
 <template>
-    <a-card :loading="loading" :title="title" style="width: 500px">
+    <a-card :loading="loading" :title="title" >
         <div class="info-infinite-container" :infinite-scroll-distance="10">
             <a-list
                 itemLayout="horizontal"
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-    import db from '../../utils/localstorage';
     const limit = 6;
     export default {
         name: 'Card',
@@ -82,36 +81,13 @@
                 this.doSearch('term', button.toElement.textContent);
             },
             doSearch (queryType, queryString) {
-                if (this.state !== '') {
-                    db.save('SEARCH_WORD', queryString);
-                    this.$get('search/simple', {
-                        type: queryType,
-                        keyword: queryString
-                    }).then((r) => {
-                        if (r.data.status) {
-                            db.save('RESULT', r.data.result);
-                            this.$router.push('/searchRes');
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: r.data.result,
-                                type: 'warning'
-                            });
-                        }
-                    }).catch((e) => {
-                        this.$message({
-                            showClose: true,
-                            message: e,
-                            type: 'warning'
-                        });
-                    });
-                } else {
-                    this.$message({
-                        showClose: true,
-                        message: '搜索结果为空',
-                        type: 'warning'
-                    });
+                this.$router.push({
+                path: '/searchRes',
+                query: {
+                queryType: queryType,
+                queryString: queryString
                 }
+                });
             }
         }
     };

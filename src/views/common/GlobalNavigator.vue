@@ -1,7 +1,7 @@
 <template>
     <el-header class="homeHeader">
         <a class="title" href="/">OASIS</a>
-        <IMenu v-on:expectedWarning="handleUserClick(command)"></IMenu>
+        <IMenu v-on:expectedWarning="handleUserClick"></IMenu>
         <div v-if="hasLogin">
             <el-button
                 icon="el-icon-bell"

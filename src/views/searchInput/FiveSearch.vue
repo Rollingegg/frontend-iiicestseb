@@ -81,7 +81,7 @@ export default {
                 setTimeout(() => {
                     this.loading = false;
                 }, 500);
-                if (this.$router.app.$route.path !== '/searchRes') {
+                if (this.$route.path !== '/searchRes') {
                     this.$router.push('/searchRes');
                 } else {
                     this.$emit('refresh');

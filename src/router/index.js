@@ -7,20 +7,8 @@ import Router from 'vue-router';
 import LoginView from '@/views/login/Common';
 import searchInputView from '@/views/searchInput/SearchInput';
 import searchResultView from '@/views/search/ResultPage';
-import uploadView from '@/views/manage/Upload';
-// import ResLiter from '@/components/ResLiter';
-// import LiteratureCard from '@/components/LiteratureCard';
-
-// import utils
-// import db from '@/utils/localstorage';
-// import request from '@/utils/request';
-/*
-import MenuView from '@/views/common/MenuView'
-import PageView from '@/views/common/PageView'
-
-import EmptyPageView from '@/views/common/EmptyPageView'
-import HomePageView from '@/views/HomePage'
-*/
+import IndexView from '@/views/Index';
+import uploadView from '@/views/excel/Excel';
 
 // 全局Router异常处理
 const originalPush = Router.prototype.push;
@@ -40,26 +28,27 @@ let constRouter = [
         component: LoginView
     },
     {
-        path: '/searchInput',
-        name: '搜索输入页',
-        component: searchInputView
-    },
-    {
-        path: '/index',
+        path: '/',
+        component: IndexView,
         name: '首页',
-        redirect: '/searchInput'
-    },
-    {
-        path: '/searchRes',
-        name: '搜索结果页',
-        component: searchResultView
-    },
-    {
-        path: '/upload',
-        name: '文献管理页',
-        component: uploadView
+        redirect: '/searchInput',
+        children: [
+            {
+                path: '/searchInput',
+                name: '搜索输入页',
+                component: searchInputView
+            },
+            {
+                path: '/upload',
+                name: '文献管理页',
+                component: uploadView
+            },
+            {
+                path: '/searchRes',
+                name: '搜索结果页',
+                component: searchResultView
+            }]
     }
-
 ];
 
 let router = new Router({

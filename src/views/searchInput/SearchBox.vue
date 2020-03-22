@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top: 15px;padding:0 15%">
+    <div style="padding:0 15%">
         <el-row type="flex" justify="space-between">
             <el-col :span="20">
         <el-autocomplete
@@ -11,13 +11,13 @@
             highlight-first-item
             clearable
             class="input-with-select"
-            @keyup.enter.native ="doSearch(getSelect(),state)"
+            @keyup.enter.native ="doSimpleSearch(getSelect(),state)"
         >
             <el-select v-model="select" slot="prepend" >
                 <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
             </el-select>
 
-            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSearch(getSelect(),state)"></el-button>
+            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSimpleSearch(getSelect(),state)"></el-button>
 
             <template slot-scope="{ item }">
                 <div class="name">
@@ -89,44 +89,17 @@
                         return 'term';
                 }
             },
-            doSearch (queryType, queryString) {
-                if (this.state !== '') {
-                    this.loading = true;
+            doSimpleSearch (queryType, queryString) {
+                console.log(queryString);
+                if (queryString !== '') {
                     db.save('SEARCH_WORD', queryString);
-                    this.$get('search/simple', {
-                        type: queryType,
-                        keyword: queryString
-                    }).then((r) => {
-                        if (r.data.status) {
-                            db.save('RESULT', r.data.result);
-                            setTimeout(() => {
-                                this.loading = false;
-                            }, 500);
-                            if (this.$router.app.$route.path !== '/searchRes') {
-                                this.$router.push('/searchRes');
-                            } else {
-                                this.$emit('refresh');
-                            }
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: r.data.result,
-                                type: 'warning'
-                            });
-                        }
-                    }).catch((e) => {
-                        this.$message({
-                            showClose: true,
-                            message: e,
-                            type: 'warning'
-                        });
-                    });
+                    this.$emit('do-simple-search', queryType, queryString);
                 } else {
                     this.$message({
                         showClose: true,
                         message: '警告：您尚未输入有效搜索信息',
                         type: 'warning'
-                    });
+                });
                 }
             },
             // TODO: 1.推荐，或者考虑删除
