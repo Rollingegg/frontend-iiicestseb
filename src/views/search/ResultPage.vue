@@ -33,8 +33,8 @@
           </div>
           <div class="no-info" v-else>
               <div class="no-data">
-              <img src="/static/img/no-search.png">
-              <br> 抱歉！没有为您找到相关的文章
+              <img src="/static/img/nodata02.png">
+              <br> 什么也没找到 T^T
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default {
       resList: [],
       queryType: '',
       queryString: '',
-      noResult: true,
+      noResult: false,
       startYear: '2000',
       endYear: '2020'
     };
