@@ -27,21 +27,6 @@
     };
 </script>
 <style lang="less">
-    :global {
-        .dragable-ghost {
-            border: 1px dashed #aaaaaa;
-            opacity: 0.65;
-        }
-        .dragable-chose {
-            border: 1px dashed #aaaaaa;
-            opacity: 0.65;
-        }
-        .dragable-drag {
-            border: 1px dashed #aaaaaa;
-            opacity: 0.65;
-        }
-    }
-
     ::-webkit-scrollbar {
         width: .5rem;
         height: .5rem;
