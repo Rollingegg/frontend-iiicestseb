@@ -22,6 +22,7 @@
           v-loading="loading"
           element-loading-text="拼命搜索中..."
           element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(255,255,255,0.95)"
           style="min-height: 35vw;"
         >
           <div class="one-line">
@@ -30,6 +31,14 @@
           </div>
           <div v-if="!noResult">
             <LCard v-for="(item, index) of resList" :key="index" :article="item"></LCard>
+            <!-- <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-size="20"
+              layout="prev, pager, next, jumper"
+              :total="paperCount">
+            </el-pagination> -->
           </div>
           <div class="no-info" v-else>
               <div class="no-data">
@@ -103,6 +112,7 @@ export default {
       }
     },
     doSimpleSearch (queryType, queryString) {
+            db.save('SEARCH_WORD', queryString);
             if (queryString === '') {
               this.$message({
                         showClose: true,
@@ -122,6 +132,7 @@ export default {
                         this.loading = false;
                     }, 500);
                     this.resList = r.data.result;
+                    console.log(this.resList);
                     if (this.resList == null) {
                         this.loading = false;
                         this.noResult = true;

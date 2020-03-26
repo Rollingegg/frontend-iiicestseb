@@ -81,13 +81,7 @@
                 this.doSearch('term', button.toElement.textContent);
             },
             doSearch (queryType, queryString) {
-                this.$router.push({
-                path: '/searchRes',
-                query: {
-                queryType: queryType,
-                queryString: queryString
-                }
-                });
+                this.$emit('do-simple-search', queryType, queryString);
             }
         }
     };

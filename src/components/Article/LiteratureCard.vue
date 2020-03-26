@@ -1,9 +1,9 @@
 <template>
   <el-card shadow="always" class="box-card">
     <div class="item-container">
-      <el-link class="document-title">{{article.paperTitle}}</el-link>
+      <el-link class="document-title" @click="openArticle(article.id)">{{article.paperTitle}}</el-link>
       <div class="author">
-        <el-link v-for="(item, index) in article.authorInfoList" :key="index">{{item.name}}</el-link>
+        <el-link v-for="(item, index) in article.authorInfoList" :key="index" @click="openAuthor(item.id)">{{item.name}}</el-link>
       </div>
       <div class="abstract">
         <!-- <p class="document-abstract">Abstract: {{article.paperAbstract}}</p> -->
@@ -23,7 +23,7 @@
         v-bind:href="article.pdfLink"
         class="download-link"
       >Download</el-link>
-      <el-link type="primary" class="viewmore-link">View More</el-link>
+      <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
     </div>
   </el-card>
 </template>
@@ -37,7 +37,29 @@ export default {
   },
   props: {
     article: Object
+  },
+  methods: {
+    openArticle (id) {
+      console.log(id);
+      let {href} = this.$router.resolve({
+        path: '/articleDetail',
+        query: {
+          articleId: id
+        }
+      });
+      window.open(href, '_blank');
+    },
+    openAuthor (id) {
+      console.log(id);
+      let {href} = this.$router.resolve({
+        path: '/authorDetail',
+        query: {
+          authorId: id
+        }
+      });
+      window.open(href, '_blank');
     }
+  }
 };
 </script>
 

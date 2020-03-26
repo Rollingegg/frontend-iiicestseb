@@ -90,9 +90,8 @@
                 }
             },
             doSimpleSearch (queryType, queryString) {
-                console.log(queryString);
+                // console.log(queryString);
                 if (queryString !== '') {
-                    db.save('SEARCH_WORD', queryString);
                     this.$emit('do-simple-search', queryType, queryString);
                 } else {
                     this.$message({

@@ -10,11 +10,11 @@
 
     <a-row type="flex" justify="space-around" style="margin-top:50px">
       <a-col :span="10">
-        <Card :title="heatAuthors" />
+        <Card :title="heatAuthors" @do-simple-search="doSimpleSearch"/>
       </a-col>
 
       <a-col :span="10">
-        <Card :title="heatWords" />
+        <Card :title="heatWords" @do-simple-search="doSimpleSearch" />
       </a-col>
     </a-row>
   </div>
@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     doSimpleSearch (queryType, queryString) {
+      db.save('SEARCH_WORD', queryString);
       this.$router.push({
         path: '/searchRes',
         query: {

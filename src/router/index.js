@@ -9,6 +9,9 @@ import searchInputView from '@/views/searchInput/SearchInput';
 import searchResultView from '@/views/search/ResultPage';
 import IndexView from '@/views/Index';
 import uploadView from '@/views/excel/Excel';
+import articleDetailView from '@/views/article/ArticleDetailPage';
+import authorDetailView from '@/views/author/AuthorPage';
+import affiliationDetailView from '@/views/affiliation/AffiliationPage';
 
 // 全局Router异常处理
 const originalPush = Router.prototype.push;
@@ -47,6 +50,21 @@ let constRouter = [
                 path: '/searchRes',
                 name: '搜索结果页',
                 component: searchResultView
+            },
+            {
+                path: '/articleDetail',
+                name: '文献详情页',
+                component: articleDetailView
+            },
+            {
+                path: '/authorDetail',
+                name: '学者主页',
+                component: authorDetailView
+            },
+            {
+                path: '/affiliationDetail',
+                name: '机构主页',
+                component: affiliationDetailView
             }]
     }
 ];

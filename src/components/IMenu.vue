@@ -1,7 +1,7 @@
 <template>
     <el-menu
         :default-active="$router.path"
-        class="el-menu-demo"
+        class="my-menu"
         mode="horizontal"
         @select="handleSelect"
         background-color="#145AA3"
@@ -11,12 +11,10 @@
         <el-menu-item index="/searchInput">首页</el-menu-item>
         <el-submenu index="2">
             <template slot="title">文献数据库</template>
-            <!--            TODO -->
             <el-menu-item index="/ase">ASE会议</el-menu-item>
             <el-menu-item index="/icse">ICSE会议</el-menu-item>
         </el-submenu>
         <el-submenu index="/admin" v-if="isAdmin">
-            <!--            TODO -->
             <template slot="title">后台管理</template>
             <el-menu-item index="/article/manage">文献管理</el-menu-item>
             <el-menu-item index="/user/manage">用户管理</el-menu-item>

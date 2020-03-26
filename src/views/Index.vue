@@ -34,9 +34,10 @@
 </script>
 
 <style lang="less" scoped>
-    #container {
-        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-        min-height: 100vh;
-        background: url("~/static/img/Large-Triangles.svg");
-    }
+@images:'~/static/img';
+#container {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    min-height: 100vh;
+    background: url('@{images}/Large-Triangles.svg');
+}
 </style>
