@@ -4,7 +4,7 @@
     <el-container>
       <el-aside width="auto" style="padding:20px">
         <div class="one-line">
-          <div style="color:white">选择过滤条件</div>
+          <div>选择过滤条件</div>
           <el-link type="primary" icon="el-icon-remove-outline" @click="reset">重置</el-link>
         </div>
         <el-card>
@@ -26,7 +26,7 @@
           style="min-height: 35vw;"
         >
           <div class="one-line">
-            <div style="color:white">Papers({{paperCount}})</div>
+            <div>一共为您找到<span class="paper-count">{{paperCount}}</span>条记录</div>
             <div></div>
           </div>
           <div v-if="!noResult">
@@ -186,6 +186,11 @@ export default {
   line-height: 35px;
   font-size: 15px;
 }
+.paper-count{
+  margin: 0 4px;
+  font-size: 20px;
+  color:rgba(0, 0, 0, 0.65);
+}
 .no-info {
   background: white;
     text-align: center;
@@ -196,9 +201,6 @@ export default {
   .no-info .no-data{
       align-self: center;
     }
-.el-aside {
-  overflow: hidden;
-}
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -208,9 +210,7 @@ export default {
   clear: both;
 }
 .el-card:hover {
-  /* border: 3px; */
   box-shadow: 0 4px 8px 0 rgba(163, 128, 128, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  cursor: pointer;
 }
 </style>

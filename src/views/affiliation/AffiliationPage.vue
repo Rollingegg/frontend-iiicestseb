@@ -25,7 +25,7 @@ export default {
       }
     },
     created () {
-        this.affiliationId = this.$route.query.affiliationId;
+        this.affiliationId = this.$route.query.id;
     }
 };
 </script>

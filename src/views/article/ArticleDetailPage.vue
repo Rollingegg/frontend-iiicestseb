@@ -43,6 +43,7 @@
                     v-for="(item, index) in keywords"
                     :key="index"
                     class="info-button"
+                    @click="openDomain(item)"
                   >{{item}}</el-button>
                 </el-col>
               </el-row>
@@ -97,6 +98,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 function uniq (array) {
   let temp = [];
   let index = [];
@@ -271,7 +273,10 @@ export default {
         kwd = this.article.keywords[0].kwd;
       }
       return kwd;
-    }
+    },
+    ...mapState({
+      user: state => state.account.user
+    })
   },
   methods: {
     getArticleDetail (id) {
@@ -281,29 +286,36 @@ export default {
     },
     openAuthor (id) {
         // TODO 把调用方法处的传入参数改为id
-      console.log(id);
-      let {href} = this.$router.resolve({
-        path: '/authorDetail',
-        query: {
-          authorId: id
-        }
-      });
-      window.open(href, '_blank');
+      this.openDetailPage('author',id);
     },
     openAffiliation (id) {
         // TODO 把调用方法处的传入参数改为id
-      console.log(id);
-      let {href} = this.$router.resolve({
-        path: '/affiliationDetail',
-        query: {
-          affiliationId: id
-        }
-      });
-      window.open(href, '_blank');
+      this.openDetailPage('affiliation',id);
+    },
+    openDomain (id) {
+        // TODO 把调用方法处的传入参数改为id
+      this.openDetailPage('keyword',id);
+    },
+    openDetailPage(detailType,queryId){
+      const detailPath={'author':'/authorDetail','keyword':'/keywordDetail','affiliation':'/affiliationDetail'};
+      if (this.user.username) {
+          this.$router.push({
+            path: detailPath[detailType],
+            query: {
+              id: queryId
+            }
+          });
+      }else{
+        this.$message({
+          showClose: true,
+          message: '亲爱的游客，请先登录哟！',
+          type: 'warning'
+        });
+      }
     }
   },
   created () {
-    let id = this.$route.query.articleId;
+    let id = this.$route.query.id;
     this.getArticleDetail(id);
   }
 };

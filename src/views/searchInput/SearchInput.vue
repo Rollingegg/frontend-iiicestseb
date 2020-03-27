@@ -1,22 +1,18 @@
 <template>
   <div class="home">
-    <el-row style="margin-top:10px">
-      <el-col :span="24" style="text-align:center">
-        <div style="font-size: 20px;color: #ffffff">{{welcomeMessage}}</div>
-      </el-col>
-    </el-row>
+    <div class="welcome">{{welcomeMessage}}</div>
 
     <search-box @do-simple-search="doSimpleSearch"></search-box>
 
-    <a-row type="flex" justify="space-around" style="margin-top:50px">
-      <a-col :span="10">
-        <Card :title="heatAuthors" @do-simple-search="doSimpleSearch"/>
-      </a-col>
+    <el-row type="flex" justify="space-around" style="margin-top:50px">
+      <el-col :md="10">
+        <Card :title="heatAuthors" @open-page="openDetailPage"/>
+      </el-col>
 
-      <a-col :span="10">
-        <Card :title="heatWords" @do-simple-search="doSimpleSearch" />
-      </a-col>
-    </a-row>
+      <el-col :md="10">
+        <Card :title="heatWords" @open-page="openDetailPage" />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -66,6 +62,23 @@ export default {
         }
       });
     },
+    openDetailPage(detailType,queryId){
+      const detailPath={'author':'/authorDetail','keyword':'/keywordDetail'};
+      if (this.user.username) {
+          this.$router.push({
+            path: detailPath[detailType],
+            query: {
+              id: queryId
+            }
+          });
+      }else{
+        this.$message({
+          showClose: true,
+          message: '亲爱的游客，请先登录哟！',
+          type: 'warning'
+        });
+      }
+    },
     welcome () {
       const date = new Date();
       const hour = date.getHours();
@@ -110,5 +123,10 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
+  .welcome{
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+  }
 }
 </style>

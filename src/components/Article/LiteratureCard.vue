@@ -15,7 +15,6 @@
       </div>
     </div>
     <div>
-      <span class="citation">Citations ({{article.citationCount}})</span>
       <el-link icon="el-icon-date" class="pub-year">{{article.publicationYear.substr(0, 4)}}</el-link>
       <el-link
         target="_blank"
@@ -24,12 +23,15 @@
         class="download-link"
       >Download</el-link>
       <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
+      <span class="citation">Citations( <span class="citation-cnt">{{article.citationCount}}</span> )</span>
     </div>
   </el-card>
 </template>
 
 <script>
 import MulWrapper from '../common/MultipleLines';
+import { mapState } from 'vuex';
+
 export default {
   name: 'LCard',
   components: {
@@ -38,26 +40,42 @@ export default {
   props: {
     article: Object
   },
+  computed: {
+    ...mapState({
+      user: state => state.account.user
+    })
+  },
   methods: {
     openArticle (id) {
-      console.log(id);
-      let {href} = this.$router.resolve({
-        path: '/articleDetail',
-        query: {
-          articleId: id
-        }
-      });
-      window.open(href, '_blank');
+      this.openDetailPage('article',id);
     },
     openAuthor (id) {
-      console.log(id);
-      let {href} = this.$router.resolve({
-        path: '/authorDetail',
-        query: {
-          authorId: id
-        }
-      });
-      window.open(href, '_blank');
+      // console.log(id);
+      // let {href} = this.$router.resolve({
+      //   path: '/authorDetail',
+      //   query: {
+      //     authorId: id
+      //   }
+      // });
+      // window.open(href, '_blank');
+      this.openDetailPage('author',id);
+    },
+    openDetailPage(detailType,queryId){
+      const detailPath={'article':'/articleDetail','author':'/authorDetail','keyword':'/keywordDetail'};
+      if (this.user.username) {
+          this.$router.push({
+            path: detailPath[detailType],
+            query: {
+              id: queryId
+            }
+          });
+      }else{
+        this.$message({
+          showClose: true,
+          message: '亲爱的游客，请先登录哟！',
+          type: 'warning'
+        });
+      }
     }
   }
 };
@@ -99,11 +117,18 @@ export default {
     }
   }
   .pub-year,
-  .download-link,
-  .citation {
+  .download-link {
     margin-left: 5px;
     padding: 5px;
     float: left;
+  }
+  .citation{
+    padding: 5px;
+    float: left;
+    .citation-cnt{
+      font-weight: 500;
+      color: darkblue;
+    }
   }
   .viewmore-link {
     float: right;

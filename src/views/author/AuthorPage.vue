@@ -40,7 +40,7 @@ export default {
       }
     },
     created () {
-        this.authorId = this.$route.query.authorId;
+        this.authorId = this.$route.query.id;
     }
 };
 </script>

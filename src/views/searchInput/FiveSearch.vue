@@ -6,8 +6,8 @@
     </el-input>
     <el-row type="flex" justify="center" style="margin-top:50px">
         <el-col :span="12">
-    <el-button round type="primary" @click="reset" >重置</el-button>
-    <el-button :loading="loading" round type="warning" @click="search" style="margin-top:50px">高级检索</el-button>
+    <el-button type="primary" @click="reset" >重置</el-button>
+    <el-button :loading="loading" type="warning" @click="search" style="margin-top:50px">高级检索</el-button>
         </el-col>
     </el-row>
   </div>

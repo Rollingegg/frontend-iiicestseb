@@ -12,6 +12,7 @@ import uploadView from '@/views/excel/Excel';
 import articleDetailView from '@/views/article/ArticleDetailPage';
 import authorDetailView from '@/views/author/AuthorPage';
 import affiliationDetailView from '@/views/affiliation/AffiliationPage';
+import keywordDetailView from '@/views/keyword/KeywordPage';
 
 // 全局Router异常处理
 const originalPush = Router.prototype.push;
@@ -65,6 +66,11 @@ let constRouter = [
                 path: '/affiliationDetail',
                 name: '机构主页',
                 component: affiliationDetailView
+            },
+            {
+                path: '/keywordDetail',
+                name: '研究领域',
+                component: keywordDetailView
             }]
     }
 ];

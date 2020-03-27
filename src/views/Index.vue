@@ -33,11 +33,9 @@
     };
 </script>
 
-<style lang="less" scoped>
-@images:'~/static/img';
+<style>
 #container {
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     min-height: 100vh;
-    background: url('@{images}/Large-Triangles.svg');
 }
 </style>

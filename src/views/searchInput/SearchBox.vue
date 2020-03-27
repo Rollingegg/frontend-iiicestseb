@@ -11,6 +11,7 @@
             highlight-first-item
             clearable
             class="input-with-select"
+            @clear="clearSearch" 
             @keyup.enter.native ="doSimpleSearch(getSelect(),state)"
         >
             <el-select v-model="select" slot="prepend" >
@@ -115,6 +116,10 @@
                         recommend.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
                     );
                 };
+            },
+            clearSearch(){
+                console.log('clear');
+                db.remove('SEARCH_WORD');
             },
             // TODO: 1.推荐，或者考虑删除
             loadAll () {
