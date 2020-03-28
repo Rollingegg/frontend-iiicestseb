@@ -3,14 +3,13 @@
         <el-button round size="large" @click="showDrawer">
             高级检索
         </el-button>
-        <a-drawer
-                title="输入检索条件"
-                width=520
-                :closable="false"
-                @close="onClose"
-                :visible="visible">
+        <el-drawer
+            size="40%"
+            :closable="false"
+            @close="onClose"
+            :visible.sync="visible">
             <ps v-on:refresh="refresh"/>
-        </a-drawer>
+        </el-drawer>
     </div>
 </template>
 <script>

@@ -150,16 +150,17 @@
     };
 </script>
 <style lang="less">
-    .el-input-group__prepend {
+    [role] > .el-input .el-input-group__prepend {
         background-color: #fff;
         width: 100px;
 
-        div div input {
+        .el-select div input {
+            font-size: 18px;
             text-align: center;
         }
     }
 
-    .el-input__inner {
+    [popperclass] {
         line-height: 24px;
         font-size: 22px;
         height: 70px;

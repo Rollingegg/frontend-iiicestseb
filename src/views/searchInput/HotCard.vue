@@ -24,7 +24,6 @@
             <el-table-column min-width="20%" sortable prop="hot" label="文章数"/>
         </el-table>
     </el-card>
-
 </template>
 
 <script>
@@ -86,7 +85,7 @@
                     case "机构":
                         return 'color: rgba(0, 0, 0, 0.65);font-size:20px;text-align:center;';
                     case "文章数":
-                        return 'font-size:18px;text-align:center;';
+                        return 'font-size:18px;text-align:center;color: rgba(0, 0, 0, 0.65);';
                 }
             }
         }
@@ -115,7 +114,6 @@
                 height: 100px;
             }
         }
-
         .has-gutter tr th div {
             text-align: center;
         }

@@ -89,11 +89,8 @@ export default {
           }
         })
         .catch(e => {
-          this.$message({
-            showClose: true,
-            message: e,
-            type: 'warning'
-          });
+            this.loading = false;
+            this.noResult = true;
         });
     }
   },

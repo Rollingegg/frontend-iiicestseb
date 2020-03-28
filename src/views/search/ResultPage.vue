@@ -121,6 +121,7 @@ export default {
                 });
                 return;
             }
+            this.loading = true;
             this.$get('search/simple', {
                 type: queryType,
                 keyword: queryString
@@ -145,13 +146,12 @@ export default {
                         message: r.data.result,
                         type: 'warning'
                     });
+                    this.loading = false;
+                    this.noResult = true;
                 }
                 }).catch((e) => {
-                    this.$message({
-                        showClose: true,
-                        message: e,
-                        type: 'warning'
-                    });
+                    this.loading = false;
+                    this.noResult = true;
                 });
             },
     reset () {
@@ -208,9 +208,5 @@ export default {
 }
 .clearfix:after {
   clear: both;
-}
-.el-card:hover {
-  box-shadow: 0 4px 8px 0 rgba(163, 128, 128, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>
