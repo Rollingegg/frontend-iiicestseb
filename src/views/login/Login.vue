@@ -152,7 +152,7 @@
                 this.$message.warning('暂未开发');
             },
             handleUsernameCheck (name) {
-                return !!(name.length && name.length < 20 && name.length > 4);
+                return !!(name.length && name.length < 21 && name.length > 3 && name.indexOf(' ')==-1);
             },
             handlePasswordLevel (value) {
                 if (value.length < 6 || value.length > 20) {
@@ -169,7 +169,7 @@
                 if (/[^0-9a-zA-Z_]/.test(value)) {
                     level++;
                 }
-                return level >= 2;
+                return level >= 1;
             },
             handleTabsChange (tab,event) {
                 // this.activeKey = val;
