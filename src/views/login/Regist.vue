@@ -1,50 +1,44 @@
 <template>
     <div class="user-layout-register">
-        <a-form ref="formRegister" :form="form" id="formRegister">
-            <a-form-item>
-                <a-input size="large" type="text" placeholder="账号"
-                         v-decorator="['username',{rules: [{ required: true, message: '请输入注册账号' },  { validator: handleUsernameCheck }], validateTrigger: ['change', 'blur']}]"></a-input>
-            </a-form-item>
+        <el-form ref="registerForm" :model="registerForm" id="formRegister" size="large" :rules="rules">
+            <el-form-item prop="username">
+                <el-input v-model="registerForm.username" placeholder="账号" autocomplete="new-password" clearable></el-input>
+            </el-form-item>
 
-            <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
-                <template slot="content">
+            <el-popover placement="right-start" trigger="click" visible="state.passwordLevelChecked">
                     <div :style="{ width: '240px' }">
                         <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span>
                         </div>
-                        <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor "/>
-                        <div style="margin-top: 10px;">
+                        <el-progress :percentage="state.percent" :stroke-width="8" :show-text="false" :color=" passwordLevelColor "/>
+                        <div style="margin-top: 8px;">
                             <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
                         </div>
                     </div>
-                </template>
 
-                <a-form-item>
-                    <a-input size="large" type="password" @click="handlePasswordInputClick"
-                             autocomplete="false"
-                             placeholder="至少6位密码"
-                             v-decorator="['password',{rules: [{ required: true, message: '至少6位密码'}, { validator: handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"></a-input>
-                </a-form-item>
-            </a-popover>
+                <el-form-item slot="reference" prop="password">
+                    <el-input type="password" @click="handlePasswordInputClick" v-model="registerForm.password"
+                             autocomplete="new-password" show-password
+                             placeholder="至少6位密码"></el-input>
+                </el-form-item>
+            </el-popover>
 
-            <a-form-item>
-                <a-input size="large" type="password" autocomplete="false" placeholder="确认密码"
-                         v-decorator="['password2',{rules: [{ required: true, message: '至少6位密码' }, { validator: handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"></a-input>
-            </a-form-item>
+            <el-form-item prop="checkPass">
+                <el-input type="password" show-password autocomplete="new-password" placeholder="确认密码" v-model="registerForm.checkPass"></el-input>
+            </el-form-item>
 
-            <a-form-item>
-                <a-button
-                        size="large"
+            <el-form-item>
+                <el-button
                         type="primary"
                         htmlType="submit"
                         class="register-button"
                         :loading="registerBtn"
-                        @click.stop.prevent="handleSubmit"
+                        @click.stop.prevent="handleSubmit('registerForm')"
                         :disabled="registerBtn">立即注册
-                </a-button>
+                </el-button>
                 <a class="login" @click="returnLogin">使用已有账户登录</a>
-            </a-form-item>
+            </el-form-item>
 
-        </a-form>
+        </el-form>
     </div>
 </template>
 
@@ -68,13 +62,20 @@
         3: '#52c41a'
     };
     export default {
-        beforeCreate () {
-            this.form = this.$form.createForm(this);
-        },
         name: 'Regist',
         components: {},
         data () {
             return {
+                registerForm: {
+                    username: '',
+                    password: '',
+                    checkPass: ''
+                },
+                rules: {
+                    username: [{ required: true, message: '请输入注册账号', validateTrigger: ['change', 'blur'] },  { validator: this.handleUsernameCheck }], 
+                    password: [{ required: true, message: '至少6位密码', validateTrigger: ['change', 'blur']}, { validator: this.handlePasswordLevel }],
+                    checkPass: [{ required: true, message: '至少6位密码', validateTrigger: ['change', 'blur'] }, { validator: this.handlePasswordCheck }]
+                },
                 state: {
                     time: 60,
                     smsSendBtn: false,
@@ -142,7 +143,7 @@
             },
 
             handlePasswordCheck (rule, value, callback) {
-                let password = this.form.getFieldValue('password');
+                let password = this.registerForm.password;
                 if (value === undefined) {
                     callback(new Error('请输入密码'));
                 }
@@ -153,7 +154,7 @@
             },
 
             handleUsernameCheck (rule, value, callback) {
-                let username = this.form.getFieldValue('username');
+                let username = this.registerForm.username;
                 if (username.length) {
                     if (username.length > 20) {
                         callback(new Error('用户名不能超过20个字符'));
@@ -181,12 +182,12 @@
                 this.state.passwordLevelChecked = false;
             },
 
-            handleSubmit () {
-                this.form.validateFields((err, values) => {
-                    if (!err) {
+            handleSubmit (formName) {
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
                         this.$postJson('user/register', {
-                            username: values.username,
-                            password: values.password
+                            username: this.registerForm.username,
+                            password: this.registerForm.password
                         }).then((r) => {
                             if (r.data.status) {
                                 this.$message.success('注册成功');

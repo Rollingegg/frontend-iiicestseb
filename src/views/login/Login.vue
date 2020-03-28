@@ -1,60 +1,60 @@
 <template>
     <div class="login">
-        <a-form @submit.prevent="doLogin" :form="form">
-            <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;" :activeKey="activeKey"
-                    @change="handleTabsChange">
-                <a-tab-pane tab="账户密码登录" key="1">
-                    <a-form-item>
-                        <a-input size="large"
-                                 v-decorator="['username',{rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]">
-                            <a-icon slot="prefix" type="user"></a-icon>
-                        </a-input>
-                    </a-form-item>
+        <el-form status-icon :model="loginForm" ref="loginForm" size="large" :rules="rules">
+            <el-tabs  v-model="activeKey" stretch
+                    @tab-click="handleTabsChange">
+                <el-tab-pane label="账户密码登录" name="1">
+                    <el-form-item prop="username">
+                        <el-input
+                                v-model="loginForm.username">
+                            <i slot="prefix" class="el-icon-user"></i>
+                        </el-input>
+                    </el-form-item>
 
-                    <a-form-item>
-                        <a-input size="large" type="password"
-                                 v-decorator="['password',{rules: [{ required: true, message: '请输入密码', whitespace: true}]}]">
-                            <a-icon slot="prefix" type="lock"></a-icon>
-                        </a-input>
-                    </a-form-item>
-                </a-tab-pane>
+                    <el-form-item prop="password">
+                        <el-input type="password"
+                            v-model="loginForm.password">
+                            <i slot="prefix" class="el-icon-lock"></i>
+                        </el-input>
+                    </el-form-item>
+                </el-tab-pane>
 
-                <a-tab-pane tab="手机号登录" key="2">
-                    <a-form-item>
-                        <a-input size="large">
-                            <a-icon slot="prefix" type="mobile"></a-icon>
-                        </a-input>
-                    </a-form-item>
-                    <a-form-item>
-                        <a-row :gutter="8" style="margin: 0 -4px">
-                            <a-col :span="16">
-                                <a-input size="large">
-                                    <a-icon slot="prefix" type="mail"></a-icon>
-                                </a-input>
-                            </a-col>
-                            <a-col :span="8" style="padding-left: 4px">
-                                <a-button style="width: 100%" class="captcha-button" size="large" @click="getCaptcha">
+                <el-tab-pane label="手机号登录" name="2">
+                    <el-form-item prop="tel">
+                        <el-input size="large" v-model="loginForm.tel">
+                            <i slot="prefix" class="el-icon-mobile-phone"></i>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item prop="smscode">
+                        <el-row :gutter="8" style="margin: 0 -4px">
+                            <el-col :span="16">
+                                <el-input v-model="loginForm.smscode">
+                                    <i slot="prefix" class="el-icon-connection"></i>
+                                </el-input>
+                            </el-col>
+                            <el-col :span="8" style="padding-left: 4px">
+                                <el-button style="width: 100%" class="captcha-button" @click="getCaptcha">
                                     获取验证码
-                                </a-button>
-                            </a-col>
-                        </a-row>
-                    </a-form-item>
-                </a-tab-pane>
-            </a-tabs>
+                                </el-button>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
+                </el-tab-pane>
+            </el-tabs>
 
-            <a-form-item>
-                <a-button :loading="loading" style="width: 100%; margin-top: 4px" size="large" htmlType="submit"
+            <el-form-item>
+                <el-button :loading="loading" style="width: 100%;" @click="doLogin('loginForm')"
                           type="primary">
                     登录
-                </a-button>
-            </a-form-item>
+                </el-button>
+            </el-form-item>
             <div>
                 <a style="float: left" @click="noRegist">游客登陆</a>
             </div>
             <div>
                 <a style="float: right" @click="regist">注册账户</a>
             </div>
-        </a-form>
+        </el-form>
     </div>
 </template>
 
@@ -62,14 +62,22 @@
     import {mapMutations} from 'vuex';
 
     export default {
-        beforeCreate () {
-            this.form = this.$form.createForm(this);
-        },
         name: 'Login',
         data () {
+            // 判断用户名是否合法
             return {
                 loading: false,
-                activeKey: '1'
+                activeKey: '1',
+                loginForm: {
+                    username: '',
+                    password: '',
+                    tel: '',
+                    smscode: ''
+                },
+                rules: {
+                    username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+                    password: [{required: true, message: '请输入密码', trigger: 'blur'}]
+                }
             };
         },
         computed: {
@@ -85,14 +93,15 @@
             this.$router.options.routes = [];
         },
         methods: {
-            doLogin () {
+            doLogin (formName) {
                 if (this.activeKey === '1') {
                     // 用户名密码登录
-                    this.form.validateFields(['username', 'password'], (errors, values) => {
-                        if (!errors) {
+                    // console.log(this.loginForm);
+                    this.$refs[formName].validate(valid => {
+                        if (valid) {
                             this.loading = true;
-                            let name = values.username;
-                            let password = values.password;
+                            let name = this.loginForm.username;
+                            let password = this.loginForm.password;
                             if (!(this.handleUsernameCheck(name) && this.handlePasswordLevel(password))) {
                                 //假装密码错了，lwj请不要乱删，谢谢
                                 setTimeout(() => {
@@ -120,7 +129,7 @@
                                     }, 500);
                                 }
                             }).catch((e) => {
-                                console.error(e);
+                                // console.error(e);
                                 setTimeout(() => {
                                     this.loading = false;
                                 }, 500);
@@ -162,8 +171,8 @@
                 }
                 return level >= 2;
             },
-            handleTabsChange (val) {
-                this.activeKey = val;
+            handleTabsChange (tab,event) {
+                // this.activeKey = val;
             },
             ...mapMutations({
                 // setToken: 'account/setToken',
