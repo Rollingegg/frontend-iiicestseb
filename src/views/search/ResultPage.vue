@@ -121,6 +121,7 @@ export default {
                 });
                 return;
             }
+            this.loading = true;
             this.$get('search/simple', {
                 type: queryType,
                 keyword: queryString
@@ -145,13 +146,12 @@ export default {
                         message: r.data.result,
                         type: 'warning'
                     });
+                    this.loading = false;
+                    this.noResult = true;
                 }
                 }).catch((e) => {
-                    this.$message({
-                        showClose: true,
-                        message: e,
-                        type: 'warning'
-                    });
+                    this.loading = false;
+                    this.noResult = true;
                 });
             },
     reset () {

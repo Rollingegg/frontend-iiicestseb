@@ -155,6 +155,7 @@ export default {
         flex: 1;
         justify-content: flex-end;
         .num {
+          text-align: center;
           font-size: @title-font-size;
           color: rgba(0, 0, 0, 0.65);
         }
