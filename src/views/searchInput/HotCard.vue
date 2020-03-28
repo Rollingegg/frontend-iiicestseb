@@ -4,7 +4,7 @@
 
         <el-table :data="authorList"
                   stripe style="width: 100%"
-                  @row-click="openAuthor"
+                  @cell-click="openAuthor"
                   :cell-style="cellStyle"
                   v-if="String(title).indexOf('作者')!==-1">
             <el-table-column min-width="10%">
@@ -17,7 +17,7 @@
 
         <el-table :data="wordList"
                   stripe style="width: 100%"
-                  @row-click="openTerm"
+                  @cell-click="openTerm"
                   :cell-style="cellStyle"
                   v-else-if="String(title).indexOf('关键词')!==-1">
             <el-table-column min-width="70%" sortable prop="name" label="关键词"/>
@@ -71,19 +71,27 @@
             }
         },
         methods: {
-            openAuthor (row) {
-                this.$emit('open-page', 'author', row.name);
+            openAuthor (row, col) {
+                if (col.label === "机构") {
+                    this.$emit('open-page', 'affiliation', row.affiliationName);
+                    return
+                }
+                if (col.label === "作者") {
+                    this.$emit('open-page', 'author', row.name);
+                }
             },
-            openTerm (keywordId) {
-                this.$emit('open-page', 'keyword', keywordId);
+            openTerm (row, col) {
+                if (col.label === "关键词") {
+                    this.$emit('open-page', 'keyword', row.name);
+                }
             },
             cellStyle (row) {
                 switch (row.column.label) {
                     case "作者":
                     case "关键词":
-                        return 'font-size: 20px;line-height:26px;text-align:center;';
+                        return 'font-size: 20px;line-height:26px;text-align:center;cursor: pointer;';
                     case "机构":
-                        return 'color: rgba(0, 0, 0, 0.65);font-size:20px;text-align:center;';
+                        return 'color: rgba(0, 0, 0, 0.65);font-size:20px;text-align:center;cursor: pointer;';
                     case "文章数":
                         return 'font-size:18px;text-align:center;color: rgba(0, 0, 0, 0.65);';
                 }
@@ -114,12 +122,12 @@
                 height: 100px;
             }
         }
+
         .has-gutter tr th div {
             text-align: center;
         }
 
         .el-table--enable-row-hover .el-table__body tr:hover > td {
-            cursor: pointer;
             background: #e9f8f9;
             border: 1px solid #f0f1ff;
             box-shadow: 0 0 1px 1px #ffffff, inset 0 0 10px 5px #f2fcf8;
