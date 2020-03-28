@@ -22,24 +22,24 @@
                     <a-input size="large" type="password" @click="handlePasswordInputClick"
                              autocomplete="false"
                              placeholder="至少6位密码"
-                             v-decorator="['password',{rules: [{ required: true, message: '至少6位密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"></a-input>
+                             v-decorator="['password',{rules: [{ required: true, message: '至少6位密码'}, { validator: handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"></a-input>
                 </a-form-item>
             </a-popover>
 
             <a-form-item>
                 <a-input size="large" type="password" autocomplete="false" placeholder="确认密码"
-                         v-decorator="['password2',{rules: [{ required: true, message: '至少6位密码' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"></a-input>
+                         v-decorator="['password2',{rules: [{ required: true, message: '至少6位密码' }, { validator: handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"></a-input>
             </a-form-item>
 
             <a-form-item>
                 <a-button
-                    size="large"
-                    type="primary"
-                    htmlType="submit"
-                    class="register-button"
-                    :loading="registerBtn"
-                    @click.stop.prevent="handleSubmit"
-                    :disabled="registerBtn">立即注册
+                        size="large"
+                        type="primary"
+                        htmlType="submit"
+                        class="register-button"
+                        :loading="registerBtn"
+                        @click.stop.prevent="handleSubmit"
+                        :disabled="registerBtn">立即注册
                 </a-button>
                 <a class="login" @click="returnLogin">使用已有账户登录</a>
             </a-form-item>
@@ -102,6 +102,16 @@
                 return this.$store.state.setting.isMobile;
             },
             handlePasswordLevel (rule, value, callback) {
+                if (value.length < 6) {
+                    this.state.percent = 10;
+                    callback(new Error('密码应该大于6位'));
+                    return
+                }
+                if (value.length > 20) {
+                    this.state.percent = 10;
+                    callback(new Error('密码应该小于于20位'));
+                    return
+                }
                 let level = 0;
 
                 // 判断这个字符串中有没有数字
@@ -145,16 +155,16 @@
             handleUsernameCheck (rule, value, callback) {
                 let username = this.form.getFieldValue('username');
                 if (username.length) {
-                    if (username.length > 10) {
-                        callback(new Error('用户名不能超过10个字符'));
+                    if (username.length > 20) {
+                        callback(new Error('用户名不能超过20个字符'));
                     } else if (username.length < 4) {
                         callback(new Error('用户名不能少于4个字符'));
                     } else {
-                        this.$get(`user/judge/${username}`).then((r) => {
+                        this.$get(`user/judge`,{username:username}).then((r) => {
                             if (r.data.status) {
                                 callback();
                             } else {
-                                callback(new Error('抱歉，该用户名已存在'));
+                                callback(new Error(r.data.result));
                             }
                         });
                     }
@@ -185,7 +195,7 @@
                                 this.$message.error('抱歉，注册账号失败   ' + r.data.result);
                             }
                         }).catch(() => {
-                            this.$message.error('抱歉，注册账号失败');
+                            this.$message.error('抱歉，注册账号失败，请稍后再试');
                         });
                     }
                 });

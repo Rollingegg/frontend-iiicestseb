@@ -150,7 +150,7 @@
                 this.importResultVisible = false;
             },
             downloadTemplate () {
-                window.open(process.env.BASE_API + '/statistics/StandardCSV');
+                window.open(process.env.BASE_API + '/admin/paper/StandardJSON');
             },
             handleRemove (file) {
                 if (this.uploading) {
