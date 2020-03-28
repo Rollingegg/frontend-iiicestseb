@@ -5,12 +5,12 @@
     <search-box @do-simple-search="doSimpleSearch"></search-box>
 
     <el-row type="flex" justify="space-around" style="margin-top:50px">
-      <el-col :md="10">
-        <Card :title="heatAuthors" @open-page="openDetailPage"/>
+      <el-col  :span="11">
+        <HotCard :title="heatAuthors" @open-page="openDetailPage"/>
       </el-col>
 
-      <el-col :md="10">
-        <Card :title="heatWords" @open-page="openDetailPage" />
+      <el-col :span="11">
+        <HotCard :title="heatWords" @open-page="openDetailPage" />
       </el-col>
     </el-row>
   </div>
@@ -20,7 +20,7 @@
 import GlobalFooter from '../common/GlobalFooter';
 import GlobalNav from '../common/GlobalNavigator';
 import SearchBox from './SearchBox';
-import Card from './HotCard';
+import HotCard from './HotCard';
 import { mapState } from 'vuex';
 import db from '../../utils/localstorage';
 
@@ -33,7 +33,7 @@ export default {
     GlobalFooter,
     GlobalNav,
     SearchBox,
-    Card
+    HotCard: HotCard
   },
   data () {
     return {

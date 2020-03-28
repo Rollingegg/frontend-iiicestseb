@@ -1,20 +1,19 @@
 <template>
     <div>
-        <el-button plain size="large" @click="showDrawer">
+        <el-button round size="large" @click="showDrawer">
             高级检索
         </el-button>
         <a-drawer
-            title="输入检索条件"
-            width=520
-            :closable="false"
-            @close="onClose"
-            :visible="visible">
+                title="输入检索条件"
+                width=520
+                :closable="false"
+                @close="onClose"
+                :visible="visible">
             <ps v-on:refresh="refresh"/>
         </a-drawer>
     </div>
 </template>
 <script>
-    // import ps from '@/components/ProSearch';
     import ps from './FiveSearch';
 
     export default {
@@ -41,5 +40,3 @@
         }
     };
 </script>
-<style>
-</style>

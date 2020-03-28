@@ -1,35 +1,39 @@
 <template>
-    <div style="padding:0 15%">
+    <div style="padding:30px 10% 30px;height: 80px">
         <el-row type="flex" justify="space-between">
             <el-col :span="20">
-        <el-autocomplete
-            style="width:100%"
-            popper-class="my-autocomplete"
-            v-model="state"
-            :fetch-suggestions="searchSuggest"
-            placeholder="开始您的学术探索之旅"
-            highlight-first-item
-            clearable
-            class="input-with-select"
-            @clear="clearSearch" 
-            @keyup.enter.native ="doSimpleSearch(getSelect(),state)"
-        >
-            <el-select v-model="select" slot="prepend" >
-                <el-option v-for="(item, index) in items" :key="index" :value="item.label"></el-option>
-            </el-select>
+                <el-autocomplete
+                        style="width:100%"
+                        popper-class="my-autocomplete"
+                        v-model="state"
+                        :fetch-suggestions="searchSuggest"
+                        placeholder="开始您的学术探索之旅"
+                        highlight-first-item
+                        clearable
+                        class="input-with-select"
+                        @clear="clearSearch"
+                        @keyup.enter.native="doSimpleSearch(getSelect(),state)">
+                    <el-select v-model="select" slot="prepend">
+                        <el-option v-for="(item, index) in selectItems" :key="index" :value="item.label"></el-option>
+                    </el-select>
 
-            <el-button :loading="loading" slot="append" type="primary" icon="el-icon-search" @click="doSimpleSearch(getSelect(),state)"></el-button>
+                    <el-button :loading="loading"
+                               slot="append"
+                               type="primary"
+                               icon="el-icon-search"
+                               @click="doSimpleSearch(getSelect(),state)"/>
 
-            <template slot-scope="{ item }">
-                <div class="name">
-                    <i class="el-icon-caret-right icon"></i>
-                    {{ item.value }}
-                </div>
-            </template>
-        </el-autocomplete>
+                    <template slot-scope="{ item }">
+                        <div class="name">
+                            <i class="el-icon-caret-right icon"></i>
+                            {{ item.value }}
+                        </div>
+                    </template>
+                </el-autocomplete>
             </el-col>
+
             <el-col :span="3">
-        <ad-search-box v-on:refresh="refresh"/>
+                <ad-search-box v-on:refresh="refresh"/>
             </el-col>
         </el-row>
     </div>
@@ -46,7 +50,7 @@
                 recommends: [],
                 state: String(db.get('SEARCH_WORD')) === '[object Object]' ? '' : db.get('SEARCH_WORD'),
                 select: '全选',
-                items: [
+                selectItems: [
                     {
                         label: '全选'
                     },
@@ -91,7 +95,6 @@
                 }
             },
             doSimpleSearch (queryType, queryString) {
-                // console.log(queryString);
                 if (queryString !== '') {
                     this.$emit('do-simple-search', queryType, queryString);
                 } else {
@@ -99,7 +102,7 @@
                         showClose: true,
                         message: '警告：您尚未输入有效搜索信息',
                         type: 'warning'
-                });
+                    });
                 }
             },
             // TODO: 1.推荐，或者考虑删除
@@ -117,8 +120,7 @@
                     );
                 };
             },
-            clearSearch(){
-                console.log('clear');
+            clearSearch () {
                 db.remove('SEARCH_WORD');
             },
             // TODO: 1.推荐，或者考虑删除
@@ -134,12 +136,6 @@
                     {id: 8, value: 'Python'}
                 ];
             },
-            handleSelect (item) {
-                console.log(item);
-            },
-            handleIconClick (ev) {
-                console.log(ev);
-            },
             refresh () {
                 this.$emit('refresh');
             }
@@ -153,27 +149,29 @@
         }
     };
 </script>
-<style>
-    .my-autocomplete {
-        width: 70%;
+<style lang="less">
+    .el-input-group__prepend {
+        background-color: #fff;
+        width: 100px;
+
+        div div input {
+            text-align: center;
+        }
     }
 
-    .my-autocomplete li {
-        line-height: normal;
-        padding: 7px;
+    .el-input__inner {
+        line-height: 24px;
+        font-size: 22px;
+        height: 70px;
     }
 
-    .my-autocomplete li .name {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
+    .el-col {
+        button {
+            height: 70px;
 
-    .my-autocomplete li .icon {
-        color: #b4b4b4;
-        margin-right: 5px;
-    }
-    .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-    width:80px
+            span {
+                font-size: 22px
+            }
+        }
     }
 </style>
