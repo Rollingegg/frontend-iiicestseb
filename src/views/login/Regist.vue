@@ -2,7 +2,7 @@
     <div class="user-layout-register">
         <el-form ref="registerForm" :model="registerForm" id="formRegister" size="large" :rules="rules">
             <el-form-item prop="username">
-                <el-input v-model="registerForm.username" placeholder="账号" autocomplete="new-password" clearable></el-input>
+                <el-input v-model="registerForm.username" placeholder="账号为4-20位字符且不能有空格" autocomplete="new-password" clearable></el-input>
             </el-form-item>
 
             <el-popover placement="right-start" trigger="click" visible="state.passwordLevelChecked">
@@ -160,7 +160,9 @@
                         callback(new Error('用户名不能超过20个字符'));
                     } else if (username.length < 4) {
                         callback(new Error('用户名不能少于4个字符'));
-                    } else {
+                    } else if(username.indexOf(' ')!==-1){
+                        callback(new Error('用户名不能出现空格字符'));
+                    }else {
                         this.$get(`user/judge`,{username:username}).then((r) => {
                             if (r.data.status) {
                                 callback();

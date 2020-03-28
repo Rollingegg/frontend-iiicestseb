@@ -34,6 +34,10 @@
 </script>
 
 <style>
+.el-card:hover {
+  box-shadow: 0 4px 8px 0 rgba(163, 128, 128, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 #container {
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     min-height: 100vh;

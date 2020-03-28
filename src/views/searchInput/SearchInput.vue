@@ -4,12 +4,12 @@
 
     <search-box @do-simple-search="doSimpleSearch"></search-box>
 
-    <el-row type="flex" justify="space-around" style="margin-top:50px">
-      <el-col :md="10">
+    <el-row :gutter="120" style="margin: 0 40px;margin-top:60px">
+      <el-col :md="12">
         <Card :title="heatAuthors" @open-page="openDetailPage"/>
       </el-col>
 
-      <el-col :md="10">
+      <el-col :md="12">
         <Card :title="heatWords" @open-page="openDetailPage" />
       </el-col>
     </el-row>

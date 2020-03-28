@@ -10,7 +10,7 @@
             </div>
             <div class="item-meta-content">
               <div class="item-meta-content-title">
-                <el-link @click="openAuthor(item.name)" class="author-link">{{item.name}}</el-link>
+                <el-link @click="openAuthor(item.id)" class="author-link">{{item.name}}</el-link>
               </div>
               <div class="item-meta-content-description">{{item.affiliationName}}</div>
             </div>

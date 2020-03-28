@@ -1,15 +1,18 @@
 <template>
   <div>
+    <div class="drawer-title">
+      输入检索条件
+    </div>
+    <div class="search-condition">
     <el-input clearable placeholder="请输入内容" v-for="(item, index) in items" :key="index" v-model="item.val" v-show="item.shown">
       <div style="width:50px" slot="prepend">{{item.label}}</div>
       <el-button slot="append" icon="el-icon-remove" @click="remove(index)"></el-button>
     </el-input>
-    <el-row type="flex" justify="center" style="margin-top:50px">
-        <el-col :span="12">
+    </div>
+    <div class="content-bottom">
     <el-button type="primary" @click="reset" >重置</el-button>
-    <el-button :loading="loading" type="warning" @click="search" style="margin-top:50px">高级检索</el-button>
-        </el-col>
-    </el-row>
+    <el-button :loading="loading" type="warning" @click="search">高级检索</el-button>
+    </div>
   </div>
 </template>
 
@@ -120,7 +123,21 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+@import '../../../static/less/Common.less';
+.drawer-title{
+  .content-header();
+  text-align: center;
+  margin-bottom: 30px;
+}
+.search-condition{
+  margin: 20px;
+}
+.content-bottom{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
 .label-prepend{
     width: 100px !important;
 }

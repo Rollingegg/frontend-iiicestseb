@@ -84,6 +84,7 @@ export default {
     align-items: center;
     .author-base {
       flex: 1 0;
+      margin-left: @base-interval;
       .author-name {
         font-size: 30px;
       }
