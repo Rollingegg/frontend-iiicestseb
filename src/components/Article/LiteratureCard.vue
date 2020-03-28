@@ -50,14 +50,6 @@ export default {
       this.openDetailPage('article',id);
     },
     openAuthor (id) {
-      // console.log(id);
-      // let {href} = this.$router.resolve({
-      //   path: '/authorDetail',
-      //   query: {
-      //     authorId: id
-      //   }
-      // });
-      // window.open(href, '_blank');
       this.openDetailPage('author',id);
     },
     openDetailPage(detailType,queryId){

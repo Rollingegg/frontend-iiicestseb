@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <el-row>
+    <el-row :gutter="20">
       <el-col :md="16" class="domain-content">
       <div class="domain-title">{{researchDomain}}</div>
       <el-card class="info-container">
@@ -85,10 +85,11 @@ export default {
 @title-font-size:24px;
 .main-container{
     .domain-content{
-      padding-right: @title-font-size;
+      
       .domain-title{
         font-size: @head-font-size;
         line-height: 36px;
+        margin-bottom: 20px;
       }
       .domain-description{
         overflow: auto;
@@ -96,11 +97,11 @@ export default {
         font-size: 14px;
       }
     .domain-recommend{
-      padding-left: @title-font-size;
+      
     }
     }
     .info-container{
-      margin: 20px 0;
+      margin-bottom: 20px;
     .card-head-title {
       font-size: @title-font-size;
       flex: 1;

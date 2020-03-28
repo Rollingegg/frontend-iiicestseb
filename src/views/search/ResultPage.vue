@@ -121,7 +121,6 @@ export default {
                 });
                 return;
             }
-            this.loading = true;
             this.$get('search/simple', {
                 type: queryType,
                 keyword: queryString
@@ -130,6 +129,7 @@ export default {
                     db.save('RESULT', r.data.result);
                     setTimeout(() => {
                         this.loading = false;
+                        this.noResult = true;
                     }, 500);
                     this.resList = r.data.result;
                     console.log(this.resList);
