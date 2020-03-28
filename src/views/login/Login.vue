@@ -93,6 +93,14 @@
                             this.loading = true;
                             let name = values.username;
                             let password = values.password;
+                            if (!(this.handleUsernameCheck(name) && this.handlePasswordLevel(password))) {
+                                //假装密码错了，lwj请不要乱删，谢谢
+                                setTimeout(() => {
+                                    this.loading = false;
+                                    this.$message.error('用户名或者密码错误');
+                                }, 500);
+                                return
+                            }
                             this.$postJson('user/login', {
                                 username: name,
                                 password: password
@@ -105,9 +113,10 @@
                                     }, 500);
                                     this.$router.push('/searchInput');
                                 } else {
-                                    this.$message.error('用户名或者密码错误');
                                     setTimeout(() => {
                                         this.loading = false;
+                                        //todo 等后端修复后直接展示后端错误信息
+                                        this.$message.error('用户名或者密码错误');
                                     }, 500);
                                 }
                             }).catch((e) => {
@@ -132,6 +141,26 @@
             },
             getCaptcha () {
                 this.$message.warning('暂未开发');
+            },
+            handleUsernameCheck (name) {
+                return !!(name.length && name.length < 20 && name.length > 4);
+            },
+            handlePasswordLevel (value) {
+                if (value.length < 6 || value.length > 20) {
+                    return false
+                }
+                let level = 0;
+
+                if (/[0-9]/.test(value)) {
+                    level++;
+                }
+                if (/[a-zA-Z]/.test(value)) {
+                    level++;
+                }
+                if (/[^0-9a-zA-Z_]/.test(value)) {
+                    level++;
+                }
+                return level >= 2;
             },
             handleTabsChange (val) {
                 this.activeKey = val;
