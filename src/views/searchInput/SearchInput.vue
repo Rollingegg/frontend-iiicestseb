@@ -62,7 +62,11 @@
                 });
             },
             openDetailPage (detailType, queryId) {
-                const detailPath = {'author': '/authorDetail','affiliation':'/affiliationDetail', 'keyword': '/keywordDetail'};
+                const detailPath = {
+                    'author': '/authorDetail',
+                    'affiliation': '/affiliationDetail',
+                    'keyword': '/keywordDetail'
+                };
                 if (this.user.username) {
                     this.$router.push({
                         path: detailPath[detailType],
