@@ -31,29 +31,7 @@
     export default {
         name: "HotCard",
         created () {
-            this.$get("statistics/hotTerms", {
-                num: limit
-            }).then(r => {
-                if (r.data.status) {
-                    this.wordList = r.data.result;
-                } else {
-                    this.wordList = [];
-                }
-            }).catch(e => {
-                this.wordList = [];
-            });
-
-            this.$get("/statistics/maxPublishAuthor", {
-                num: limit
-            }).then(r => {
-                if (r.data.status) {
-                    this.authorList = r.data.result;
-                } else {
-                    this.authorList = [];
-                }
-            }).catch(e => {
-                this.authorList = [];
-            });
+            this.getData();
         },
         data () {
             return {
@@ -71,6 +49,33 @@
             }
         },
         methods: {
+            getData(){
+                if (this.title.indexOf('关键词')!==-1){
+                    this.$get("statistics/hotTerms", {
+                        num: limit
+                    }).then(r => {
+                        if (r.data.status) {
+                            this.wordList = r.data.result;
+                        } else {
+                            this.wordList = [];
+                        }
+                    }).catch(e => {
+                        this.wordList = [];
+                    });
+                }else {
+                    this.$get("/statistics/maxPublishAuthor", {
+                        num: limit
+                    }).then(r => {
+                        if (r.data.status) {
+                            this.authorList = r.data.result;
+                        } else {
+                            this.authorList = [];
+                        }
+                    }).catch(e => {
+                        this.authorList = [];
+                    });
+                }
+            },
             openAuthor (row, col) {
                 if (col.label === "机构") {
                     this.$emit('open-page', 'affiliation', row.affiliationName);
