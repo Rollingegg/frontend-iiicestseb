@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="copyright">
-      Copyright © 
+      Copyright ©
       <span v-html="copyright"></span>
     </div>
   </div>
@@ -28,8 +28,5 @@ export default {
     }
   }
 
-  &a {
-    text-decoration: none;
-  }
 }
 </style>

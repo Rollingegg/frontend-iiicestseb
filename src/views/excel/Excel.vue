@@ -27,16 +27,35 @@
           @click="downloadTemplate"
           style="margin-right: .5rem"
         >模板下载</el-button>
+        <el-button
+          size="medium"
+          type="success"
+          @click="importActionVisible=true"
+        >后台导入</el-button>
       </div>
     </div>
+    <el-dialog
+        :visible.sync="importActionVisible"
+        center
+        width="70%"
+        @close="importActionVisible = false">
+        <div style="font-size:24px;border-bottom:1px solid" slot="title">选择后台导入文件</div>
+        <el-radio-group v-model="selectedTemplate">
+            <el-radio v-for="(item, index) in templateList" :key="index" :label="index">{{item}}</el-radio>
+        </el-radio-group>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="importActionVisible = false">取 消</el-button>
+            <el-button type="primary" @click="importTemplate" :loading="uploading">{{uploading ? '导入中' : '导入' }}</el-button>
+        </div>
+    </el-dialog>
     <div class="card-area">
       <!-- 表格区域 -->
-      <el-table :data="tableData" style="width: 100%" height="250">
-        <el-table-column fixed prop="title" label="论文标题" width="300"></el-table-column>
+      <el-table :data="dataSource.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%" height="500">
+        <el-table-column fixed prop="title" label="论文标题" width="300" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="id" label="论文编号" width="50"></el-table-column>
         <el-table-column prop="conferenceId" label="会议编号" width="50"></el-table-column>
-        <el-table-column prop="publisher" label="发布机关" width="50"></el-table-column>
-        <el-table-column prop="pdfUrl" label="pdf链接" :show-overflow-tooltip="true" width="150"></el-table-column>
+        <el-table-column prop="publisher" label="发布机关" width="80"></el-table-column>
+        <el-table-column prop="pdfUrl" label="pdf链接" :show-overflow-tooltip="true" width="300"></el-table-column>
         <el-table-column prop="publicationTitle" label="刊物名称" :show-overflow-tooltip="true" width="300"></el-table-column>
         <el-table-column prop="citationCountPaper" label="引用数" width="50"></el-table-column>
         <el-table-column prop="citationCountPatent" label="被引数" width="50"></el-table-column>
@@ -47,7 +66,7 @@
         v-if="dataSource.length"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-size="size"
+        :page-size="pageSize"
         layout="total, prev, pager, next, jumper"
         :total="dataSource.length"
         ></el-pagination>
@@ -78,12 +97,15 @@ export default {
       uploading: false,
       importResultVisible: false,
       dataSource: [],
-      tableData: [],
       paginationInfo: null,
       currentPage: 1,
-      size: 20,
-      loading: false
+      pageSize: 20,
+      templateList: ['ase13_19(605).json','icse15_19(815).json','icse10_14(1200)','icse15_19(50).json'],
+      selectedTemplate: 0,
+      importActionVisible: false
     };
+  },
+  computed:{
   },
   methods: {
     handleChange(file, fileList) {
@@ -166,10 +188,7 @@ export default {
       this.hasSelected = true;
     },
     fetch() {
-      this.loading = true;
-      this.loading = false;
       this.dataSource = this.importData;
-      this.handleCurrentChange(this.currentPage);
     },
     handleMsg(message, type = "info") {
       const duration = 4000;
@@ -180,21 +199,37 @@ export default {
         this.$message({ message, type, duration, showClose });
       });
     },
-    paging(size, current) {
-      const tableList = Array(this.dataSource);
-      const tablePush = [];
-      tableList.forEach((item, index) => {
-        if (size * (current - 1) <= index && index <= size * current - 1) {
-          tablePush.push(item);
-        }
-      });
-      return tablePush;
-    },
     // 页码改变事件
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.tableData = this.paging(this.size, val);
-      console.log(this.tableData[0]);
+    },
+    importTemplate(){
+        const selectedFile=this.templateList[this.selectedTemplate];
+      const formData = new FormData();
+      formData.append("filename", selectedFile);
+      this.uploading = true;
+      let timeStart = new Date();
+      this.$upload("admin/paper/loadJSON", formData)
+        .then(r => {
+            this.importActionVisible=false;
+          this.times = (new Date() - timeStart) / 1000;
+          if (r.data.status) {
+            this.errors = r.data.result.errorLogs;
+            this.importData = r.data.result.papers;
+            this.fetch();
+            setTimeout(()=>{
+                this.importResultVisible = true;
+            },500);
+          } else {
+            this.importData = [];
+            this.handleMsg(r.data.result, "error");
+          }
+          this.uploading = false;
+        })
+        .catch(r => {
+          console.error(r);
+          this.uploading = false;
+        });
     }
   }
 };

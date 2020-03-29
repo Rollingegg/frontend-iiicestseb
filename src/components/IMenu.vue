@@ -1,6 +1,6 @@
 <template>
     <el-menu
-        :default-active="$router.path"
+        :default-active="$route.path"
         class="my-menu"
         mode="horizontal"
         @select="handleSelect"

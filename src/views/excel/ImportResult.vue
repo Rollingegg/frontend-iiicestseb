@@ -53,17 +53,17 @@
             </el-tab-pane>
 
             <el-tab-pane label="成功记录" name="2" v-if="importData.length">
-                <el-table :data="tableData2" style="width: 100%" height="250">
-                    <el-table-column fixed prop="title" label="论文标题" width="300"></el-table-column>
-                    <el-table-column prop="id" label="论文编号" width="50"></el-table-column>
-                    <el-table-column prop="conferenceId" label="会议编号" width="50"></el-table-column>
-                    <el-table-column prop="publisher" label="发布机关" width="50"></el-table-column>
-                    <el-table-column prop="pdfUrl" label="pdf链接" :show-overflow-tooltip="true" width="150"></el-table-column>
-                    <el-table-column prop="publicationTitle" label="刊物名称" :show-overflow-tooltip="true" width="300"></el-table-column>
-                    <el-table-column prop="citationCountPaper" label="引用数" width="50"></el-table-column>
-                    <el-table-column prop="citationCountPatent" label="被引数" width="50"></el-table-column>
-                    <el-table-column prop="startPage" label="起始页" width="50"></el-table-column>
-                    <el-table-column prop="endPage" label="结束页" width="50"></el-table-column>
+                <el-table :data="importData.slice((currentPage2-1)*size2,currentPage2*size2)" style="width: 100%" height="250">
+                <el-table-column fixed prop="title" label="论文标题" width="300" :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="id" label="论文编号" width="50"></el-table-column>
+                <el-table-column prop="conferenceId" label="会议编号" width="50"></el-table-column>
+                <el-table-column prop="publisher" label="发布机关" width="80"></el-table-column>
+                <el-table-column prop="pdfUrl" label="pdf链接" :show-overflow-tooltip="true" width="300"></el-table-column>
+                <el-table-column prop="publicationTitle" label="刊物名称" :show-overflow-tooltip="true" width="300"></el-table-column>
+                <el-table-column prop="citationCountPaper" label="引用数" width="50"></el-table-column>
+                <el-table-column prop="citationCountPatent" label="被引数" width="50"></el-table-column>
+                <el-table-column prop="startPage" label="起始页" width="50"></el-table-column>
+                <el-table-column prop="endPage" label="结束页" width="50"></el-table-column>
             </el-table>
                 <el-pagination
                 v-if="importData.length"
@@ -101,7 +101,7 @@
                 tableData1: [],
                 tableData2: [],
                 size1: 5,
-                size2: 5,
+                size2: 10,
                 currentPage1: 1,
                 currentPage2: 1,
                 dataSource: []
@@ -132,9 +132,7 @@
             },
             // 页码改变事件
             handleCurrentChange2(val) {
-            console.log(`当前页: ${val}`);
             this.currentPage2 = val;
-            this.tableData2 = this.paging(this.size, val,this.importData);
             }
         }
     };

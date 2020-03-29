@@ -49,10 +49,10 @@
                 </el-button>
             </el-form-item>
             <div>
-                <a style="float: left" @click="noRegist">游客登陆</a>
+                <el-link type="primary" :underline="false" style="float: left" @click="noRegist">游客登陆</el-link>
             </div>
             <div>
-                <a style="float: right" @click="regist">注册账户</a>
+                <el-link type="primary" :underline="false" style="float: right" @click="regist">注册账户</el-link>
             </div>
         </el-form>
     </div>

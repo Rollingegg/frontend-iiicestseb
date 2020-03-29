@@ -35,7 +35,7 @@
                         @click.stop.prevent="handleSubmit('registerForm')"
                         :disabled="registerBtn">立即注册
                 </el-button>
-                <a class="login" @click="returnLogin">使用已有账户登录</a>
+                <el-link type="primary" :underline="false" class="login" @click="returnLogin">使用已有账户登录</el-link>
             </el-form-item>
 
         </el-form>
