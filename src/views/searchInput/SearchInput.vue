@@ -2,7 +2,7 @@
     <div class="home">
         <div class="welcome">{{welcomeMessage}}</div>
 
-        <search-box @do-simple-search="doSimpleSearch"></search-box>
+        <search-box @do-search="doSearch"></search-box>
 
         <el-row :gutter="120" style="margin: 0 40px;margin-top:60px">
             <el-col :md="12">
@@ -52,13 +52,12 @@
             db.remove('RESULT');
         },
         methods: {
-            doSimpleSearch (queryType, queryString) {
-                db.save('SEARCH_WORD', queryString);
+            doSearch (params) {
+              // console.log(params);
                 this.$router.push({
                     path: '/searchRes',
                     query: {
-                        queryType: queryType,
-                        queryString: queryString
+                      search_condition: JSON.stringify(params)
                     }
                 });
             },

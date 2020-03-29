@@ -28,48 +28,48 @@ Vue.use(Router);
 let constRouter = [
     {
         path: '/login',
-        name: '登录页',
+        name: 'LoginPage',
         component: LoginView
     },
     {
         path: '/',
         component: IndexView,
-        name: '首页',
+        name: 'IndexPage',
         redirect: '/searchInput',
         children: [
             {
                 path: '/searchInput',
-                name: '搜索输入页',
+                name: 'HomePage',
                 component: searchInputView
             },
             {
                 path: '/upload',
-                name: '文献管理页',
+                name: 'UploadPage',
                 component: uploadView
             },
             {
                 path: '/searchRes',
-                name: '搜索结果页',
+                name: 'SearchResultPage',
                 component: searchResultView
             },
             {
                 path: '/articleDetail',
-                name: '文献详情页',
+                name: 'ArticlePage',
                 component: articleDetailView
             },
             {
                 path: '/authorDetail',
-                name: '学者主页',
+                name: 'AuthorPage',
                 component: authorDetailView
             },
             {
                 path: '/affiliationDetail',
-                name: '机构主页',
+                name: 'AffiliationPage',
                 component: affiliationDetailView
             },
             {
                 path: '/keywordDetail',
-                name: '研究领域',
+                name: 'TermPage',
                 component: keywordDetailView
             }]
     }
@@ -104,13 +104,13 @@ router.beforeEach((to, from, next) => {
             if (!userRouter) {
                 let mocRouter = [{
                     path: '/',
-                    name: '主页',
+                    name: 'IndexPage',
                     component: 'MenuView',
                     icon: 'none',
                     redirect: '/index',
                     children: [{
                         path: '/searchInput',
-                        name: '搜索主页',
+                        name: 'HomePage',
                         component: 'HomePageView',
                         icon: 'home',
                         meta: {closeable: false, isShow: true}

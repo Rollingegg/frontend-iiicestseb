@@ -1,6 +1,6 @@
 <template>
   <div>
-    <search-box @do-simple-search="doSimpleSearch" @refresh="reset"></search-box>
+    <search-box @do-search="doSearch" @refresh="reset"></search-box>
     <el-container>
       <el-aside width="auto" style="padding:20px">
         <div class="one-line">
@@ -13,40 +13,12 @@
           <div style="text-align: center">至</div>
           <el-date-picker v-model="endYear" type="year" clearable text="截止年份" value-format="yyyy"></el-date-picker>
           <div style="text-align:center;margin: 16px 6px">
-            <el-button icon="el-icon-s-promotion" type="primary" @click="handleFilter">过滤</el-button>
+            <el-button icon="el-icon-s-promotion" type="primary" @click="handleFilter">在结果中过滤</el-button>
           </div>
         </el-card>
       </el-aside>
       <el-main>
-        <div
-          v-loading="loading"
-          element-loading-text="拼命搜索中..."
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(255,255,255,0.95)"
-          style="min-height: 35vw;"
-        >
-          <div class="one-line">
-            <div>一共为您找到<span class="paper-count">{{paperCount}}</span>条记录</div>
-            <div></div>
-          </div>
-          <div v-if="!noResult">
-            <LCard v-for="(item, index) of resList" :key="index" :article="item"></LCard>
-            <!-- <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="currentPage"
-              :page-size="20"
-              layout="prev, pager, next, jumper"
-              :total="paperCount">
-            </el-pagination> -->
-          </div>
-          <div class="no-info" v-else>
-              <div class="no-data">
-              <img src="/static/img/nodata02.png">
-              <br> 什么也没找到 T^T
-            </div>
-          </div>
-        </div>
+        <paper-list :keyword="searchParams"></paper-list>
       </el-main>
     </el-container>
   </div>
@@ -57,6 +29,7 @@ import GlobalNav from '../common/GlobalNavigator';
 import GlobalFooter from '../common/GlobalFooter';
 import SearchBox from '../searchInput/SearchBox';
 import LCard from '@/components/Article/LiteratureCard';
+import PaperList from '../author/PaperListPage';
 import db from '../../utils/localstorage';
 
 export default {
@@ -69,7 +42,8 @@ export default {
       queryString: '',
       noResult: false,
       startYear: '2000',
-      endYear: '2020'
+      endYear: '2020',
+      searchParams: {}
     };
   },
   computed: {
@@ -81,12 +55,11 @@ export default {
     GlobalNav,
     GlobalFooter,
     SearchBox,
-    LCard
+    LCard,
+    PaperList
   },
   methods: {
     handleFilter () {
-      console.log(this.startYear);
-      console.log(this.endYear);
       if (this.endYear < this.startYear) {
         this.$message({
           showClose: true,
@@ -94,85 +67,27 @@ export default {
           type: 'warning'
         });
       } else {
-        let newList = [];
-        let artList = db.get('RESULT');
-        for (let i = 0; i < artList.length; i++) {
-          const ele = artList[i];
-          let pdate = String(ele.publicationYear).substr(0, 4);
-          if (this.startYear <= pdate && this.endYear >= pdate) {
-            newList.push(ele);
-          }
-        }
-        this.resList = newList;
-        this.$message({
-          message: '筛选完成',
-          showClose: true,
-          type: 'success'
-        });
+        let newSearchParam=JSON.parse(JSON.stringify(this.searchParams));
+        newSearchParam['start_year']=this.startYear;
+        newSearchParam['end_year']=this.endYear;
+        // console.log(newSearchParam===this.searchParams);
+        this.searchParams=newSearchParam;
+        // console.log(this.searchParams);
       }
     },
-    doSimpleSearch (queryType, queryString) {
-            db.save('SEARCH_WORD', queryString);
-            if (queryString === '') {
-              this.$message({
-                        showClose: true,
-                        message: '警告：您尚未输入有效搜索信息',
-                        type: 'warning'
-                });
-                return;
-            }
-            this.loading = true;
-            this.$get('search/simple', {
-                type: queryType,
-                keyword: queryString
-            }).then((r) => {
-                if (r.data.status) {
-                    db.save('RESULT', r.data.result);
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.noResult = true;
-                    }, 500);
-                    this.resList = r.data.result;
-                    console.log(this.resList);
-                    if (this.resList == null) {
-                        this.loading = false;
-                        this.noResult = true;
-                    } else {
-                      this.noResult = false;
-                    }
-                } else {
-                    this.$message({
-                        showClose: true,
-                        message: r.data.result,
-                        type: 'warning'
-                    });
-                    this.loading = false;
-                    this.noResult = true;
-                }
-                }).catch((e) => {
-                    this.loading = false;
-                    this.noResult = true;
-                });
-            },
+    doSearch(params){
+      // console.log(params);
+      this.searchParams=params;
+    },
     reset () {
-      // console.log(db.get('RESULT'));
-      console.log('reset');
-      if (db.get('RESULT').length > 0) {
-        this.resList = db.get('RESULT');
-      } else {
-        this.$message({
-          showClose: true,
-          message: '搜索记录为空',
-          type: 'warning'
-        });
-      }
-      this.loading = false;
+      let newSearchParam=JSON.parse(JSON.stringify(this.searchParams));
+      newSearchParam['start_year']=null;
+      newSearchParam['end_year']=null;
+      this.searchParams=newSearchParam;
     }
   },
-  mounted () {
-    this.queryType = this.$route.query.queryType;
-    this.queryString = this.$route.query.queryString;
-    this.doSimpleSearch(this.queryType, this.queryString);
+  created () {
+    this.searchParams = JSON.parse(this.$route.query.search_condition);
   }
 };
 </script>

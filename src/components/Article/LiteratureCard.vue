@@ -1,9 +1,9 @@
 <template>
   <el-card shadow="always" class="box-card">
     <div class="item-container">
-      <el-link class="document-title" @click="openArticle(article.id)">{{article.paperTitle}}</el-link>
+      <el-link class="document-title" @click="openArticle(article.id)">{{article.title}}</el-link>
       <div class="author">
-        <el-link v-for="(item, index) in article.authorInfoList" :key="index" @click="openAuthor(item.id)">{{item.name}}</el-link>
+        <el-link v-for="(item, index) in article.authorList" :key="index" @click="openAuthor(item.id)">{{item.name}}</el-link>
       </div>
       <div class="abstract">
         <!-- <p class="document-abstract">Abstract: {{article.paperAbstract}}</p> -->
@@ -11,19 +11,19 @@
       </div>
       <div class="keywords">
         <span>Keywords:</span>
-        <el-tag v-for="(item, index) in article.termList" :key="index">{{item.word}}</el-tag>
+        <el-tag v-for="(item, index) in article.termsList" :key="index">{{item.name}}</el-tag>
       </div>
     </div>
     <div>
-      <el-link icon="el-icon-date" class="pub-year">{{article.publicationYear.substr(0, 4)}}</el-link>
+      <el-link icon="el-icon-date" class="pub-year">{{String(article.chronDate).substr(0,4)}}</el-link>
       <el-link
         target="_blank"
         icon="el-icon-download"
-        v-bind:href="article.pdfLink"
+        v-bind:href="article.pdfUrl"
         class="download-link"
       >Download</el-link>
       <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
-      <span class="citation">Citations( <span class="citation-cnt">{{article.citationCount}}</span> )</span>
+      <span class="citation">Citations( <span class="citation-cnt">{{article.citationCountPaper}}</span> )</span>
     </div>
   </el-card>
 </template>
@@ -117,7 +117,9 @@ export default {
   .citation{
     padding: 5px;
     float: left;
+    font-size: 14px;
     .citation-cnt{
+      font-size: 16px;
       font-weight: 500;
       color: darkblue;
     }

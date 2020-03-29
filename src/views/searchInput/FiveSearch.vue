@@ -1,144 +1,126 @@
 <template>
   <div>
-    <div class="drawer-title">
-      输入检索条件
-    </div>
+    <div class="drawer-title">输入检索条件</div>
     <div class="search-condition">
-    <el-input clearable placeholder="请输入内容" v-for="(item, index) in items" :key="index" v-model="item.val" v-show="item.shown">
-      <div style="width:50px" slot="prepend">{{item.label}}</div>
-      <el-button slot="append" icon="el-icon-remove" @click="remove(index)"></el-button>
-    </el-input>
+      <el-input
+        clearable
+        placeholder="请输入内容"
+        v-for="(item, index) in items"
+        :key="index"
+        v-model="item.val"
+        v-show="item.shown"
+      >
+        <div style="width:50px" slot="prepend">{{item.label}}</div>
+        <el-button slot="append" icon="el-icon-remove" @click="remove(index)"></el-button>
+      </el-input>
     </div>
     <div class="content-bottom">
-    <el-button type="primary" @click="reset" >重置</el-button>
-    <el-button :loading="loading" type="warning" @click="search">高级检索</el-button>
+      <el-button type="primary" @click="reset">重置</el-button>
+      <el-button :loading="loading" type="warning" @click="search">高级检索</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import db from '../../utils/localstorage';
+import db from "../../utils/localstorage";
 const limit = 200;
 export default {
-  name: 'fsearch',
-  data () {
+  name: "fsearch",
+  data() {
     return {
       loading: false,
       items: [
         {
-          label: '篇名',
-          val: '',
+          label: "篇名",
+          val: "",
           shown: true
         },
         {
-          label: '作者',
-          val: '',
+          label: "作者",
+          val: "",
           shown: true
         },
         {
-          label: '作者单位',
-          val: '',
+          label: "作者单位",
+          val: "",
           shown: true
         },
         {
-          label: '摘要',
-          val: '',
+          label: "摘要",
+          val: "",
           shown: true
         },
         {
-          label: 'DOI',
-          val: '',
+          label: "DOI",
+          val: "",
           shown: true
         },
         {
-          label: '关键词',
-          val: '',
+          label: "关键词",
+          val: "",
           shown: true
         }
       ]
     };
   },
   methods: {
-    search () {
-    //   console.log(this.items);
-        let isValid = false;
-        for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i] !== '') {
-                isValid = true;
-                break;
-            }
+    search() {
+        // console.log(this.items);
+      let isValid = false;
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].val !== "") {
+          isValid = true;
+          break;
         }
+      }
+      // console.log(isValid);
       if (isValid) {
         this.loading = true;
-        this.$get('search/advanced', {
-            paper_title: this.items[0].val,
-            author_name: this.items[1].val,
-            affiliation_name: this.items[2].val,
-            paper_abstract: this.items[3].val,
-            doi: this.items[4].val,
-            term: this.items[5].val,
-            limit: limit
-        }).then((r) => {
-            if (r.data.status) {
-                db.save('RESULT', r.data.result);
-                setTimeout(() => {
-                    this.loading = false;
-                }, 500);
-                if (this.$route.path !== '/searchRes') {
-                    this.$router.push('/searchRes');
-                } else {
-                    this.$emit('refresh');
-                }
-            } else {
-                this.$message({
-                    showClose: true,
-                    message: r.data.result,
-                    type: 'warning'
-                });
-            }
-        }).catch((e) => {
-            this.$message({
-                showClose: true,
-                message: e,
-                type: 'warning'
-            });
+        this.$emit("do-five-search", {
+          title: this.items[0].val,
+          author_name: this.items[1].val,
+          affiliation_name: this.items[2].val,
+          paper_abstract: this.items[3].val,
+          doi: this.items[4].val,
+          term: this.items[5].val
         });
-    } else {
+        this.loading=false;
+      } else {
         this.$message({
-            showClose: true,
-            message: '警告：您尚未输入有效搜索信息',
-            type: 'warning'
+          showClose: true,
+          message: "警告：您尚未输入有效搜索信息",
+          type: "warning"
         });
-    }
+      }
     },
-    reset () {
-        this.items.forEach(item => {
-            item.shown = true;
-        });
+    reset() {
+      this.items.forEach(item => {
+        item.shown = true;
+      });
     },
-    remove (index) {
-        this.items[index].shown = false;
+    remove(index) {
+      this.items[index].shown = false;
     }
   }
 };
 </script>
 
 <style lang="less">
-@import '../../../static/less/Common.less';
-.drawer-title{
+@import "../../../static/less/Common.less";
+.drawer-title {
   .content-header();
   text-align: center;
   margin-bottom: 30px;
 }
-.search-condition{
+.search-condition {
   margin: 20px;
 }
-.content-bottom{
+.content-bottom {
   margin-top: 30px;
   display: flex;
   justify-content: center;
 }
-.label-prepend{
-    width: 100px !important;
+.label-prepend {
+  width: 100px !important;
 }
 </style>

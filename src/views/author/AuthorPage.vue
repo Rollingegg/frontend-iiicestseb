@@ -33,7 +33,7 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab!==null" :is="currentTab" :type="type" :keyword="authorName"></component>
+        <component v-if="currentTab!==null" :is="currentTab" :keyword= "keyword"></component>
         <!-- <paper-list :type="author" :keyword="authorId"></paper-list> -->
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">学术图谱</el-tab-pane>
@@ -51,10 +51,15 @@ export default {
       activeName: "overview",
       type: "author_name",
       authorId: "",
-      authorName: "Jidong Ge",
+      authorName: "Y. Liu",
       affiliationName: "Nanjing University",
       currentTab: null
     };
+  },
+  computed: {
+    keyword(){
+      return {author_name: this.authorName};
+    }
   },
   methods: {
     handleClick(tab, event) {
@@ -69,7 +74,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.authorId = this.$route.query.id;
   }
 };

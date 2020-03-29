@@ -8,7 +8,7 @@
             :closable="false"
             @close="onClose"
             :visible.sync="visible">
-            <ps v-on:refresh="refresh"/>
+            <ps @do-five-search="handleSearch"/>
         </el-drawer>
     </div>
 </template>
@@ -29,8 +29,8 @@
             onClose () {
                 this.visible = false;
             },
-            refresh () {
-                this.$emit('refresh');
+            handleSearch (params) {
+                this.$emit('do-advanced-search',params);
                 this.visible = false;
             }
         },

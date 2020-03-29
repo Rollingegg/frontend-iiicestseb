@@ -11,6 +11,22 @@ export default {
 </script>
 
 <style>
+/*elementui loading css 覆盖 开始自定义动画*/
+.el-loading-spinner .circular{
+  width: 42px;
+  height: 42px;
+  animation: loading-rotate 2s linear infinite;
+  display: none;
+}
+.el-loading-spinner{
+  background: url(./assets/BeanEater.gif) no-repeat;
+  background-size: 48px 48px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 100px;
+  left: 45%;
+}
 #oasis{
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 }
