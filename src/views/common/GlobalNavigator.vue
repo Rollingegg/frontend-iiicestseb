@@ -2,20 +2,15 @@
     <el-header class="homeHeader">
         <a class="title" href="/">OASIS</a>
         <IMenu v-on:expectedWarning="handleUserClick"></IMenu>
-        <div v-if="hasLogin">
+        <div v-if="hasLogin" class="user-avatar">
             <el-button
                 icon="el-icon-bell"
                 type="text"
-                style="margin-right: 8px;color: #000000;"
-                size="normal"
+                size="large"
+                style="margin-right:20px"
             ></el-button>
             <el-dropdown class="userInfo" @command="handleUserClick">
-          <span class="el-dropdown-link">
-            {{user.name}}
-            <i>
-              <img src="@/assets/logo.png" alt/>
-            </i>
-          </span>
+          <el-avatar src="../../assets/logo.png" alt="user.username" :size="50">{{user.username}}</el-avatar>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
                     <el-dropdown-item command="setting">设置</el-dropdown-item>
@@ -102,16 +97,9 @@
         cursor: pointer;
     }
 
-    .el-dropdown-link img {
-        width: 48px;
-        height: 48px;
-        border-radius: 24px;
-        margin-left: 8px;
-    }
-
-    .el-dropdown-link {
-        color: #ffffff;
+    .user-avatar{
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
 </style>

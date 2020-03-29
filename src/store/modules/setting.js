@@ -13,7 +13,7 @@ export default {
         theme: db.get('THEME', 'light'),
         layout: db.get('LAYOUT', 'side'),
         systemName: 'OASIS 文献检索系统',
-        copyright: `${new Date().getFullYear()} <a href="http://3.dwxh.xyz:3000" target="_blank">IIICEStseB</a>`,
+        copyright: `${new Date().getFullYear()} <a class="copyright-link" href="http://3.dwxh.xyz:3000" target="_blank">IIICEStseB</a>`,
         multipage: getBooleanValue(db.get('MULTIPAGE'), true),
         fixSiderbar: getBooleanValue(db.get('FIX_SIDERBAR'), true),
         fixHeader: getBooleanValue(db.get('FIX_HEADER'), true),

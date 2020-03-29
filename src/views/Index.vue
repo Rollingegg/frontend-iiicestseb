@@ -39,7 +39,6 @@
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 #container {
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     min-height: 100vh;
 }
 </style>

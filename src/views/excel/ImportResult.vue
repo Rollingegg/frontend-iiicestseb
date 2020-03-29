@@ -1,72 +1,82 @@
 <template>
-    <a-modal
+    <el-dialog
         class="import-result"
-        title="导入结果"
-        v-model="show"
-        :centered="true"
-        :footer="null"
-        :maskClosable="false"
-        :width=1000
-        @cancel="handleCancel">
+        :visible="importResultVisible"
+        center
+        width="70%"
+        @close="handleCancel">
+        <div style="font-size:24px;border-bottom:1px solid" slot="title">导入结果</div>
         <div class="import-desc">
           <span v-if="importData.length === 0 && errors.length === 0">
-            <a-alert
-                message="暂无导入记录"
+            <el-alert :closable="false"
+                title="暂无导入记录"
                 type="info">
-            </a-alert>
+            </el-alert>
           </span>
 
             <span v-if="importData.length !== 0 && errors.length !== 0">
-            <a-alert
-                message="部分导入成功"
+            <el-alert :closable="false"
+                title="部分导入成功"
                 type="warning">
-              <div slot="description">
+              <div slot>
                 成功导入 <a>{{importData.length}}</a> 条记录，<a>{{errors.length}}</a> 条记录导入失败，共耗时 <a>{{times}}</a> 秒
               </div>
-            </a-alert>
+            </el-alert>
           </span>
 
             <span v-if="importData.length !== 0 && errors.length === 0">
-            <a-alert
-                message="全部导入成功"
+            <el-alert :closable="false"
+                title="全部导入成功"
                 type="success">
-              <div slot="description">
+              <div slot>
                 成功导入 <a>{{importData.length}}</a> 条记录，共耗时 <a>{{times}}</a> 秒
               </div>
-            </a-alert>
+            </el-alert>
           </span>
 
             <span v-if="importData.length === 0 && errors.length !== 0">
-            <a-alert
-                message="全部导入失败"
+            <el-alert :closable="false"
+                title="全部导入失败"
                 type="error">
-              <div slot="description">
+              <div slot>
                 <a>{{errors.length}}</a> 条记录导入失败，共耗时  <a>{{times}}</a> 秒
               </div>
-            </a-alert>
+            </el-alert>
           </span>
         </div>
 
-        <a-tabs defaultActiveKey="1">
-            <a-tab-pane tab="失败记录" key="2" v-if="errors.length">
-                <a-table ref="errorTable"
-                         :columns="errorColumns"
-                         :dataSource="errors"
-                         :pagination="pagination"
-                         :scroll="{ x: 900 }">
-                </a-table>
-            </a-tab-pane>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="失败记录" name="1" v-if="errors.length">
+                <div style="overflow: auto;height:300px">
+                <div v-for="(item, index) in errors" :key="index">{{item}}</div>
+                </div>
+            </el-tab-pane>
 
-            <a-tab-pane tab="成功记录" key="1" v-if="importData.length">
-                <a-table ref="successTable"
-                         :columns="successColumns"
-                         :dataSource="importData"
-                         :pagination="pagination"
-                         :scroll="{ x: 900 }">
-                </a-table>
-            </a-tab-pane>
-        </a-tabs>
-    </a-modal>
+            <el-tab-pane label="成功记录" name="2" v-if="importData.length">
+                <el-table :data="importData.slice((currentPage2-1)*size2,currentPage2*size2)" style="width: 100%" height="250">
+                <el-table-column fixed prop="title" label="论文标题" width="300" :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="id" label="论文编号" width="50"></el-table-column>
+                <el-table-column prop="conferenceId" label="会议编号" width="50"></el-table-column>
+                <el-table-column prop="publisher" label="发布机关" width="80"></el-table-column>
+                <el-table-column prop="pdfUrl" label="pdf链接" :show-overflow-tooltip="true" width="300"></el-table-column>
+                <el-table-column prop="publicationTitle" label="刊物名称" :show-overflow-tooltip="true" width="300"></el-table-column>
+                <el-table-column prop="citationCountPaper" label="引用数" width="50"></el-table-column>
+                <el-table-column prop="citationCountPatent" label="被引数" width="50"></el-table-column>
+                <el-table-column prop="startPage" label="起始页" width="50"></el-table-column>
+                <el-table-column prop="endPage" label="结束页" width="50"></el-table-column>
+            </el-table>
+                <el-pagination
+                v-if="importData.length"
+                @current-change="handleCurrentChange2"
+                :current-page.sync="currentPage2"
+                :page-size="size2"
+                layout="total, prev, pager, next, jumper"
+                :total="importData.length"
+                ></el-pagination>
+
+            </el-tab-pane>
+        </el-tabs>
+    </el-dialog>
 </template>
 <script>
     export default {
@@ -87,101 +97,17 @@
         },
         data () {
             return {
-                pagination: {
-                    pageSizeOptions: ['5', '10'],
-                    defaultCurrent: 1,
-                    defaultPageSize: 5,
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-                }
+                activeName: '1',
+                tableData1: [],
+                tableData2: [],
+                size1: 5,
+                size2: 10,
+                currentPage1: 1,
+                currentPage2: 1,
+                dataSource: []
             };
         },
         computed: {
-            successColumns () {
-                return [
-                    {
-                        title: '发布标题',
-                        dataIndex: 'publicationTitle',
-                        customRender: (text) => {
-                            if (text.length > 10) {
-                                text = text.substring(0, 8) + '...';
-                            }
-                            return text;
-                        }
-                    }, {
-                        title: '发布编号',
-                        dataIndex: 'publisherId'
-                    }, {
-                        title: '会议编号',
-                        dataIndex: 'conferenceId'
-                    }, {
-                        title: 'pdf连接',
-                        dataIndex: 'pdfLink',
-                        customRender: (text) => {
-                            if (text.length > 20) {
-                                text = text.substring(0, 18) + '...';
-                            }
-                            return text;
-                        }
-                    }, {
-                        title: 'doi',
-                        dataIndex: 'doi'
-                    }, {
-                        title: '标题',
-                        dataIndex: 'paperTitle',
-                        customRender: (text) => {
-                            if (text.length > 20) {
-                                text = text.substring(0, 18) + '...';
-                            }
-                            return text;
-                        }
-                    }, {
-                        title: '摘要',
-                        dataIndex: 'paperAbstract',
-                        customRender: (text) => {
-                            if (text.length > 20) {
-                                text = text.substring(0, 18) + '...';
-                            }
-                            return text;
-                        }
-                    }, {
-                        title: '引用数',
-                        dataIndex: 'referenceCount'
-                    }, {
-                        title: '什么数',
-                        dataIndex: 'citationCount'
-                    }, {
-                        title: '发布时间',
-                        dataIndex: 'publicationYear',
-                        customRender: (text) => {
-                            return text.substr(0, 4);
-                        }
-                    }, {
-                        title: '开始页',
-                        dataIndex: 'startPage'
-                    }, {
-                        title: '终了页',
-                        dataIndex: 'endPage'
-                    }, {
-                        title: '认定机构',
-                        dataIndex: 'documentIdentifier'
-                    }];
-            },
-            errorColumns () {
-                return [
-                    {
-                        title: '行',
-                        dataIndex: 'row',
-                        customRender: (text, row, index) => {
-                            return `第 ${text} 行`;
-                        }
-                    },
-                    {
-                        title: '错误信息',
-                        dataIndex: 'msg'
-                    }];
-            },
             show: {
                 get: function () {
                     return this.importResultVisible;
@@ -193,6 +119,20 @@
         methods: {
             handleCancel () {
                 this.$emit('close');
+            },
+            paging(size, current,dataSource) {
+            const tableList = Array(dataSource);
+            const tablePush = [];
+            tableList.forEach((item, index) => {
+                if (size * (current - 1) <= index && index <= size * current - 1) {
+                tablePush.push(item);
+                }
+            });
+            return tablePush;
+            },
+            // 页码改变事件
+            handleCurrentChange2(val) {
+            this.currentPage2 = val;
             }
         }
     };
