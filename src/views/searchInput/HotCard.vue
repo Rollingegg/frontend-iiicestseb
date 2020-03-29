@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="hover" :loading="loading">
+    <el-card shadow="always" :loading="loading">
         <div class="card-head-title" slot="header">{{title}}</div>
 
         <el-table :data="authorList"

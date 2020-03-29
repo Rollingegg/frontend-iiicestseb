@@ -141,7 +141,4 @@ export default {
 .label-prepend{
     width: 100px !important;
 }
-  .el-input__inner{
-    height: 52px;
-  }
 </style>

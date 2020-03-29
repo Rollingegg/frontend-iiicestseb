@@ -1,5 +1,5 @@
 <template>
-    <div style="padding:30px 10% 30px;height: 80px">
+    <div style="padding:0 15%">
         <el-row type="flex" justify="space-between">
             <el-col :span="20">
                 <el-autocomplete
@@ -154,25 +154,9 @@
         background-color: #fff;
         width: 100px;
 
-        .el-select div input {
-            font-size: 18px;
-            text-align: center;
-        }
     }
 
     [popperclass] {
-        line-height: 24px;
         font-size: 22px;
-        height: 70px;
-    }
-
-    .el-col {
-        button {
-            height: 70px;
-
-            span {
-                font-size: 22px
-            }
-        }
     }
 </style>
