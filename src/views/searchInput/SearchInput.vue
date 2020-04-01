@@ -53,7 +53,6 @@
         },
         methods: {
             doSearch (params) {
-              // console.log(params);
                 this.$router.push({
                     path: '/searchRes',
                     query: {
@@ -63,9 +62,9 @@
             },
             openDetailPage (detailType, queryId) {
                 const detailPath = {
-                    'author': '/authorDetail',
-                    'affiliation': '/affiliationDetail',
-                    'keyword': '/keywordDetail'
+                    'author': 'authorDetail',
+                    'affiliation': 'affiliationDetail',
+                    'keyword': 'keywordDetail'
                 };
                 if (this.user.username) {
                     this.$router.push({
