@@ -100,6 +100,7 @@ export default {
     },
     remove(index) {
       this.items[index].shown = false;
+      this.items[index].val = '';
     }
   }
 };

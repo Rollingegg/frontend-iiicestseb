@@ -1,10 +1,7 @@
 <template>
   <div class="main-container">
     <div class="author-header">
-      <el-avatar
-        :size="96"
-        src="https://i1.rgstatic.net/ii/profile.image/273529509773320-1442225925601_Q128/Jidong_Ge.jpg"
-      ></el-avatar>
+      <el-avatar :size="96" src="static\img\Jidong_Ge.jpg"></el-avatar>
       <div class="author-base">
         <div class="author-name">{{authorName}}</div>
         <el-link :underline="false" icon="el-icon-school">{{affiliationName}}</el-link>
@@ -17,26 +14,15 @@
       class="main-container"
     >
       <el-tab-pane label="Overview" name="overview">
-        <el-row :gutter="20">
-          <el-col :md="16" class="author-content">
-            <el-card>
-              <div slot="header">About {{authorName}}</div>
-              <div></div>
-            </el-card>
-          </el-col>
-          <el-col :md="8">
-            <el-card>
-              <div slot="header">About {{authorName}}</div>
-              <div></div>
-            </el-card>
-          </el-col>
-        </el-row>
+        <author-overview></author-overview>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab!==null" :is="currentTab" :keyword= "keyword"></component>
-        <!-- <paper-list :type="author" :keyword="authorId"></paper-list> -->
+        <component v-if="currentTab!==null" :is="currentTab" :keyword="keyword"></component>
       </el-tab-pane>
-      <el-tab-pane label="SchGraph" name="graph">学术图谱</el-tab-pane>
+      <el-tab-pane label="SchGraph" name="graph">
+        <h1>学术图谱</h1>
+        <component v-if="currentTab2!==null" :is="currentTab2"></component>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -44,8 +30,14 @@
 <script>
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
 import PaperList from "./PaperListPage";
+import AuthorOverview from "./AuthorOverview";
+import RelationGraph from "@/components/Author/RelationGraph";
 export default {
   name: "AuthorPage",
+  components: {
+    AuthorOverview,
+    RelationGraph
+  },
   data() {
     return {
       activeName: "overview",
@@ -53,12 +45,13 @@ export default {
       authorId: "",
       authorName: "Y. Liu",
       affiliationName: "Nanjing University",
-      currentTab: null
+      currentTab: null,
+      currentTab2: null
     };
   },
   computed: {
-    keyword(){
-      return {author_name: this.authorName};
+    keyword() {
+      return { type: "author_name", author_name: this.authorName };
     }
   },
   methods: {
@@ -68,6 +61,10 @@ export default {
         case "papers":
           console.log("papers");
           this.currentTab = PaperList;
+          break;
+        case 'graph':
+          console.log("graph");
+          this.currentTab2 = RelationGraph;
           break;
         default:
           break;
@@ -94,9 +91,6 @@ export default {
         font-size: 30px;
       }
     }
-  }
-  .author-content{
-    
   }
 }
 </style>

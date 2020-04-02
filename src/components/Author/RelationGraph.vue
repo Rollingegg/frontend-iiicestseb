@@ -1,38 +1,23 @@
 <template>
-  <div>
-    <h1>{{affiliationId}}</h1>
-    <el-tabs
-      v-model="activeName"
-      type="border-card"
-      @tab-click="handleClick"
-      class="main-container"
-    >
-      <el-tab-pane label="Overview" name="overview">机构简介</el-tab-pane>
-      <el-tab-pane label="Members" name="members">成员列表</el-tab-pane>
-      <el-tab-pane label="Papers" name="papers">发表文章</el-tab-pane>
-      <el-tab-pane label="SchGraph" name="graph">
-        <h1>学术图谱</h1>
-        <div style="width:100%;height:600px">
-        <component v-if="currentTab!==null" :is="currentTab" chartId="affiliation-graph" height="600px" width="100%" :options="options"></component>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+  <el-card>
+    <div id="author-rel-graph" style="width:100%;height:600px"></div>
+  </el-card>
 </template>
 
 <script>
-import chart from '@/components/common/CommonEchart';
+import echarts from "echarts";
 export default {
-  name: "AffiliationPage",
-  component: {
-    chart
-  },
+  name: "RelationGraph",
   data() {
     return {
-      activeName: "overview",
-      affiliationId: "",
-      currentTab: null,
-      options: {
+      charts: "",
+      option: {}
+    };
+  },
+  methods: {
+    drawGraph(id) {
+      let charts = echarts.init(document.getElementById("author-rel-graph"));
+      this.option = {
         title: { text: "人民的名义关系图谱" },
         tooltip: {
           formatter: function(x) {
@@ -449,30 +434,26 @@ export default {
             ]
           }
         ]
-      }
-    };
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-      switch (tab.name) {
-        case 'graph':
-          console.log("graph");
-          this.currentTab = chart;
-          break;
-        default:
-          break;
-      }
+      };
+      charts.setOption(this.option);
+      this.charts = charts;
     }
   },
-  created() {
-    this.affiliationId = this.$route.query.id;
+  mounted() {
+    this.$nextTick(function() {
+      this.drawGraph("author-rel-graph");
+      let that = this;
+      let resizeTimer = null;
+      window.onresize = function() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          that.drawGraph("author-rel-graph");
+        }, 100);
+      };
+    });
   }
 };
 </script>
 
-<style lang="less" scoped>
-.main-container {
-  background: white;
-}
+<style>
 </style>
