@@ -93,7 +93,6 @@
         },
         created () {
             this.$db.clear();
-            this.$router.options.routes = [];
             if (this.user.username) {
                 return window.location.reload()
             }
