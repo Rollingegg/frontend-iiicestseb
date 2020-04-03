@@ -51,7 +51,6 @@
                 this.$router.push({name: '登录页', params: {regist: 'Regist'}});
             },
             handleUserClick (command) {
-                // this[command]();
                 if (command === 'logout') {
                     this.logout();
                 } else {
@@ -64,7 +63,6 @@
             },
             logout () {
                 this.$router.push('/login');
-                window.location.reload();
             }
         },
         components: {

@@ -14,9 +14,6 @@ export default {
         layout: db.get('LAYOUT', 'side'),
         systemName: 'OASIS 文献检索系统',
         copyright: `${new Date().getFullYear()} <a class="copyright-link" href="http://3.dwxh.xyz:3000" target="_blank">IIICEStseB</a>`,
-        multipage: getBooleanValue(db.get('MULTIPAGE'), true),
-        fixSiderbar: getBooleanValue(db.get('FIX_SIDERBAR'), true),
-        fixHeader: getBooleanValue(db.get('FIX_HEADER'), true),
         colorList: [
             'rgb(245, 34, 45)',
             'rgb(250, 84, 28)',
@@ -30,35 +27,6 @@ export default {
         color: db.get('COLOR', 'rgb(24, 144, 255)')
     },
     mutations: {
-        setDevice (state, isMobile) {
-            state.isMobile = isMobile;
-        },
-        setTheme (state, theme) {
-            db.save('THEME', theme);
-            state.theme = theme;
-        },
-        setLayout (state, layout) {
-            db.save('LAYOUT', layout);
-            state.layout = layout;
-        },
-        setMultipage (state, multipage) {
-            db.save('MULTIPAGE', multipage);
-            state.multipage = multipage;
-        },
-        setSidebar (state, type) {
-            state.sidebar.opened = type;
-        },
-        fixSiderbar (state, flag) {
-            db.save('FIX_SIDERBAR', flag);
-            state.fixSiderbar = flag;
-        },
-        fixHeader (state, flag) {
-            db.save('FIX_HEADER', flag);
-            state.fixHeader = flag;
-        },
-        setSettingBar (state, flag) {
-            state.settingBar.opened = flag;
-        },
         setColor (state, color) {
             db.save('COLOR', color);
             state.color = color;

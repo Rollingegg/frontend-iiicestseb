@@ -1,19 +1,16 @@
 <template>
     <div class="login">
         <el-form status-icon :model="loginForm" ref="loginForm" size="large" :rules="rules">
-            <el-tabs  v-model="activeKey" stretch
-                    @tab-click="handleTabsChange">
+            <el-tabs v-model="activeKey" stretch @tab-click="handleTabsChange">
                 <el-tab-pane label="账户密码登录" name="1">
                     <el-form-item prop="username">
-                        <el-input
-                                v-model="loginForm.username">
+                        <el-input v-model="loginForm.username">
                             <i slot="prefix" class="el-icon-user"></i>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item prop="password">
-                        <el-input type="password"
-                            v-model="loginForm.password">
+                        <el-input type="password" v-model="loginForm.password">
                             <i slot="prefix" class="el-icon-lock"></i>
                         </el-input>
                     </el-form-item>
@@ -43,8 +40,10 @@
             </el-tabs>
 
             <el-form-item>
-                <el-button :loading="loading" style="width: 100%;" @click="doLogin('loginForm')"
-                          type="primary">
+                <el-button :loading="loading"
+                           style="width: 100%;"
+                           @click="doLogin('loginForm')"
+                           type="primary">
                     登录
                 </el-button>
             </el-form-item>
@@ -59,13 +58,13 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
 
     export default {
         name: 'Login',
         data () {
-            // 判断用户名是否合法
             return {
+                isReload: false,
                 loading: false,
                 activeKey: '1',
                 loginForm: {
@@ -81,35 +80,33 @@
             };
         },
         computed: {
-            systemName () {
-                return this.$store.state.setting.systemName;
-            },
-            copyright () {
-                return this.$store.state.setting.copyright;
-            }
+            ...mapState({
+                user: state => state.account.user
+            })
         },
         created () {
             this.$db.clear();
-            this.$router.options.routes = [];
+            if (this.user.username) {
+                return window.location.reload()
+            }
+            this.isReload = true
         },
         methods: {
             doLogin (formName) {
                 if (this.activeKey === '1') {
-                    // 用户名密码登录
-                    // console.log(this.loginForm);
                     this.$refs[formName].validate(valid => {
                         if (valid) {
                             this.loading = true;
                             let name = this.loginForm.username;
                             let password = this.loginForm.password;
                             if (!(this.handleUsernameCheck(name) && this.handlePasswordLevel(password))) {
-                                //假装密码错了，lwj请不要乱删，谢谢
                                 setTimeout(() => {
                                     this.loading = false;
                                     this.$message.error('用户名或者密码错误');
                                 }, 500);
                                 return
                             }
+
                             this.$postJson('user/login', {
                                 username: name,
                                 password: password
@@ -124,12 +121,10 @@
                                 } else {
                                     setTimeout(() => {
                                         this.loading = false;
-                                        //todo 等后端修复后直接展示后端错误信息
-                                        this.$message.error('用户名或者密码错误');
+                                        this.$message.error(r.data.result);
                                     }, 500);
                                 }
-                            }).catch((e) => {
-                                // console.error(e);
+                            }).catch(() => {
                                 setTimeout(() => {
                                     this.loading = false;
                                 }, 500);
@@ -152,7 +147,7 @@
                 this.$message.warning('暂未开发');
             },
             handleUsernameCheck (name) {
-                return !!(name.length && name.length < 21 && name.length > 3 && name.indexOf(' ')==-1);
+                return name.length && name.length < 21 && name.length > 3 && name.indexOf(' ') === -1;
             },
             handlePasswordLevel (value) {
                 if (value.length < 6 || value.length > 20) {
@@ -171,34 +166,13 @@
                 }
                 return level >= 1;
             },
-            handleTabsChange (tab,event) {
-                // this.activeKey = val;
-            },
             ...mapMutations({
-                // setToken: 'account/setToken',
-                // setExpireTime: 'account/setExpireTime',
-                // setPermissions: 'account/setPermissions',
-                // setRoles: 'account/setRoles',
+                setExpireTime: 'account/setExpireTime',
                 setUser: 'account/setUser',
-                // setTheme: 'setting/setTheme',
-                // setLayout: 'setting/setLayout',
-                // setMultipage: 'setting/setMultipage',
-                // fixSiderbar: 'setting/fixSiderbar',
-                // fixHeader: 'setting/fixHeader',
-                setColor: 'setting/setColor'
             }),
             saveLoginData (data) {
-                // this.setToken(data.token);
-                // this.setExpireTime(data.exipreTime);
+                this.setExpireTime(Date.now() + 3600000);
                 this.setUser(data);
-                // this.setPermissions(data.permissions);
-                // this.setRoles(data.roles);
-                // this.setTheme(data.config.theme);
-                // this.setLayout(data.config.layout);
-                // this.setMultipage(data.config.multiPage === '1');
-                // this.fixSiderbar(data.config.fixSiderbar === '1');
-                // this.fixHeader(data.config.fixHeader === '1');
-                // this.setColor(data.config.color);
             }
         }
     };

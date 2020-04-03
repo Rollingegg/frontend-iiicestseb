@@ -2,7 +2,7 @@
     <div class="home">
         <div class="welcome">{{welcomeMessage}}</div>
 
-        <search-box @do-search="doSearch"></search-box>
+        <SearchBox @do-search="doSearch"></SearchBox>
 
         <el-row :gutter="120" style="margin: 0 40px;margin-top:60px">
             <el-col :md="12">
@@ -33,7 +33,7 @@
             GlobalFooter,
             GlobalNav,
             SearchBox,
-            HotCard: HotCard
+            HotCard
         },
         data () {
             return {
@@ -47,25 +47,23 @@
                 user: state => state.account.user
             })
         },
-        props: {},
         created () {
             db.remove('RESULT');
         },
         methods: {
             doSearch (params) {
-              // console.log(params);
                 this.$router.push({
                     path: '/searchRes',
                     query: {
-                      search_condition: JSON.stringify(params)
+                        search_condition: JSON.stringify(params)
                     }
                 });
             },
             openDetailPage (detailType, queryId) {
                 const detailPath = {
-                    'author': '/authorDetail',
-                    'affiliation': '/affiliationDetail',
-                    'keyword': '/keywordDetail'
+                    'author': 'authorDetail',
+                    'affiliation': 'affiliationDetail',
+                    'keyword': 'keywordDetail'
                 };
                 if (this.user.username) {
                     this.$router.push({
