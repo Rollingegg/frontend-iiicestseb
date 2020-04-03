@@ -49,6 +49,11 @@ let constRouter = [
                 path: 'searchRes',
                 name: 'SearchResultPage',
                 component: view('search/ResultPage')
+            },
+            {
+                path: 'articleDetail',
+                name: 'ArticlePage',
+                component: view('article/ArticleDetailPage')
             }]
     }
 ];
@@ -96,11 +101,6 @@ router.beforeEach((to, from, next) => {
                         path: 'keywordDetail',
                         name: 'TermPage',
                         component: 'keyword/KeywordPage'
-                    },
-                    {
-                        path: 'articleDetail',
-                        name: 'ArticlePage',
-                        component: view('article/ArticleDetailPage')
                     }
                 ];
                 if (user.privilegeLevel === '管理员') {

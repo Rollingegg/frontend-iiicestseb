@@ -1,4 +1,4 @@
-// 判断一个属性是不是空
+
 function isEmpty (obj) {
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 

@@ -21,6 +21,9 @@
 </template>
 
 <script>
+    import db from "../../utils/localstorage";
+
+    const limit = 200;
     export default {
         name: "fsearch",
         data () {
