@@ -10,7 +10,6 @@
             </div>
             <component :is="componentName" @regist="handleRegist" class="main-content"></component>
         </div>
-        <global-footer :copyright="copyright"/>
     </div>
 </template>
 
@@ -30,9 +29,6 @@
         computed: {
             systemName () {
                 return this.$store.state.setting.systemName;
-            },
-            copyright () {
-                return this.$store.state.setting.copyright;
             }
         },
         methods: {
