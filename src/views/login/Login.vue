@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <el-form status-icon :model="loginForm" ref="loginForm" size="large" :rules="rules">
-            <el-tabs v-model="activeKey" stretch @tab-click="handleTabsChange">
+            <el-tabs v-model="activeKey" stretch>
                 <el-tab-pane label="账户密码登录" name="1">
                     <el-form-item prop="username">
                         <el-input v-model="loginForm.username">

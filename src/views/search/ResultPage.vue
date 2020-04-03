@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <search-box @do-search="doSearch"></search-box>
-    <el-container>
-      <el-aside width="auto" style="padding:20px">
-        <div class="one-line">
-          <div>选择过滤条件</div>
-          <el-link type="primary" icon="el-icon-remove-outline" @click="reset">重置</el-link>
-        </div>
-        <el-card>
-          <div slot="header" class="clearfix">发表时间</div>
-          <el-date-picker v-model="startYear" type="year" clearable text="起始年份" value-format="yyyy"></el-date-picker>
-          <div style="text-align: center">至</div>
-          <el-date-picker v-model="endYear" type="year" clearable text="截止年份" value-format="yyyy"></el-date-picker>
-          <div style="text-align:center;margin: 16px 6px">
-            <el-button icon="el-icon-s-promotion" type="primary" @click="handleFilter">在结果中过滤</el-button>
-          </div>
-        </el-card>
-      </el-aside>
-      <el-main>
-        <paper-list :keyword="searchParams"></paper-list>
-      </el-main>
-    </el-container>
-  </div>
+    <div>
+        <search-box @do-search="doSearch"></search-box>
+
+        <el-container>
+            <el-aside width="auto" style="padding:20px">
+                <div class="one-line">
+                    <div>选择过滤条件</div>
+                    <el-link type="primary" icon="el-icon-remove-outline" @click="reset">重置</el-link>
+                </div>
+                <el-card>
+                    <div slot="header" class="clearfix">发表时间</div>
+                    <el-date-picker v-model="startYear" type="year" clearable text="起始年份" value-format="yyyy"/>
+                    <div style="text-align: center;padding-top: 10px;padding-bottom: 10px;">至</div>
+                    <el-date-picker v-model="endYear" type="year" clearable text="截止年份" value-format="yyyy"/>
+                    <div style="text-align:center;margin: 16px 6px">
+                        <el-button icon="el-icon-s-promotion" type="primary" @click="handleFilter">在结果中过滤</el-button>
+                    </div>
+                </el-card>
+            </el-aside>
+
+            <el-main>
+                <paper-list :keyword="searchParams"></paper-list>
+            </el-main>
+        </el-container>
+    </div>
 </template>
 
 <script>
