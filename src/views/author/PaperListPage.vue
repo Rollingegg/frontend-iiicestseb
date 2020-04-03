@@ -1,160 +1,156 @@
 <template>
-  <el-row>
-    <el-col :md="16">
-      <div
-        v-loading="loading"
-        element-loading-background="rgba(255,255,255,0.95)"
-      >
-        <div class="one-line">
-          <div>Papers({{paperCount}})</div>
-          <div></div>
-        </div>
-        <div v-if="!noResult">
-          <LCard v-for="(item, index) of resList" :key="index" :article="item"></LCard>
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="params.page+1"
-            :page-size="20"
-            layout="prev, pager, next, jumper"
-            :total="paperCount"
-          ></el-pagination>
-        </div>
-        <div class="no-info" v-else>
-          <div class="no-data">
-            <img src="/static/img/nodata02.png" />
-            <br />什么也没找到 T^T
-          </div>
-        </div>
-      </div>
-    </el-col>
-    <el-col :md="8">相关推荐</el-col>
-  </el-row>
+    <el-row>
+        <el-col :md="16">
+            <div v-loading="loading" element-loading-background="rgba(255,255,255,0.95)">
+                <div class="one-line">
+                    <div>Papers({{paperCount}})</div>
+                </div>
+
+                <div v-if="!noResult">
+                    <LCard v-for="(item, index) of responseList" :key="index" :article="item"></LCard>
+                    <el-pagination
+                            @current-change="handleCurrentChange"
+                            :current-page="params.page+1"
+                            :page-size="10"
+                            layout="prev, pager, next, jumper"
+                            :total="paperCount"/>
+                </div>
+
+                <div v-else class="no-info">
+                    <div class="no-data">
+                        <img src="/static/img/nodata02.png" alt="没有数据"/>
+                        <br/>什么也没找到 T^T
+                    </div>
+                </div>
+            </div>
+        </el-col>
+
+        <el-col :md="8">相关推荐</el-col>
+    </el-row>
 </template>
 
 <script>
-import LCard from "@/components/Article/LiteratureCard";
+    import LCard from "@/components/Article/LiteratureCard";
 
-export default {
-  name: "PaperList",
-  components: {
-    LCard
-  },
-  data() {
-    return {
-      resList: [],
-      noResult: false,
-      loading: true,
-      params: {
-        allKeyword: null,
-        titleKeyword: null,
-        paperAbstractKeyword: null,
-        doiKeyword: null,
-        authorKeyword: null,
-        affiliationKeyword: null,
-        termKeyword: null,
-        type: null,
-        page: 0,
-        limit: 20,
-        chronDateMaxKeyword: null,
-        chronDateMinKeyword: null
-      }
-    };
-  },
-  props: {
-    keyword: Object
-  },
-  computed: {
-    paperCount: function() {
-      return this.resList == null ? 0 : this.resList.length;
-    }
-  },
-  watch: {
-    keyword(newValue, oldValue){
-      this.initParams(newValue);
-      this.fetch();
-    }
-  },
-  methods: {
-    handleCurrentChange(currentPage) {
-      this.params.page = currentPage - 1;
-      this.fetch();
-    },
-    fetch() {
-      this.loading = true;
-      this.$postJson("search/advanced", this.params)
-        .then(r => {
-          if (r.data.status) {
-            setTimeout(() => {
-              this.loading = false;
-            }, 500);
-            this.resList = r.data.result;
-            // console.log(this.resList);
-            if (this.resList == null) {
-              this.noResult = true;
-            } else {
-              this.noResult = false;
+    export default {
+        name: "PaperList",
+        components: {
+            LCard
+        },
+        data () {
+            return {
+                responseList: [],
+                noResult: false,
+                loading: true,
+                params: {
+                    allKeyword: null,
+                    titleKeyword: null,
+                    paperAbstractKeyword: null,
+                    doiKeyword: null,
+                    authorKeyword: null,
+                    affiliationKeyword: null,
+                    termKeyword: null,
+                    type: null,
+                    page: 0,
+                    limit: 10,
+                    chronDateMaxKeyword: null,
+                    chronDateMinKeyword: null
+                }
+            };
+        },
+        props: {
+            keyword: Object
+        },
+        computed: {
+            paperCount: function () {
+                return this.responseList == null ? 0 : this.responseList.length;
             }
-          } else {
-            this.$message({
-              showClose: true,
-              message: r.data.result,
-              type: "warning"
-            });
-            this.loading = false;
-            this.noResult = true;
-          }
-        })
-        .catch(e => {
-          this.loading = false;
-          this.noResult = true;
-        });
-    },
-    initParams(keyword) {
-      const paramsMap = {
-        affiliation_name: "affiliationKeyword",
-        title: "titleKeyword",
-        paper_abstract: "paperAbstractKeyword",
-        doi: "doiKeyword",
-        author_name: "authorKeyword",
-        term: "termKeyword",
-        all: "allKeyword",
-        start_year: "chronDateMinKeyword",
-        end_year: "chronDateMaxKeyword"
-      };
-      // console.log(this.params);
-      this.params.type = keyword.type;
-      for (const key in keyword) {
-        if (keyword.hasOwnProperty(key) && key !== "type") {
-          const k = keyword[key];
-          this.params[paramsMap[key]] = k;
+        },
+        watch: {
+            keyword (newValue, oldValue) {
+                this.initParams(newValue);
+                this.fetch();
+            }
+        },
+        methods: {
+            handleCurrentChange (currentPage) {
+                this.params.page = currentPage - 1;
+                this.fetch();
+            },
+            fetch () {
+                this.loading = true;
+                this.$postJson("search/advanced", this.params)
+                    .then(r => {
+                        if (r.data.status) {
+                            setTimeout(() => {
+                                this.loading = false;
+                            }, 500);
+                            this.responseList = r.data.result;
+                            // console.log(this.responseList);
+                            this.noResult = this.responseList == null;
+                        } else {
+                            this.$message({
+                                showClose: true,
+                                message: r.data.result,
+                                type: "warning"
+                            });
+                            this.loading = false;
+                            this.noResult = true;
+                        }
+                    })
+                    .catch(e => {
+                        this.loading = false;
+                        this.noResult = true;
+                    });
+            },
+            initParams (keyword) {
+                const paramsMap = {
+                    affiliation_name: "affiliationKeyword",
+                    title: "titleKeyword",
+                    paper_abstract: "paperAbstractKeyword",
+                    doi: "doiKeyword",
+                    author_name: "authorKeyword",
+                    term: "termKeyword",
+                    all: "allKeyword",
+                    start_year: "chronDateMinKeyword",
+                    end_year: "chronDateMaxKeyword"
+                };
+                // console.log(this.params);
+                this.params.type = keyword.type;
+                for (const key in keyword) {
+                    if (keyword.hasOwnProperty(key) && key !== "type") {
+                        const k = keyword[key];
+                        this.params[paramsMap[key]] = k;
+                    }
+                }
+            }
+        },
+        mounted () {
+            this.initParams(this.keyword);
+            this.fetch();
         }
-      }
-    }
-  },
-  mounted() {
-    this.initParams(this.keyword);
-    this.fetch();
-  }
-};
+    };
 </script>
 
 <style lang="less" scoped>
-.one-line {
-  display: flex;
-  height: 35px;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  line-height: 35px;
-  font-size: 16px;
-}
-.no-info {
-  background: white;
-  text-align: center;
-  font-size: 30px;
-  display: flex;
-  flex-direction: column;
-  .no-data {
-    align-self: center;
-  }
-}
+    .one-line {
+        display: flex;
+        height: 35px;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        line-height: 35px;
+        font-size: 16px;
+    }
+
+    .no-info {
+        background: white;
+        text-align: center;
+        font-size: 30px;
+        display: flex;
+        flex-direction: column;
+
+        .no-data {
+            align-self: center;
+        }
+    }
 </style>
