@@ -16,7 +16,6 @@ import keywordDetailView from '@/views/keyword/KeywordPage';
 import noFoundDetailView from '@/views/error/404';
 */
 
-
 // 全局Router异常处理
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push (location) {
@@ -30,6 +29,11 @@ Vue.use(Router);
 
 let constRouter = [
     {
+        path: '/login',
+        name: 'LoginPage',
+        component: view('login/Common')
+    },
+    {
         path: '/',
         component: view('Index'),
         name: 'IndexPage',
@@ -39,11 +43,6 @@ let constRouter = [
                 path: 'searchInput',
                 name: 'HomePage',
                 component: view('searchInput/SearchInput')
-            },
-            {
-                path: 'login',
-                name: 'LoginPage',
-                component: view('login/Common')
             },
             {
                 path: 'searchRes',
@@ -100,7 +99,7 @@ router.beforeEach((to, from, next) => {
                     {
                         path: 'articleDetail',
                         name: 'ArticlePage',
-                        component: view('article/ArticleDetailPage')
+                        component: 'article/ArticleDetailPage'
                     }
                 ];
                 if (user.privilegeLevel === '管理员') {
@@ -127,7 +126,7 @@ router.beforeEach((to, from, next) => {
 function go (to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
     asyncRouter.forEach((r) => {
-            router.options.routes[0].children.push(r);
+            router.options.routes[1].children.push(r);
         }
     );
     router.options.routes.push({

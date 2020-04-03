@@ -1,6 +1,6 @@
 <template>
     <div>
-        <search-box @do-search="doSearch" @refresh="reset"></search-box>
+        <search-box @do-search="doSearch"></search-box>
 
         <el-container>
             <el-aside width="auto" style="padding:20px">
