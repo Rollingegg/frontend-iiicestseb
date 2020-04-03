@@ -13,6 +13,9 @@ import './utils/install';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import echarts from 'echarts';
+import moment from 'moment';
+
 Vue.config.productionTip = false;
 Vue.use(db);
 Vue.use(ElementUI);
@@ -20,6 +23,7 @@ Vue.use(ElementUI);
 Vue.use({
     install (Vue) {
         Vue.prototype.$db = db;
+        Vue.prototype.$echarts = echarts;
     }
 });
 
@@ -32,6 +36,7 @@ Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
 Vue.prototype.$isEmpty = userfulFunctions.isEmpty;
+Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */
 new Vue({

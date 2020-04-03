@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import echarts from 'echarts';
 export default {
     props: {
         className: String,
@@ -22,7 +21,7 @@ export default {
     },
     methods: {
         initChart(){
-            this.charts=echarts.init(document.getElementById(this.chartId));
+            this.charts=this.$echarts.init(document.getElementById(this.chartId));
             this.charts.setOption(this.options);
         }
     },

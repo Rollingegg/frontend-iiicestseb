@@ -1,6 +1,6 @@
 <template>
   <!--为echarts准备一个具备大小的容器dom-->
-    <div id="my-chart" style="width: 100%;height: 100%"></div>
+    <div id="my-chart" style="width: 100%;height: 400px"></div>
 </template>
 <script>
 import echarts from "echarts";
@@ -47,7 +47,7 @@ export default {
                 show: true,
                 textStyle: {
                   fontSize: "30",
-                  fontWeight: "blod"
+                  fontWeight: "bold"
                 }
               }
             },
