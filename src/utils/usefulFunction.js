@@ -25,8 +25,37 @@ function isEmpty (obj) {
     return true;
 }
 
+function fnDebounce(fn,delay){
+    let timer = null; 
+    return function() {
+        if(timer){
+            clearTimeout(timer); 
+        }
+        timer = setTimeout(fn,delay); 
+    }
+}
+
+function fnThrottle(method, delay, duration) {
+    let timer;
+    let begin = new Date().getTime();
+    return function() {
+      let current = new Date().getTime();
+      clearTimeout(timer);
+      if (current - begin >= duration) {
+        method();
+        begin = current;
+      } else {
+        timer = setTimeout(function() {
+          method();
+        }, delay);
+      }
+    };
+}
+
 const userfulFunctions = {
-    isEmpty
+    isEmpty,
+    fnDebounce,
+    fnThrottle
 };
 
 export default userfulFunctions;

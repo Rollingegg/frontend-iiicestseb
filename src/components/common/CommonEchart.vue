@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div :class="className" :id="chartId" :style="{height:height,width:width}">
+      <div :class="className" :ref="chartId" :style="{height:height,width:width}">
       </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     },
     methods: {
         initChart(){
-            this.charts=this.$echarts.init(document.getElementById(this.chartId));
+            this.charts=this.$echarts.init(this.$refs[this.chartId]);
             this.charts.setOption(this.options);
         }
     },

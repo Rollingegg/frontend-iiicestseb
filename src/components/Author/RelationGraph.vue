@@ -1,6 +1,6 @@
 <template>
   <el-card>
-    <div id="author-rel-graph" style="width:100%;height:600px"></div>
+    <div :ref="author-rel-graph" style="width:100%;height:600px"></div>
   </el-card>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     drawGraph(id) {
-      let charts = echarts.init(document.getElementById("author-rel-graph"));
+      let charts = echarts.init(this.$refs["author-rel-graph"]);
       this.option = {
         title: { text: "人民的名义关系图谱" },
         tooltip: {

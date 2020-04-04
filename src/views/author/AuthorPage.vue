@@ -27,6 +27,7 @@
                           <div class="statistic-num">{{baseInfo.paperCount}}</div>
                           <div class="statistic-type">Total Published Papers</div>
                         </div>
+                        <div class="statistic-icon"><el-icon class="el-icon-document"></el-icon></div>
                       </div>
                     </el-col>
                     <el-col :md="12">
@@ -35,6 +36,7 @@
                           <div class="statistic-num">{{baseInfo.citationCount}}</div>
                           <div class="statistic-type">Citations</div>
                         </div>
+                        <div class="statistic-icon"><el-icon class="el-icon-paperclip"></el-icon></div>
                       </div>
                     </el-col>
                   </el-row>
@@ -226,8 +228,10 @@ export default {
     border: 1px solid @border-color;
     padding: 20px;
     display: flex;
+    align-items: center;
     .statistic-content {
       align-items: flex-start;
+      flex: 3;
       .statistic-num {
         font-size: @statistic-font-size;
         margin-bottom: 10px;
@@ -235,6 +239,11 @@ export default {
       .statistic-type {
         font-size: 14px;
       }
+    }
+    .statistic-icon{
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
     }
   }
 }

@@ -36,6 +36,8 @@ Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
 Vue.prototype.$isEmpty = userfulFunctions.isEmpty;
+Vue.prototype.$debounce = userfulFunctions.fnDebounce;
+Vue.prototype.$throttle = userfulFunctions.fnThrottle;
 Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */

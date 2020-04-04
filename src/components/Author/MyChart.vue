@@ -1,6 +1,6 @@
 <template>
   <!--为echarts准备一个具备大小的容器dom-->
-    <div id="my-chart" style="width: 100%;height: 400px"></div>
+    <div ref="myChart" style="width: 100%;height: 400px"></div>
 </template>
 <script>
 import echarts from "echarts";
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     drawPie(id) {
-      this.charts = echarts.init(document.getElementById(id));
+      this.charts = echarts.init(this.$refs[id]);
       this.charts.setOption({
         tooltip: {
           trigger: "item",
@@ -65,7 +65,7 @@ export default {
   //调用
   mounted() {
     this.$nextTick(function() {
-      this.drawPie("my-chart");
+      this.drawPie("myChart");
     });
   }
 };
