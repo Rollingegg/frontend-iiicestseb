@@ -11,7 +11,9 @@ export default {
     CommonEchart
   },
   data() {
-    return {};
+    return {
+      
+    };
   },
   props: {
     height: String,
@@ -32,8 +34,8 @@ export default {
       });
       return arr;
     },
-    options() {
-      let obj = {
+    options(){
+        return {
         tooltip: {
           trigger: "item",
           formatter: "{b}<br/>Published Papers: {c} ({d}%)"
@@ -71,11 +73,13 @@ export default {
           }
         ]
       };
-      return obj;
     }
   },
+  methods: {
+    
+  },
   mounted() {
-    // this.initOption();
+    
   }
 };
 </script>
