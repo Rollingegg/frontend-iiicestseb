@@ -96,7 +96,7 @@ export default {
   components: { ImportResult },
   data() {
     return {
-      uploadUrl: process.env.BASE_API + "/admin/paper/StandardJSON",
+      downloadUrl: process.env.BASE_API + "/admin/StandardJSON",
       replace: true,
       msgPromise: Promise.resolve(),
       hasSelected: true,
@@ -154,7 +154,7 @@ export default {
       this.importResultVisible = false;
     },
     downloadTemplate() {
-      window.open(this.uploadUrl);
+      window.open(this.downloadUrl);
     },
     handleRemove(file) {
       if (this.uploading) {
@@ -177,7 +177,7 @@ export default {
       formData.append("file", content.file);
       this.uploading = true;
       let timeStart = new Date();
-      this.$upload("admin/paper/uploadJSON", formData)
+      this.$upload("admin/uploadJSON", formData)
         .then(r => {
           this.times = (new Date() - timeStart) / 1000;
           if (r.data.status) {
@@ -223,7 +223,7 @@ export default {
       formData.append("filename", selectedFile);
       this.uploading = true;
       let timeStart = new Date();
-      this.$upload("admin/paper/loadJSON", formData)
+      this.$upload("admin/loadJSON", formData)
         .then(r => {
           this.importActionVisible = false;
           this.times = (new Date() - timeStart) / 1000;

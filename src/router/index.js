@@ -48,11 +48,6 @@ let constRouter = [
                 path: 'searchRes',
                 name: 'SearchResultPage',
                 component: view('search/ResultPage')
-            },
-            {
-                path: 'articleDetail',
-                name: 'ArticlePage',
-                component: view('article/ArticleDetailPage')
             }]
     }
 ];
