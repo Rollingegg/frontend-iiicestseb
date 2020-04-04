@@ -3,8 +3,8 @@
     <div class="author-header">
       <el-avatar :size="96" src="static\img\Jidong_Ge.jpg"></el-avatar>
       <div class="author-base">
-        <div class="author-name">{{authorName}}</div>
-        <el-link :underline="false" icon="el-icon-school">{{affiliationName}}</el-link>
+        <div class="author-name">{{baseInfo.name}}</div>
+        <el-link :underline="false" icon="el-icon-school" @click="openAffiliation(baseInfo.affiliationId)">{{baseInfo.affiliationName}}</el-link>
       </div>
     </div>
     <el-tabs
@@ -14,7 +14,72 @@
       class="main-container"
     >
       <el-tab-pane label="Overview" name="overview">
-        <author-overview></author-overview>
+        <div class="overview-container">
+          <el-row :gutter="15">
+            <el-col :md="16">
+              <el-card>
+                <div slot="header">About {{baseInfo.name}}</div>
+                <div class="statistic-container">
+                  <el-row :gutter="10">
+                    <el-col :md="12">
+                      <div class="statistic-card">
+                        <div class="statistic-content">
+                          <div class="statistic-num">{{baseInfo.paperCount}}</div>
+                          <div class="statistic-type">Total Published Papers</div>
+                        </div>
+                      </div>
+                    </el-col>
+                    <el-col :md="12">
+                      <div class="statistic-card">
+                        <div class="statistic-content">
+                          <div class="statistic-num">{{baseInfo.citationCount}}</div>
+                          <div class="statistic-type">Citations</div>
+                        </div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="statistic-container">
+                  <el-row :gutter="10">
+                    <el-col :md="12">
+                      <div class="statistic-card">
+                        <div class="statistic-content">
+                          <div class="statistic-num">{{baseInfo.paperCount}}</div>
+                          <div>H-Index</div>
+                        </div>
+                      </div>
+                    </el-col>
+                    <el-col :md="12">
+                      <div class="statistic-card">
+                        <div class="statistic-content">
+                          <div class="statistic-num">{{baseInfo.paperCount}}</div>
+                          <div>IF(x)</div>
+                        </div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :md="8">
+              <el-card>
+                <div slot="header">Recent Papers</div>
+                <div class="recent-paper-container">
+                  <div class="recent-paper-item" v-for="(item, index) in recentPapers" :key="index">
+                    <el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link>
+                    <el-link icon="el-icon-date" :underline="false" style="float:right">{{String(item.chronDate).substr(0,4)}}</el-link>
+                  </div>
+                </div>
+              </el-card>
+              <el-card>
+                <div slot="header">Recent Papers</div>
+                <div>
+                  <my-chart></my-chart>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
         <component v-if="currentTab!==null" :is="currentTab" :keyword="keyword"></component>
@@ -30,31 +95,103 @@
 <script>
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
 import PaperList from "@/components/Article/LiteratureList";
-import AuthorOverview from "./AuthorOverview";
 import RelationGraph from "@/components/Author/RelationGraph";
+import MyChart from "@/components/Author/MyChart";
+import { mapState } from 'vuex';
 export default {
   name: "AuthorPage",
   components: {
-    AuthorOverview,
-    RelationGraph
+    RelationGraph,
+    MyChart
   },
   data() {
     return {
       activeName: "overview",
       type: "author_name",
       authorId: "",
-      authorName: "Y. Liu",
-      affiliationName: "Nanjing University",
+      baseInfo: {},
+      recentPapers: [],
       currentTab: null,
       currentTab2: null
     };
   },
   computed: {
+    ...mapState({
+      user: state => state.account.user
+    }),
     keyword() {
       return { type: "author_name", id: this.authorId };
     }
   },
   methods: {
+    getAuthorBaseInfo() {
+      const id = this.authorId;
+      this.$get("/author/info", {
+        id: id
+      }).then(r => {
+        if (r.data.status) {
+          this.baseInfo=r.data.result;
+        }else{
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            }
+      });
+    },
+    getRecentPapers(){
+      const id = this.authorId;
+      const limit = 5;
+      this.$get("/paper/affiliation/recently/publish", {
+        id: id,
+        limit: limit
+      }).then(r => {
+        if (r.data.status) {
+          this.recentPapers=r.data.result;
+        }else{
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            }
+      });
+    },
+    openArticle (id) {
+      this.openDetailPage('article',id);
+    },
+    openAuthor (id) {
+      this.openDetailPage('author',id);
+    },
+    openAffiliation(id) {
+      this.openDetailPage("affiliation", id);
+    },
+    openDomain(id) {
+      this.openDetailPage("keyword", id);
+    },
+    openDetailPage(detailType, queryId) {
+      const detailPath = {
+        author: "/authorDetail",
+        keyword: "/keywordDetail",
+        affiliation: "/affiliationDetail",
+        article: "/articleDetail"
+      };
+      if (this.user.username) {
+        this.$router.push({
+          path: detailPath[detailType],
+          query: {
+            id: queryId
+          }
+        });
+      } else {
+        this.$message({
+          showClose: true,
+          message: "亲爱的游客，请先登录哟！",
+          type: "warning"
+        });
+      }
+    },
     handleClick(tab, event) {
       console.log(tab, event);
       switch (tab.name) {
@@ -62,7 +199,7 @@ export default {
           console.log("papers");
           this.currentTab = PaperList;
           break;
-        case 'graph':
+        case "graph":
           console.log("graph");
           this.currentTab2 = RelationGraph;
           break;
@@ -73,12 +210,34 @@ export default {
   },
   mounted() {
     this.authorId = this.$route.query.id;
+    this.getAuthorBaseInfo();
+    this.getRecentPapers();
   }
 };
 </script>
 
 <style lang="less" scoped>
 @base-interval: 20px;
+@statistic-font-size: 20px;
+@border-color: #ebeef5;
+.statistic-container {
+  padding: 8px;
+  .statistic-card {
+    border: 1px solid @border-color;
+    padding: 20px;
+    display: flex;
+    .statistic-content {
+      align-items: flex-start;
+      .statistic-num {
+        font-size: @statistic-font-size;
+        margin-bottom: 10px;
+      }
+      .statistic-type {
+        font-size: 14px;
+      }
+    }
+  }
+}
 .main-container {
   .author-header {
     display: flex;

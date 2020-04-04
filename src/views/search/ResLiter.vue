@@ -252,7 +252,7 @@
 </script>
 
 <style>
-    .el-table__row:hover {
+    /* .el-table__row:hover {
         cursor: pointer;
     }
 
@@ -272,10 +272,10 @@
     .info-row{
         margin-bottom: 16px;
         font-size: 16px;
-    }
+    } */
     /* 组合定位 */
-    .el-button.info-button{
+    /* .el-button.info-button{
         margin-bottom: 4px;
         margin-left: 10px;
-    }
+    } */
 </style>
