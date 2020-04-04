@@ -7,7 +7,10 @@
                 </div>
 
                 <div v-if="!noResult">
-                    <LCard v-for="(item, index) of responseList.searchResultVOCollection" :key="index" :article="item"></LCard>
+                    <LCard :key="index"
+                           :article="item"
+                           v-on:deletedPaper="deletedPaper"
+                           v-for="(item, index) of responseList.searchResultVOCollection"/>
                     <el-pagination @current-change="handleCurrentChange"
                                    :current-page="params.page+1"
                                    :page-size="10"
@@ -120,6 +123,10 @@
                         this.params[paramsMap[key]] = keyword[key];
                     }
                 }
+            },
+            deletedPaper(deleted){
+                console.log(deleted);
+                this.fetch()
             }
         },
         mounted () {
