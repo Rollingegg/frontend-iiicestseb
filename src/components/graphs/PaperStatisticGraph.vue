@@ -22,7 +22,7 @@ export default {
   methods: {
     initOption() {
       let category = [];
-      let dottedBase = this.$moment('2000');
+      let dottedBase = this.$moment('2000','YYYY');
       let date = this.$moment(dottedBase);
       let lineData = [];
       let barData = [];

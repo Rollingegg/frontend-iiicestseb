@@ -29,7 +29,7 @@
 
 <script>
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
-import PaperList from "./PaperListPage";
+import PaperList from "@/components/Article/LiteratureList";
 import AuthorOverview from "./AuthorOverview";
 import RelationGraph from "@/components/Author/RelationGraph";
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     keyword() {
-      return { type: "author_name", author_name: this.authorName };
+      return { type: "author_name", id: this.authorId };
     }
   },
   methods: {

@@ -9,11 +9,13 @@
     >
       <el-tab-pane label="Overview" name="overview">机构简介</el-tab-pane>
       <el-tab-pane label="Members" name="members">成员列表</el-tab-pane>
-      <el-tab-pane label="Papers" name="papers">发表文章</el-tab-pane>
+      <el-tab-pane label="Papers" name="papers">
+        <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
+      </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <h1>学术图谱</h1>
         <div style="width:100%;height:600px">
-        <component v-if="currentTab!==null" :is="currentTab" height="600px"></component>
+        <component v-if="currentTab3!==null" :is="currentTab3" height="600px"></component>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+import PaperList from "@/components/Article/LiteratureList";
 import chart from '@/components/graphs/PaperStatisticGraph';
 export default {
   name: "AffiliationPage",
@@ -31,16 +34,23 @@ export default {
     return {
       activeName: "overview",
       affiliationId: "",
-      currentTab: null
+      currentTab3: null,
+      currentTab2: null
     };
+  },
+  computed: {
+    keyword() {
+      return { type: "affiliation_name", id: this.affiliationId };
+    }
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
       switch (tab.name) {
+        case 'papers':
+          this.currentTab2 = PaperList;
+          break;
         case 'graph':
-          console.log("graph");
-          this.currentTab = chart;
+          this.currentTab3 = chart;
           break;
         default:
           break;

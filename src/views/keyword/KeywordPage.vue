@@ -28,7 +28,7 @@
         </div>
       </el-card>
       
-      <component v-if="currentTab!==null" :is="currentTab" :type="type" :keyword="researchDomain"></component>
+      <component v-if="currentTab!==null" :is="currentTab" :type="type" :keyword="keyword"></component>
       </el-col>
       <el-col :md="8" class="domain-recommend">
         
@@ -70,6 +70,11 @@ export default {
         researchDomain: 'Artificial Intelligence System',
         domainDesciption: 'Artificial Intelligence System (AIS) was a distributed computing project undertaken by Intelligence Realm, Inc. with the long-term goal of simulating the human brain in real time, complete with artificial consciousness and artificial general intelligence. They claimed to have found, in research, the "mechanisms of knowledge representation in the brain which is equivalent to finding artificial intelligence", before moving into the developmental phase.'
       };
+    },
+    computed: {
+      keyword() {
+      return { type: this.type, term: this.researchDomain };
+    }
     },
     methods: {
       

@@ -10,8 +10,8 @@
     </div>
     <div class="authors-container">
       <div v-for="(item, index) in authors.slice(0,showSize)" :key="index" class="author-item">
-        <el-avatar shape="square" icon="el-icon-user-solid"></el-avatar>
-        <el-link type="primary">{{String(item.name).substr(0,10)+'...'}}</el-link>
+        <el-avatar shape="square" :size="80">Author</el-avatar>
+        <el-link type="primary">{{item.name}}</el-link>
       </div>
     </div>
   </el-card>

@@ -86,16 +86,17 @@
             },
             openAuthor (row, col) {
                 if (col.label === "机构") {
-                    this.$emit("open-page", "affiliation", row.affiliationName);
+                    this.$emit("open-page", "affiliation", row.affiliationId);
                     return;
                 }
                 if (col.label === "作者") {
-                    this.$emit("open-page", "author", row.name);
+                    this.$emit("open-page", "author", row.id);
                 }
             },
             openTerm (row, col) {
+                console.log(row);
                 if (col.label === "关键词") {
-                    this.$emit("open-page", "keyword", row.name);
+                    this.$emit("open-page", "keyword", row.id);
                 }
             },
             cellStyle (row) {

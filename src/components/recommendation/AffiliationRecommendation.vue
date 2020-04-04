@@ -14,8 +14,8 @@
         :key="index"
         class="affiliation-item"
       >
-        <el-avatar shape="square" icon="el-icon-school"></el-avatar>
-        <div><el-link type="primary" class="affiliation-name">{{String(item.name).substr(0,25)+'...'}}</el-link></div>
+        <el-avatar shape="square" :size="80">Affiliation</el-avatar>
+        <div><el-link type="primary" class="affiliation-name">{{item.name}}</el-link></div>
       </div>
     </div>
   </el-card>
@@ -67,7 +67,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   .affiliation-item {
-    width: 50%;
+    width: 25%;
     margin: 10px 0;
   }
 }
