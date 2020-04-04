@@ -27,103 +27,105 @@
 </template>
 
 <script>
-import GlobalNav from '../common/GlobalNavigator';
-import GlobalFooter from '../common/GlobalFooter';
-import SearchBox from '../searchInput/SearchBox';
-import LCard from '@/components/Article/LiteratureCard';
-import PaperList from '../author/PaperListPage';
-import db from '../../utils/localstorage';
+    import GlobalNav from '../common/GlobalNavigator';
+    import GlobalFooter from '../common/GlobalFooter';
+    import SearchBox from '../searchInput/SearchBox';
+    import LCard from '@/components/Article/LiteratureCard';
+    import PaperList from '../author/PaperListPage';
 
-export default {
-  name: 'ResPage',
-  data: function () {
-    return {
-      loading: true,
-      resList: [],
-      queryType: '',
-      queryString: '',
-      noResult: false,
-      startYear: '2000',
-      endYear: '2020',
-      searchParams: {}
+    export default {
+        name: 'ResPage',
+        data: function () {
+            return {
+                loading: true,
+                resList: [],
+                queryType: '',
+                queryString: '',
+                noResult: false,
+                startYear: '2011',
+                endYear: '2019',
+                searchParams: {}
+            };
+        },
+        computed: {
+            paperCount: function () {
+                return this.resList == null ? 0 : this.resList.length;
+            }
+        },
+        components: {
+            GlobalNav,
+            GlobalFooter,
+            SearchBox,
+            LCard,
+            PaperList
+        },
+        methods: {
+            handleFilter () {
+                if (this.endYear < this.startYear) {
+                    this.$message({
+                        showClose: true,
+                        message: '请选择正确的年份范围',
+                        type: 'warning'
+                    });
+                } else {
+                    let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
+                    newSearchParam['start_year']=this.startYear;
+                    newSearchParam['end_year']=this.endYear;
+                    newSearchParam['page'] = 0;
+                    this.searchParams = newSearchParam;
+                }
+            },
+            doSearch (params) {
+                this.searchParams = params;
+            },
+            reset () {
+                let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
+                newSearchParam['start_year'] = null;
+                newSearchParam['end_year'] = null;
+                this.searchParams = newSearchParam;
+            }
+        },
+        created () {
+            this.searchParams = JSON.parse(this.$route.query.search_condition);
+        }
     };
-  },
-  computed: {
-    paperCount: function () {
-      return this.resList == null ? 0 : this.resList.length;
-    }
-  },
-  components: {
-    GlobalNav,
-    GlobalFooter,
-    SearchBox,
-    LCard,
-    PaperList
-  },
-  methods: {
-    handleFilter () {
-      if (this.endYear < this.startYear) {
-        this.$message({
-          showClose: true,
-          message: '请选择正确的年份范围',
-          type: 'warning'
-        });
-      } else {
-        let newSearchParam=JSON.parse(JSON.stringify(this.searchParams));
-        newSearchParam['start_year']=this.startYear;
-        newSearchParam['end_year']=this.endYear;
-        // console.log(newSearchParam===this.searchParams);
-        this.searchParams=newSearchParam;
-        // console.log(this.searchParams);
-      }
-    },
-    doSearch(params){
-      // console.log(params);
-      this.searchParams=params;
-    },
-    reset () {
-      let newSearchParam=JSON.parse(JSON.stringify(this.searchParams));
-      newSearchParam['start_year']=null;
-      newSearchParam['end_year']=null;
-      this.searchParams=newSearchParam;
-    }
-  },
-  created () {
-    this.searchParams = JSON.parse(this.$route.query.search_condition);
-  }
-};
 </script>
 
 <style>
-.one-line {
-  display: flex;
-  height: 35px;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  line-height: 35px;
-  font-size: 15px;
-}
-.paper-count{
-  margin: 0 4px;
-  font-size: 20px;
-  color:rgba(0, 0, 0, 0.65);
-}
-.no-info {
-  background: white;
-    text-align: center;
-    font-size: 30px;
-    display: flex;
-    flex-direction: column;
-  }
-  .no-info .no-data{
-      align-self: center;
+    .one-line {
+        display: flex;
+        height: 35px;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        line-height: 35px;
+        font-size: 15px;
     }
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
+
+    .paper-count {
+        margin: 0 4px;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.65);
+    }
+
+    .no-info {
+        background: white;
+        text-align: center;
+        font-size: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .no-info .no-data {
+        align-self: center;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+
+    .clearfix:after {
+        clear: both;
+    }
 </style>
