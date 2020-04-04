@@ -1,23 +1,24 @@
 <template>
   <el-card>
-    <div :ref="author-rel-graph" style="width:100%;height:600px"></div>
+    <common-echart chartId="author-rel-graph" :height="height" width="100%" :options="options"></common-echart>
   </el-card>
 </template>
 
 <script>
-import echarts from "echarts";
+import CommonEchart from "../common/CommonEchart";
 export default {
   name: "RelationGraph",
   data() {
     return {
-      charts: "",
-      option: {}
+      height: "600px"
     };
   },
-  methods: {
-    drawGraph(id) {
-      let charts = echarts.init(this.$refs["author-rel-graph"]);
-      this.option = {
+  components: {
+    CommonEchart
+  },
+  computed: {
+    options(){
+      let obj={
         title: { text: "人民的名义关系图谱" },
         tooltip: {
           formatter: function(x) {
@@ -435,22 +436,12 @@ export default {
           }
         ]
       };
-      charts.setOption(this.option);
-      this.charts = charts;
+      return obj;
     }
   },
+  methods: {
+  },
   mounted() {
-    this.$nextTick(function() {
-      this.drawGraph("author-rel-graph");
-      let that = this;
-      let resizeTimer = null;
-      window.onresize = function() {
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-          that.drawGraph("author-rel-graph");
-        }, 100);
-      };
-    });
   }
 };
 </script>

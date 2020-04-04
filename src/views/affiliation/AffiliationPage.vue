@@ -65,6 +65,12 @@
                   </el-row>
                 </div>
               </el-card>
+              <el-card>
+                <div slot="header">Recent Papers</div>
+                <div>
+                  <domain-pie height="400px" :data="domainStatistics"></domain-pie>
+                </div>
+              </el-card>
             </el-col>
             <el-col :md="8">
               <el-card>
@@ -78,12 +84,6 @@
                       style="float:right"
                     >{{String(item.chronDate).substr(0,4)}}</el-link>
                   </div>
-                </div>
-              </el-card>
-              <el-card>
-                <div slot="header">Recent Papers</div>
-                <div>
-                  <my-graph></my-graph>
                 </div>
               </el-card>
             </el-col>
@@ -128,12 +128,12 @@
 <script>
 import PaperList from "@/components/Article/LiteratureList";
 import chart from "@/components/graphs/PaperStatisticGraph";
-import MyGraph from "@/components/Author/MyChart";
+import DomainPie from "@/components/Author/DomainsPieGraph";
 import { mapState } from "vuex";
 export default {
   name: "AffiliationPage",
   components: {
-    MyGraph
+    DomainPie
   },
   data() {
     return {
@@ -142,6 +142,7 @@ export default {
       baseInfo: {},
       recentPapers: [],
       totalMembers: [],
+      domainStatistics: [],
       currentTab3: null,
       currentTab2: null
     };
@@ -250,6 +251,24 @@ export default {
         default:
           break;
       }
+    },
+    getDomainStatistics(){
+      const id = this.affiliationId;
+      const limit = 10;
+      this.$get("/statistics/affiliation/hot/term", {
+        id: id,
+        limit: limit
+      }).then(r => {
+        if (r.data.status) {
+          this.domainStatistics=r.data.result;
+        }else{
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            }
+      });
     }
   },
   mounted() {
@@ -257,6 +276,7 @@ export default {
     this.getAffiliationBaseInfo();
     this.getRecentPapers();
     this.getAllMembers();
+    this.getDomainStatistics();
   }
 };
 </script>

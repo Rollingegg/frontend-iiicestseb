@@ -62,6 +62,12 @@
                   </el-row>
                 </div>
               </el-card>
+              <el-card>
+                <div slot="header">Research Domains Ranking</div>
+                <div>
+                  <domain-pie height="300px" :data="domainStatistics"></domain-pie>
+                </div>
+              </el-card>
             </el-col>
             <el-col :md="8">
               <el-card>
@@ -71,12 +77,6 @@
                     <el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link>
                     <el-link icon="el-icon-date" :underline="false" style="float:right">{{String(item.chronDate).substr(0,4)}}</el-link>
                   </div>
-                </div>
-              </el-card>
-              <el-card>
-                <div slot="header">Recent Papers</div>
-                <div>
-                  <my-chart></my-chart>
                 </div>
               </el-card>
             </el-col>
@@ -98,13 +98,13 @@
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
 import PaperList from "@/components/Article/LiteratureList";
 import RelationGraph from "@/components/Author/RelationGraph";
-import MyChart from "@/components/Author/MyChart";
+import DomainPie from "@/components/Author/DomainsPieGraph";
 import { mapState } from 'vuex';
 export default {
   name: "AuthorPage",
   components: {
     RelationGraph,
-    MyChart
+    DomainPie
   },
   data() {
     return {
@@ -113,6 +113,7 @@ export default {
       authorId: "",
       baseInfo: {},
       recentPapers: [],
+      domainStatistics: [],
       currentTab: null,
       currentTab2: null
     };
@@ -195,25 +196,42 @@ export default {
       }
     },
     handleClick(tab, event) {
-      console.log(tab, event);
+      // console.log(tab, event);
       switch (tab.name) {
         case "papers":
-          console.log("papers");
           this.currentTab = PaperList;
           break;
         case "graph":
-          console.log("graph");
           this.currentTab2 = RelationGraph;
           break;
         default:
           break;
       }
+    },
+    getDomainStatistics(){
+      const id = this.authorId;
+      const limit = 5;
+      this.$get("/statistics/author/hot/term", {
+        id: id,
+        limit: limit
+      }).then(r => {
+        if (r.data.status) {
+          this.domainStatistics=r.data.result;
+        }else{
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            }
+      });
     }
   },
   mounted() {
     this.authorId = this.$route.query.id;
     this.getAuthorBaseInfo();
     this.getRecentPapers();
+    this.getDomainStatistics();
   }
 };
 </script>
