@@ -13,7 +13,11 @@
       class="main-container"
     >
       <el-tab-pane label="Overview" name="overview">
-        <div class="overview-container">
+        <div
+          class="overview-container"
+          v-loading="loading"
+          element-loading-background="rgba(255,255,255,0.95)"
+        >
           <el-row :gutter="15">
             <el-col :md="16">
               <el-card>
@@ -101,7 +105,9 @@
                 <div>
                   <el-link type="primary" @click="openAuthor(item.id)">{{item.name}}</el-link>
                 </div>
-                <div><el-icon class="el-icon-user"></el-icon></div>
+                <div>
+                  <el-icon class="el-icon-user"></el-icon>
+                </div>
               </div>
             </div>
           </el-col>
@@ -144,7 +150,8 @@ export default {
       totalMembers: [],
       domainStatistics: [],
       currentTab3: null,
-      currentTab2: null
+      currentTab2: null,
+      loading: true
     };
   },
   computed: {
@@ -190,7 +197,7 @@ export default {
         }
       });
     },
-    getAllMembers(){
+    getAllMembers() {
       const id = this.affiliationId;
       this.$get("/author/allin/affiliation", {
         id: id
@@ -252,7 +259,7 @@ export default {
           break;
       }
     },
-    getDomainStatistics(){
+    getDomainStatistics() {
       const id = this.affiliationId;
       const limit = 10;
       this.$get("/statistics/affiliation/hot/term", {
@@ -260,14 +267,20 @@ export default {
         limit: limit
       }).then(r => {
         if (r.data.status) {
-          this.domainStatistics=r.data.result;
-        }else{
-            this.$message({
-              showClose: true,
-              message: r.data.result,
-              type: "warning"
-            });
-            }
+          this.domainStatistics = r.data.result;
+          setTimeout(() => {
+            this.loading=false;
+          }, 500);
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+          this.loading=false;
+        }
+      }).catch(e=>{
+        this.loading=false;
       });
     }
   },
@@ -331,10 +344,10 @@ export default {
       }
     }
   }
-  .member-item{
+  .member-item {
     border-bottom: 1px solid gainsboro;
   }
-  .recent-paper-item{
+  .recent-paper-item {
     margin-bottom: 5px;
   }
 }

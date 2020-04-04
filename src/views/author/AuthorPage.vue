@@ -4,7 +4,11 @@
       <el-avatar :size="96" src="static\img\Jidong_Ge.jpg"></el-avatar>
       <div class="author-base">
         <div class="author-name">{{baseInfo.name}}</div>
-        <el-link :underline="false" icon="el-icon-school" @click="openAffiliation(baseInfo.affiliationId)">{{baseInfo.affiliationName}}</el-link>
+        <el-link
+          :underline="false"
+          icon="el-icon-school"
+          @click="openAffiliation(baseInfo.affiliationId)"
+        >{{baseInfo.affiliationName}}</el-link>
       </div>
     </div>
     <el-tabs
@@ -14,7 +18,11 @@
       class="main-container"
     >
       <el-tab-pane label="Overview" name="overview">
-        <div class="overview-container">
+        <div
+          class="overview-container"
+          v-loading="loading"
+          element-loading-background="rgba(255,255,255,0.95)"
+        >
           <el-row :gutter="15">
             <el-col :md="16">
               <el-card>
@@ -27,7 +35,9 @@
                           <div class="statistic-num">{{baseInfo.paperCount}}</div>
                           <div class="statistic-type">Total Published Papers</div>
                         </div>
-                        <div class="statistic-icon"><el-icon class="el-icon-document"></el-icon></div>
+                        <div class="statistic-icon">
+                          <el-icon class="el-icon-document"></el-icon>
+                        </div>
                       </div>
                     </el-col>
                     <el-col :md="12">
@@ -36,7 +46,9 @@
                           <div class="statistic-num">{{baseInfo.citationCount}}</div>
                           <div class="statistic-type">Citations</div>
                         </div>
-                        <div class="statistic-icon"><el-icon class="el-icon-paperclip"></el-icon></div>
+                        <div class="statistic-icon">
+                          <el-icon class="el-icon-paperclip"></el-icon>
+                        </div>
                       </div>
                     </el-col>
                   </el-row>
@@ -75,7 +87,11 @@
                 <div class="recent-paper-container">
                   <div class="recent-paper-item" v-for="(item, index) in recentPapers" :key="index">
                     <el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link>
-                    <el-link icon="el-icon-date" :underline="false" style="float:right">{{String(item.chronDate).substr(0,4)}}</el-link>
+                    <el-link
+                      icon="el-icon-date"
+                      :underline="false"
+                      style="float:right"
+                    >{{String(item.chronDate).substr(0,4)}}</el-link>
                   </div>
                 </div>
               </el-card>
@@ -99,7 +115,7 @@
 import PaperList from "@/components/Article/LiteratureList";
 import RelationGraph from "@/components/Author/RelationGraph";
 import DomainPie from "@/components/Author/DomainsPieGraph";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "AuthorPage",
   components: {
@@ -115,7 +131,8 @@ export default {
       recentPapers: [],
       domainStatistics: [],
       currentTab: null,
-      currentTab2: null
+      currentTab2: null,
+      loading: true
     };
   },
   computed: {
@@ -133,17 +150,17 @@ export default {
         id: id
       }).then(r => {
         if (r.data.status) {
-          this.baseInfo=r.data.result;
-        }else{
-            this.$message({
-              showClose: true,
-              message: r.data.result,
-              type: "warning"
-            });
-            }
+          this.baseInfo = r.data.result;
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+        }
       });
     },
-    getRecentPapers(){
+    getRecentPapers() {
       const id = this.authorId;
       const limit = 5;
       this.$get("/paper/affiliation/recently/publish", {
@@ -151,21 +168,21 @@ export default {
         limit: limit
       }).then(r => {
         if (r.data.status) {
-          this.recentPapers=r.data.result;
-        }else{
-            this.$message({
-              showClose: true,
-              message: r.data.result,
-              type: "warning"
-            });
-            }
+          this.recentPapers = r.data.result;
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+        }
       });
     },
-    openArticle (id) {
-      this.openDetailPage('article',id);
+    openArticle(id) {
+      this.openDetailPage("article", id);
     },
-    openAuthor (id) {
-      this.openDetailPage('author',id);
+    openAuthor(id) {
+      this.openDetailPage("author", id);
     },
     openAffiliation(id) {
       this.openDetailPage("affiliation", id);
@@ -208,23 +225,31 @@ export default {
           break;
       }
     },
-    getDomainStatistics(){
+    getDomainStatistics() {
       const id = this.authorId;
       const limit = 5;
       this.$get("/statistics/author/hot/term", {
         id: id,
         limit: limit
-      }).then(r => {
-        if (r.data.status) {
-          this.domainStatistics=r.data.result;
-        }else{
+      })
+        .then(r => {
+          if (r.data.status) {
+            this.domainStatistics = r.data.result;
+            setTimeout(() => {
+              this.loading = false;
+            }, 500);
+          } else {
             this.$message({
               showClose: true,
               message: r.data.result,
               type: "warning"
             });
-            }
-      });
+            this.loading = false;
+          }
+        })
+        .catch(e => {
+          this.loading = false;
+        });
     }
   },
   mounted() {
@@ -258,7 +283,7 @@ export default {
         font-size: 14px;
       }
     }
-    .statistic-icon{
+    .statistic-icon {
       display: flex;
       flex: 1;
       justify-content: flex-end;

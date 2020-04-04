@@ -5,7 +5,6 @@
       :id="chartId"
       :ref="chartId"
       :style="{height:height,width:width}"
-      :loading="loading"
     ></div>
   </div>
 </template>
@@ -22,17 +21,13 @@ export default {
   data() {
     return {
       charts: null,
-      loading: true,
-      initCnt: 0
     };
   },
   methods: {
     initChart() {
-      this.loading = true;
       let charts = this.$echarts.init(this.$refs[this.chartId]);
       charts.setOption(this.options, true);
       this.charts = charts;
-      this.loading = false;
     }
   },
   mounted() {
