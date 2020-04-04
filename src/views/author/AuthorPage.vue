@@ -74,7 +74,7 @@
                   </el-row>
                 </div>
               </el-card>
-              <el-card>
+              <el-card class="card-container">
                 <div slot="header">Research Domains Ranking</div>
                 <div>
                   <domain-pie height="300px" :data="domainStatistics"></domain-pie>
@@ -95,6 +95,25 @@
                   </div>
                 </div>
               </el-card>
+              <el-card class="card-container">
+                <div slot="header">Top co-authors</div>
+                <div class="co-author-item" v-for="(item, index) in coAuthorList" :key="index">
+                  <el-avatar icon="el-icon-user"></el-avatar>
+                  <div class="co-author-base">
+                    <div><el-link
+                      :underline="false"
+                      type="primary"
+                      class="co-author-name"
+                      @click="openAuthor(item.id)"
+                    >{{item.name}}</el-link></div>
+                    <el-link
+                      :underline="false"
+                      icon="el-icon-school"
+                      @click="openAffiliation(item.affiliationId)"
+                    >{{item.affiliationName}}</el-link>
+                  </div>
+                </div>
+              </el-card>
             </el-col>
           </el-row>
         </div>
@@ -104,7 +123,7 @@
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <h1>学术图谱</h1>
-        <component v-if="currentTab2!==null" :is="currentTab2"></component>
+        <component v-if="currentTab2!==null" :is="currentTab2" :authorId="String(authorId)"></component>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -113,13 +132,12 @@
 <script>
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
 import PaperList from "@/components/Article/LiteratureList";
-import RelationGraph from "@/components/Author/RelationGraph";
+import AuthorGraphPage from './AuthorGraphPage';
 import DomainPie from "@/components/Author/DomainsPieGraph";
 import { mapState } from "vuex";
 export default {
   name: "AuthorPage",
   components: {
-    RelationGraph,
     DomainPie
   },
   data() {
@@ -130,6 +148,7 @@ export default {
       baseInfo: {},
       recentPapers: [],
       domainStatistics: [],
+      coAuthorList: [],
       currentTab: null,
       currentTab2: null,
       loading: true
@@ -169,6 +188,24 @@ export default {
       }).then(r => {
         if (r.data.status) {
           this.recentPapers = r.data.result;
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+        }
+      });
+    },
+    getTopCoAuthors() {
+      const id = this.authorId;
+      const limit = 5;
+      this.$get("/author/partner", {
+        id: id,
+        limit: limit
+      }).then(r => {
+        if (r.data.status) {
+          this.coAuthorList = r.data.result;
         } else {
           this.$message({
             showClose: true,
@@ -219,7 +256,7 @@ export default {
           this.currentTab = PaperList;
           break;
         case "graph":
-          this.currentTab2 = RelationGraph;
+          this.currentTab2 = AuthorGraphPage;
           break;
         default:
           break;
@@ -256,6 +293,7 @@ export default {
     this.authorId = this.$route.query.id;
     this.getAuthorBaseInfo();
     this.getRecentPapers();
+    this.getTopCoAuthors();
     this.getDomainStatistics();
   }
 };
@@ -302,6 +340,21 @@ export default {
         font-size: 30px;
       }
     }
+  }
+  .co-author-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    .co-author-base {
+      flex: 1 0;
+      margin-left: 8px;
+      .co-author-name {
+        font-size: 16px;
+      }
+    }
+  }
+  .card-container{
+    margin-top: @base-interval;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <el-card>
+  <div>
     <common-echart chartId="domain-pie-graph" :height="height" width="100%" :options="options"></common-echart>
-  </el-card>
+  </div>
 </template>
 
 <script>
