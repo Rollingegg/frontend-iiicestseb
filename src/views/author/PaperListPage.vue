@@ -114,6 +114,7 @@
                     term: "termKeyword",
                     all: "allKeyword",
                     page: "page",
+                    limit: "limit",
                     start_year: "chronDateMinKeyword",
                     end_year: "chronDateMaxKeyword"
                 };

@@ -3,13 +3,14 @@
         <el-row :gutter="20">
             <el-col :md="16" class="domain-content">
                 <div class="domain-title">{{researchDomain}}</div>
-                <el-card class="info-container">
-                    <div slot="header" class="card-head-title">领域描述</div>
-                    <div class="domain-description">
-                        {{domainDesciption}}
-                    </div>
-                </el-card>
-
+                <!--todo: 后端数据没有存描述，后面可能加入
+                    <el-card class="info-container">
+                        <div slot="header" class="card-head-title">领域描述</div>
+                        <div class="domain-description">
+                            {{domainDesciption}}
+                        </div>
+                    </el-card>
+                -->
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">活跃学者</div>
                     <el-table :data="relativeAuthors"
@@ -33,8 +34,9 @@
                     </div>
                 </el-card>
 
-                <component v-if="currentTab!==null" :is="currentTab" :type="type" :keyword="keyword"></component>
+                <PaperList :keyword="keywordAndLimitation"></PaperList>
             </el-col>
+
             <el-col :md="8" class="domain-recommend">
 
                 <el-card class="info-container">
@@ -67,6 +69,7 @@
 
     export default {
         name: 'KeywordPage',
+        components: {PaperList},
         data () {
             return {
                 currentTab: PaperList,
@@ -80,11 +83,35 @@
             };
         },
         computed: {
-            keyword () {
-                return {type: this.type, term: this.researchDomain};
+            keywordAndLimitation () {
+                return {type: this.type, term: this.researchDomain, limit: 5};
             }
         },
         methods: {
+            init () {
+                this.getTermBaseInfo();
+                this.getActiveAuthorsOfTerm();
+
+            },
+            getTermBaseInfo () {
+                this.researchDomain = 'a';
+                /*todo 从关键词id获得关键字信息
+                this.$get("/Term/info", {
+                    id: this.keywordId
+                }).then(r => {
+                    if (r.data.status) {
+                        this.researchDomain = r.data.result.researchDomain;
+                        this.domainDesciption = '';
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: "warning"
+                        });
+                    }
+                });
+                */
+            },
             getActiveAuthorsOfTerm () {
                 let limit = 5;
                 this.$get("/statistics/activeAuthorsOfTerm", {
@@ -137,7 +164,7 @@
             this.keywordId = this.$route.query.id;
         },
         mounted () {
-            this.getActiveAuthorsOfTerm();
+            this.init();
         }
     };
 </script>
