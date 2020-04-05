@@ -208,7 +208,22 @@ export default {
       ];
     }
   },
+  watch: {
+    $route: "refreshData"
+  },
   methods: {
+    refreshData(newVal, oldVa) {
+      this.init();
+    },
+    init(){
+      this.authorId = this.$route.query.id;
+      this.activeName= "overview";
+      this.getAuthorBaseInfo();
+      this.getAuthorStatisticsInfo();
+      this.getRecentPapers();
+      this.getTopCoAuthors();
+      this.getDomainStatistics();
+    },
     getAuthorBaseInfo() {
       const id = this.authorId;
       this.$get("/author/info", {
@@ -352,12 +367,7 @@ export default {
     }
   },
   mounted() {
-    this.authorId = this.$route.query.id;
-    this.getAuthorBaseInfo();
-    this.getAuthorStatisticsInfo();
-    this.getRecentPapers();
-    this.getTopCoAuthors();
-    this.getDomainStatistics();
+    this.init();
   }
 };
 </script>
