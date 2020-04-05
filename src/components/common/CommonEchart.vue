@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    this.initChart();
+    // this.initChart();
   },
   watch: {
     options: {
