@@ -28,11 +28,11 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">活跃机构</div>
                     <div class="info-infinite-container">
-                        <AffiliationOfTermGraph height="400px" :affiliation_times_data="Affiliation_Times_Data"/>
+                        <AffiliationOfTermGraph height="400px" :affiliation_times_data="affiliation_times_data"/>
                     </div>
                 </el-card>
 
-                <PaperList :keyword="keywordAndLimitation"></PaperList>
+                <LiteratureList searchType="term" :searchId="keywordId"></LiteratureList>
             </el-col>
 
             <el-col :md="8" class="domain-recommend">
@@ -40,7 +40,7 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">论文发表</div>
                     <div class="info-infinite-container">
-                        论文发表统计图
+                        <any_-year-graph height="400px" :searchId='keywordId' searchType="term"></any_-year-graph>
                     </div>
                 </el-card>
 
@@ -63,27 +63,29 @@
 </template>
 
 <script>
-    import PaperList from '../author/PaperListPage';
+    import LiteratureList from "@/components/Article/LiteratureList";
     import AffiliationOfTermGraph from '@/components/keyword/AffiliationOfTermGraph';
+    import Any_YearGraph from "@/components/graphs/Any_YearGraph";
 
     export default {
         name: 'KeywordPage',
         components: {
-            PaperList,
-            AffiliationOfTermGraph
+            LiteratureList,
+            AffiliationOfTermGraph,
+            Any_YearGraph
         },
         data () {
             return {
-                currentTab: PaperList,
                 activeName: 'overview',
-                keywordId: '',
+                keywordId: this.$route.query.id,
                 type: 'term',
-                researchDomain: 'Artificial Intelligence System',
-                domainDescription: 'Artificial Intelligence System (AIS) was a distributed computing project undertaken by Intelligence Realm, Inc. with the long-term goal of simulating the human brain in real time, complete with artificial consciousness and artificial general intelligence. They claimed to have found, in research, the "mechanisms of knowledge representation in the brain which is equivalent to finding artificial intelligence", before moving into the developmental phase.',
+                researchDomain: '',
+                domainDescription: '',
                 recentPapers: [],
                 relativeAuthors: [],
                 relativeAffiliations: [],
-                Affiliation_Times_Data: []
+                affiliation_times_data: [],
+                times_yaer_data: {},
             };
         },
         computed: {
@@ -105,9 +107,7 @@
                 this.getActiveAffiliationsOfTerm();
             },
             getTermBaseInfo () {
-                this.researchDomain = 'a';
-                /*todo 从关键词id获得关键字信息
-                this.$get("/Term/info", {
+                this.$get("/term/info", {
                     id: this.keywordId
                 }).then(r => {
                     if (r.data.status) {
@@ -121,16 +121,15 @@
                         });
                     }
                 });
-                */
             },
             getActiveAffiliationsOfTerm () {
                 let limit = 5;
-                this.$get("/statistics/activeAffiliationOfTerm", {
+                this.$get("/statistics/term/activeAffiliation", {
                     termId: this.keywordId,
                     max: limit
                 }).then(r => {
                     if (r.data.status) {
-                        this.Affiliation_Times_Data = r.data.result;
+                        this.affiliation_times_data = r.data.result;
                     } else {
                         this.$message({
                             showClose: true,

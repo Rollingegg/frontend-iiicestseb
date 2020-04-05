@@ -69,7 +69,7 @@
             }
         },
         watch: {
-            keyword (newValue, oldValue) {
+            keyword (newValue) {
                 this.initParams(newValue);
                 this.fetch();
             }

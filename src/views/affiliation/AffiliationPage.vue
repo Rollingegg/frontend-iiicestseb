@@ -133,7 +133,7 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
+        <component v-if="currentTab2!==null" :is="currentTab2" searchType="affiliation_name" :searchId="affiliationId"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <component v-if="currentTab3!==null" :is="currentTab3" :keyword="keyword"></component>
@@ -157,7 +157,7 @@ export default {
   data() {
     return {
       activeName: "overview",
-      affiliationId: "",
+      affiliationId: this.$route.query.id,
       baseInfo: {},
       recentPapers: [],
       totalMembers: [],

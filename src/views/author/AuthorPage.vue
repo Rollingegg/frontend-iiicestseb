@@ -156,7 +156,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab!==null" :is="currentTab" :keyword="keyword"></component>
+        <component v-if="currentTab!==null" :is="currentTab" searchType="author_name" :searchId="authorId"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
@@ -182,7 +182,7 @@ export default {
     return {
       activeName: "overview",
       type: "author_name",
-      authorId: "",
+      authorId: this.$route.query.id,
       baseInfo: {},
       statisticInfo: {},
       recentPapers: [],
