@@ -146,7 +146,7 @@ const request = {
                 }
             }
         }
-        return BACKEND_REQUEST.delete(`${url}${_params}`);
+        return BACKEND_REQUEST.delete(`${url}${_params.substr(0, _params.length - 1)}`);
     },
     export (url, params = {}) {
         Message.info({

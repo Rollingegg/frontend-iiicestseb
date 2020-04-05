@@ -27,8 +27,10 @@
                      class="download-link">
                 Download
             </el-link>
-            <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
             <span class="citation">Citations( <span class="citation-cnt">{{article.citationCountPaper}}</span> )</span>
+
+            <el-button  v-if="isAdmin" type="danger" class="delete-btn" icon="el-icon-delete" circle @click="deletePaper"></el-button>
+            <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
         </div>
     </el-card>
 </template>
@@ -42,8 +44,16 @@
         components: {
             MulWrapper
         },
+        data () {
+            return {
+                isAdmin: false
+            }
+        },
         props: {
             article: Object
+        },
+        mounted () {
+            this.isAdmin = this.user && this.user.privilegeLevel === '管理员'
         },
         computed: {
             ...mapState({
@@ -77,6 +87,45 @@
                         type: 'warning'
                     });
                 }
+            },
+            deletePaper () {
+                this.$confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'warn',
+                        message: '正在开发中'
+                    });
+                    /* //todo jh说后端有问题，到时候可以恢复
+                    this.$delete('/admin/paper/delete', {id: this.article.id})
+                        .then((r) => {
+                            if (r.data.status) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: '删除失败' + r.data.result
+                                });
+                            }
+                        }).catch(() => {
+                        this.$message({
+                            type: 'error',
+                            message: '删除失败!请查看日志'
+                        });
+                    });
+                    */
+                    this.$emit('deletedPaper', true)
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         }
     };
@@ -141,6 +190,12 @@
                 font-weight: 500;
                 color: darkblue;
             }
+        }
+
+        .delete-btn {
+            float: right;
+            margin: 0 20px;
+            padding: 5px;
         }
 
         .viewmore-link {
