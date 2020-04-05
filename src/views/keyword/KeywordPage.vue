@@ -87,11 +87,17 @@
                 return {type: this.type, term: this.researchDomain, limit: 5};
             }
         },
+        watch: {
+            $route: "refreshData"
+        },
         methods: {
+            refreshData() {
+                this.init();
+            },
             init () {
+                this.keywordId = this.$route.query.id;
                 this.getTermBaseInfo();
                 this.getActiveAuthorsOfTerm();
-
             },
             getTermBaseInfo () {
                 this.researchDomain = 'a';
@@ -159,9 +165,6 @@
                     }
                 });
             }
-        },
-        created () {
-            this.keywordId = this.$route.query.id;
         },
         mounted () {
             this.init();
