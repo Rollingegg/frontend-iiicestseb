@@ -159,7 +159,6 @@
         <component v-if="currentTab!==null" :is="currentTab" :keyword="keyword"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
-        <h1>学术图谱</h1>
         <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
       </el-tab-pane>
     </el-tabs>

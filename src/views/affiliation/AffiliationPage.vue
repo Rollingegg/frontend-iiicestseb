@@ -67,7 +67,11 @@
                   >
                     <el-avatar icon="el-icon-user-solid"></el-avatar>
                     <div style="margin-left:5px">
-                      <el-link :underline="false" style="font-size:16px" @click="openAuthor(item.id)">{{item.name}}</el-link>
+                      <el-link
+                        :underline="false"
+                        style="font-size:16px"
+                        @click="openAuthor(item.id)"
+                      >{{item.name}}</el-link>
                       <div class="hot-author-description">
                         <el-tooltip effect="light" content="H-Index" placement="bottom">
                           <span style="margin-left:5px">
@@ -77,7 +81,9 @@
                         </el-tooltip>
                         <el-tooltip effect="light" content="发表论文数" placement="bottom">
                           <span style="margin-left:5px">
-                            <i class="fa fa-file"></i>{{item.paperNum}}</span>
+                            <i class="fa fa-file"></i>
+                            {{item.paperNum}}
+                          </span>
                         </el-tooltip>
                       </div>
                     </div>
@@ -130,7 +136,6 @@
         <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
-        <h1>学术图谱</h1>
         <component v-if="currentTab3!==null" :is="currentTab3" :keyword="keyword"></component>
       </el-tab-pane>
     </el-tabs>

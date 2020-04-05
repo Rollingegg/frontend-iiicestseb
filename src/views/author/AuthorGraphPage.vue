@@ -1,13 +1,17 @@
 <template>
-  <div>
+  <div v-loading="loading" element-loading-background="rgba(255,255,255,0.95)">
     <el-row :gutter="20">
       <el-col :md="16">
         <el-card>
+            <div slot="header" class="graph-card-header">学术关系图谱</div>
           <component :is="cg3" height="600px" :data="graphData"></component>
         </el-card>
       </el-col>
       <el-col :md="8">
-        <el-card></el-card>
+        <el-card>
+            <div slot="header" class="graph-card-header">研究领域词云</div>
+            <component :is="cg1" height="600px" :data="domainStatistics"></component>
+        </el-card>
       </el-col>
     </el-row>
     <el-card class="card-container">
@@ -19,15 +23,19 @@
 <script>
 import RelationGraph from "@/components/Author/RelationGraph";
 import PaperStatisticGraph from "@/components/graphs/PaperStatisticGraph";
+import TermWordCloud from "@/components/Author/TermWordCloud";
 export default {
   name: "AuthorGraphPage",
   data() {
     return {
+      cg1: null,
       cg2: null,
       cg3: null,
       tableData: [],
-      searchId: '',
-      searchType: '',
+      searchId: "",
+      searchType: "",
+      loading: true,
+      domainStatistics: [],
       graphData: {
         data: [
           {
@@ -404,7 +412,7 @@ export default {
       const pathsMap = {
         affiliation_name: "/statistics/affiliation/publish/count/per/year",
         author_name: "/statistics/author/publish/count/per/year",
-        term: "/statistics/term/count/per/year",
+        term: "/statistics/term/count/per/year"
       };
       const searchPath = pathsMap[this.searchType];
       const id = this.searchId;
@@ -422,19 +430,52 @@ export default {
         }
       });
     },
-    initGraphData(){
-        this.getPublishStatistics();
-        this.cg3 = RelationGraph;
-        this.cg2 = PaperStatisticGraph;
+    getDomainStatistics() {
+      const pathsMap = {
+        affiliation_name: "/statistics/affiliation/hot/term",
+        author_name: "/statistics/author/hot/term"
+      };
+      const searchPath = pathsMap[this.searchType];
+      const id = this.searchId;
+      const limit = 1000;
+      this.$get(searchPath, {
+        id: id,
+        limit: limit
+      })
+        .then(r => {
+          if (r.data.status) {
+            this.domainStatistics = r.data.result;
+            setTimeout(() => {
+              this.loading = false;
+            }, 500);
+          } else {
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            this.loading = false;
+          }
+        })
+        .catch(e => {
+          this.loading = false;
+        });
+    },
+    initGraphData() {
+      this.getPublishStatistics();
+      this.getDomainStatistics();
+      this.cg3 = RelationGraph;
+      this.cg2 = PaperStatisticGraph;
+      this.cg1 = TermWordCloud;
     },
     initParams(keyword) {
-      this.searchType = this.keyword['type'];
-      this.searchId = this.keyword['id'];
+      this.searchType = this.keyword["type"];
+      this.searchId = this.keyword["id"];
     }
   },
   mounted() {
-      this.initParams();
-      this.initGraphData();
+    this.initParams();
+    this.initGraphData();
   }
 };
 </script>
@@ -443,5 +484,8 @@ export default {
 @base-interval: 20px;
 .card-container {
   margin-top: @base-interval;
+}
+.graph-card-header{
+    font-size: 24px;
 }
 </style>
