@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import CommonEchart from "@/components/common/CommonEchart";
+    import CommonEchart from "../common/CommonEchart";
 
     export default {
         name: "AffiliationOfTermGraph",
@@ -21,13 +21,12 @@
                 let chartName = [];
                 let chartData = [];
 
+                let yMax = 0;
                 for (let i = 0; i < this.affiliation_times_data.length; i += 1) {
-                    //todo:push实际的出现数量
-                    chartData.push(50 - i);
+                    chartData.push(this.affiliation_times_data[i].paperNum + 1 - this.affiliation_times_data[0].paperNum);
                     chartName.push(this.affiliation_times_data[i].name);
                     yMax = chartData[i];
                 }
-                let yMax = 55;
 
                 let yMaxArr = []; // 全部都是最大值, 做图形的底部灰色打底
                 for (let i = 0; i < chartData.length; i += 1) {
@@ -37,15 +36,11 @@
                 return {
                     tooltip: {
                         trigger: 'axis',
-                        axisPointer: {
-                            // type: 'none', // 去除鼠标移入的时候的阴影/竖线等
-                        },
-                        backgroundColor: '#ccc', // 浮层的文本背景
+                        backgroundColor: '#ccc',
                         textStyle: {
-                            color: '#404a84', // 浮层的文本颜色
+                            color: '#404a84',
                         },
-                        // formatter: '{a0}: {c0}<br />{a1}: {c1}'
-                        formatter: '{a} : {c}', //浮层内容格式 a: series中的name c 数据值
+                        formatter: '{a1}: {c1}'
                     },
                     legend: {
                         textStyle: {
@@ -56,7 +51,7 @@
                         type: 'value',
                         axisLine: {
                             lineStyle: {
-                                color: 'blue'
+                                color: 'green'
                             }
                         },
                         show: true,
@@ -64,27 +59,33 @@
                             show: false
                         },
                     },
-                    yAxis: [{ // 第二个y轴 为了让数据在右侧末尾显示
+                    yAxis: [{
+                        type: 'category',
+                        data: chartData,
+                        inverse: true,
+                        splitLine: {
+                            show: false
+                        },
+                        show: false,
+                    }, { // 第二个y轴 为了让数据在右侧末尾显示
                         show: true,
                         inverse: true,
                         data: chartData,
-                        nameTextStyle: {},// 坐标轴名称的文字样式。 官网上是这样的解释, 但是 我试了这个并不能改变坐标轴的文字样式
+                        nameTextStyle: {},
                         axisLabel: {
                             textStyle: {
                                 fontSize: 12, //坐标轴名称的大小
-                                color: 'blue', // 坐标轴名称的颜色
+                                color: 'green', // 坐标轴名称的颜色
                             },
                         },
                     }],
                     series: [{
-                        name: '我是打底',
                         type: 'pictorialBar',
-                        symbol: 'rect', // 类型
+                        symbol: 'roundRect', // 类型
                         yAxisIndex: 0,
                         barWidth: 10,
                         itemStyle: {
                             normal: {
-                                barBorderRadius: 5,
                                 color: '#ccc',
                             }
                         },
@@ -95,13 +96,13 @@
                         },
                         symbolRepeat: true,
                         symbolRotate: '45',
-                        symbolSize: [12, 4],
+                        symbolSize: [15, 4],
                         symbolMargin: 4,
                         data: yMaxArr,
                     }, {
-                        name: '我是上层方块',
+                        name: '发表数量',
                         type: 'pictorialBar',
-                        symbol: 'rect',
+                        symbol: 'roundRect',
                         itemStyle: {
                             normal: {
                                 color: 'red'
@@ -109,49 +110,46 @@
                         },
                         label: {
                             normal: {
-                                show: true, // 数据大小的显示, 100 200 300
+                                show: true,
                                 textStyle: {
-                                    color: '#000000', // 颜色
+                                    color: '#c8c8c8', // 颜色
                                 },
-                                position: 'right',
+                                position: 'left',
                             },
                         },
                         barWidth: 10,
                         symbolRepeat: true,
                         symbolRotate: '45',
-                        symbolSize: [12, 4],
+                        symbolSize: [15, 4],
                         symbolMargin: 4,
                         data: chartData,
-                    },
-                        // 数据条--------------------我是分割线君------------------------------//
-                        {
-                            show: true,
-                            type: 'bar',
-                            // xAxisIndex: 1, //代表使用第二个X轴刻度
-                            barGap: '-100%',
-                            barWidth: '10%',
-                            itemStyle: {
-                                normal: {
-                                    barBorderRadius: 200,
-                                    color: 'yellow'
-                                    // color: 'rgba(22,203,115,0.05)' //数据条柱状图的填充颜色,, 一开始我的有一点点背景颜色
+                    }, {
+                        show: true,
+                        type: 'bar',
+                        // xAxisIndex: 1, //代表使用第二个X轴刻度
+                        barGap: '-100%',
+                        barWidth: '10%',
+                        data: chartData,
+                        itemStyle: {
+                            normal: {
+                                barBorderRadius: 200,
+                                color: 'yellow'
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: [0, '-20'],
+                                textStyle: {
+                                    fontSize: 14,
+                                    color: 'blue',
+                                },
+                                formatter: function (data) {
+                                    return chartName[data.dataIndex];
                                 }
-                            },
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: [0, '-20'],
-                                    textStyle: {
-                                        fontSize: 14,
-                                        color: 'pink',
-                                    },
-                                    formatter: function (data) {
-                                        return chartName[data.dataIndex];
-                                    }
-                                }
-                            },
-                            data: chartData
+                            }
                         }
+                    }
                     ]
                 }
 

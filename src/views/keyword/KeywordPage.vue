@@ -28,10 +28,7 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">活跃机构</div>
                     <div class="info-infinite-container">
-                        <AffiliationOfTermGraph height="300px" :affiliation_times_data="Affiliation_Times_Data"/>
-                        <div>
-                            活跃机构统计图
-                        </div>
+                        <AffiliationOfTermGraph height="400px" :affiliation_times_data="Affiliation_Times_Data"/>
                     </div>
                 </el-card>
 
@@ -67,7 +64,7 @@
 
 <script>
     import PaperList from '../author/PaperListPage';
-    import AffiliationOfTermGraph from './AffiliationOfTermGraph';
+    import AffiliationOfTermGraph from '@/components/keyword/AffiliationOfTermGraph';
 
     export default {
         name: 'KeywordPage',
@@ -127,7 +124,7 @@
                 */
             },
             getActiveAffiliationsOfTerm () {
-                let limit = 10;
+                let limit = 5;
                 this.$get("/statistics/activeAffiliationOfTerm", {
                     termId: this.keywordId,
                     max: limit
