@@ -32,7 +32,7 @@
                     </div>
                 </el-card>
 
-                <PaperList :keyword="keywordAndLimitation"></PaperList>
+                <LiteratureList searchType="term" :searchId="keywordId"></LiteratureList>
             </el-col>
 
             <el-col :md="8" class="domain-recommend">
@@ -63,20 +63,19 @@
 </template>
 
 <script>
-    import PaperList from '../author/PaperListPage';
+    import LiteratureList from "@/components/Article/LiteratureList";
     import AffiliationOfTermGraph from '@/components/keyword/AffiliationOfTermGraph';
     import Any_YearGraph from "@/components/graphs/Any_YearGraph";
 
     export default {
         name: 'KeywordPage',
         components: {
-            PaperList,
+            LiteratureList,
             AffiliationOfTermGraph,
             Any_YearGraph
         },
         data () {
             return {
-                currentTab: PaperList,
                 activeName: 'overview',
                 keywordId: this.$route.query.id,
                 type: 'term',
