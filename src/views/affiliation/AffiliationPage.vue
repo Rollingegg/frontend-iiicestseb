@@ -392,7 +392,6 @@ export default {
   .hot-author-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     margin-bottom: @base-interval;
     .hot-author-item {
       margin-bottom: 5px;

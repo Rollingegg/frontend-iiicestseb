@@ -21,8 +21,18 @@ export default {
   computed: {
     optionData() {
       let arr = [];
+      let index=0;
       this.data.forEach(item => {
-        arr.push({ value: item.count, name: item.name });
+        arr.push({ value: item.count, name: (name=>{
+            let splitedNames=String(name).split(' ')
+            if(index<1){
+                // 关键词长度超过20, 只显示第一个单词加...
+                if(String(name).length>20)
+                    return splitedNames[0]+'...';
+            }
+            return name;
+        })(item.name) });
+        index++;
       });
       return arr;
     },
@@ -57,7 +67,7 @@ export default {
             // Text size range which the value in data will be mapped to.
             // Default to have minimum 12px and maximum 60px size.
 
-            sizeRange: [10, 60],
+            sizeRange: [6, 60],
 
             // Text rotation range and step in degree. Text will be rotated randomly in range [-90, 90] by rotationStep 45
 
