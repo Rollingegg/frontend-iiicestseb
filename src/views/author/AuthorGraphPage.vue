@@ -10,17 +10,24 @@
         <el-card></el-card>
       </el-col>
     </el-row>
-    <el-card class="card-container"></el-card>
+    <el-card class="card-container">
+      <component :is="cg2" height="300px" :tableData="tableData"></component>
+    </el-card>
   </div>
 </template>
 
 <script>
 import RelationGraph from "@/components/Author/RelationGraph";
+import PaperStatisticGraph from "@/components/graphs/PaperStatisticGraph";
 export default {
   name: "AuthorGraphPage",
   data() {
     return {
+      cg2: null,
       cg3: null,
+      tableData: [],
+      searchId: '',
+      searchType: '',
       graphData: {
         data: [
           {
@@ -390,11 +397,44 @@ export default {
   },
   components: {},
   props: {
-    authorId: String
+    keyword: Object
   },
-  methods: {},
+  methods: {
+    getPublishStatistics() {
+      const pathsMap = {
+        affiliation_name: "/statistics/affiliation/publish/count/per/year",
+        author_name: "/statistics/author/publish/count/per/year",
+        term: "/statistics/term/count/per/year",
+      };
+      const searchPath = pathsMap[this.searchType];
+      const id = this.searchId;
+      this.$get(searchPath, {
+        id: id
+      }).then(r => {
+        if (r.data.status) {
+          this.tableData = r.data.result;
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+        }
+      });
+    },
+    initGraphData(){
+        this.getPublishStatistics();
+        this.cg3 = RelationGraph;
+        this.cg2 = PaperStatisticGraph;
+    },
+    initParams(keyword) {
+      this.searchType = this.keyword['type'];
+      this.searchId = this.keyword['id'];
+    }
+  },
   mounted() {
-    this.cg3 = RelationGraph;
+      this.initParams();
+      this.initGraphData();
   }
 };
 </script>

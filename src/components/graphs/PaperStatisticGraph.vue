@@ -1,7 +1,7 @@
 <template>
-  <el-card>
+  <div>
     <common-echart chartId="paper-statistic-graph" :height="height" width="100%" :options="options"></common-echart>
-  </el-card>
+  </div>
 </template>
 
 <script>
@@ -12,38 +12,40 @@ export default {
   },
   data() {
     return {
-      options: {},
-      optionData: {}
+      optionData: {},
+      yearBase: "2010",
+      yearEnd: "2020"
     };
   },
   props: {
-    height: String
+    height: String,
+    tableData: Array
   },
-  methods: {
-    initOption() {
-      let category = [];
-      let dottedBase = this.$moment('2000','YYYY');
-      let date = this.$moment(dottedBase);
-      let lineData = [];
-      let barData = [];
-      const textColor = '#000';
-      const backgroundColor = '#fff';
-      const barColor1="#145aa3";
-      const barColor2="#409EFF";
-
-      for (let i = 0; i < 20; i++) {
-        category.push(
-          date.format('YYYY')
-        );
-        let b = Math.random() * 20;
-        let d = Math.random() * 200;
-        barData.push(b);
-        lineData.push(b);
-        date=date.add(1,'y');
+  computed: {
+    category() {
+      let dottedBase=Number(this.yearBase);
+      let dottedEnd=Number(this.yearEnd);
+      let category=[];
+      while (dottedBase<dottedEnd) {
+        category.push(String(dottedBase));
+        dottedBase++;
       }
-
-      // option
-      this.options = {
+      return category;
+    },
+    barData() {
+      let length=Number(this.yearEnd)-Number(this.yearBase);
+      let barData=new Array(length).fill(0);
+      this.tableData.forEach(item=>{
+        barData[Number(item.year)-Number(this.yearBase)]=Number(item.count);
+      });
+      return barData;
+    },
+    options(){
+      const textColor = "#000";
+      const backgroundColor = "#fff";
+      const barColor1 = "#145aa3";
+      const barColor2 = "#409EFF";
+      return {
         backgroundColor: backgroundColor,
         tooltip: {
           trigger: "axis",
@@ -52,13 +54,14 @@ export default {
           }
         },
         legend: {
-          data: ["line", "bar"],
+          data: [ "papers"],
           textStyle: {
-            color: textColor
+            color: textColor,
+            fontSize: "24"
           }
         },
         xAxis: {
-          data: category,
+          data: this.category,
           axisLine: {
             lineStyle: {
               color: textColor
@@ -67,26 +70,13 @@ export default {
         },
         yAxis: {
           splitLine: { show: false },
-          axisLine: {
-            lineStyle: {
-              color: textColor
-            }
-          }
+          type: 'value'
         },
         series: [
-        //   {
-        //     name: "line",
-        //     type: "line",
-        //     smooth: true,
-        //     showAllSymbol: true,
-        //     symbol: "emptyCircle",
-        //     symbolSize: 15,
-        //     data: lineData
-        //   },
           {
-            name: "bar",
+            name: "papers",
             type: "bar",
-            barWidth: 30,
+            barWidth: 60,
             itemStyle: {
               barBorderRadius: 5,
               color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -94,42 +84,15 @@ export default {
                 { offset: 1, color: barColor2 }
               ])
             },
-            data: barData
-          },
-        //   {
-        //     name: "line",
-        //     type: "bar",
-        //     barGap: "-100%",
-        //     barWidth: 20,
-        //     itemStyle: {
-        //       color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-        //         { offset: 0, color: "rgba(20,200,212,0.5)" },
-        //         { offset: 0.2, color: "rgba(20,200,212,0.2)" },
-        //         { offset: 1, color: "rgba(20,200,212,0)" }
-        //       ])
-        //     },
-        //     z: -12,
-        //     data: lineData
-        //   },
-        //   {
-        //     name: "dotted",
-        //     type: "pictorialBar",
-        //     symbol: "rect",
-        //     itemStyle: {
-        //       color: barColor1
-        //     },
-        //     symbolRepeat: true,
-        //     symbolSize: [48, 12],
-        //     symbolMargin: 1,
-        //     z: -10,
-        //     data: lineData
-        //   }
+            data: this.barData
+          }
         ]
       };
     }
   },
+  methods: {
+  },
   mounted() {
-    this.initOption();   
   }
 };
 </script>

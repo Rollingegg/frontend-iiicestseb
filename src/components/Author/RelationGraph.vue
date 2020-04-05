@@ -42,7 +42,6 @@ export default {
             layout: "force",
             symbolSize: 80,
             roam: true,
-            focusNodeAdjacency: true,
             edgeSymbol: ["circle", "arrow"],
             edgeSymbolSize: [4, 10],
             edgeLabel: {
@@ -63,11 +62,17 @@ export default {
               }
             },
             lineStyle: {
-              normal: {
-                width: 2,
-                color: "#4b565b"
-              }
+              // normal: {
+              //   width: 2,
+              //   color: "#4b565b"
+              // },
+              width: 4,
+              color: 'source',
+              curveness: 0.3
             },
+            // 聚焦点及其相邻边
+            focusNodeAdjacency: true,
+            // 聚焦时边的样式
             emphasis: {
                 lineStyle: {
                     width: 10

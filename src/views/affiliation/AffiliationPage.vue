@@ -123,9 +123,7 @@
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <h1>学术图谱</h1>
-        <div style="width:100%;height:600px">
-          <component v-if="currentTab3!==null" :is="currentTab3" height="600px"></component>
-        </div>
+        <component v-if="currentTab3!==null" :is="currentTab3" :keyword="keyword"></component>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -133,7 +131,7 @@
 
 <script>
 import PaperList from "@/components/Article/LiteratureList";
-import chart from "@/components/graphs/PaperStatisticGraph";
+import AuthorGraphPage from '../author/AuthorGraphPage';
 import DomainPie from "@/components/Author/DomainsPieGraph";
 import { mapState } from "vuex";
 export default {
@@ -253,7 +251,7 @@ export default {
           this.currentTab2 = PaperList;
           break;
         case "graph":
-          this.currentTab3 = chart;
+          this.currentTab3 = AuthorGraphPage;
           break;
         default:
           break;
