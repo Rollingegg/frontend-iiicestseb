@@ -182,6 +182,8 @@
                         }
                         this.uploading = false;
                         this.fileList = [];
+                        this.$postJson("/admin/paper/statistics/reCompute");
+                        this.$postJson("/admin/author/statistics/reCompute");
                     })
                     .catch(r => {
                         this.uploading = false;

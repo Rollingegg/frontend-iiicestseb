@@ -123,28 +123,4 @@
         text-overflow: ellipsis;
         text-align: center;
     }
-
-    .el-card {
-        border: 1px solid #f8f8f8;
-        border-radius: 4px;
-        overflow: auto;
-
-        .el-card__body {
-            padding: 10px;
-
-            .el-table__row {
-                height: 100px;
-            }
-        }
-
-        .has-gutter tr th div {
-            text-align: center;
-        }
-
-        .el-table--enable-row-hover .el-table__body tr:hover > td {
-            background: #e9f8f9;
-            border: 1px solid #f0f1ff;
-            box-shadow: 0 0 1px 1px #ffffff, inset 0 0 10px 5px #f2fcf8;
-        }
-    }
 </style>
