@@ -48,36 +48,44 @@
                     </el-col>
                   </el-row>
                 </div>
-                <div class="statistic-container">
-                  <el-row :gutter="10">
-                    <el-col :md="12">
-                      <div class="statistic-card">
-                        <div class="statistic-content">
-                          <div class="statistic-num">{{baseInfo.paperCount}}</div>
-                          <div>H-Index</div>
-                        </div>
-                      </div>
-                    </el-col>
-                    <el-col :md="12">
-                      <div class="statistic-card">
-                        <div class="statistic-content">
-                          <div class="statistic-num">{{baseInfo.paperCount}}</div>
-                          <div>IF(x)</div>
-                        </div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
               </el-card>
-              <el-card>
-                <div slot="header">Recent Papers</div>
+              <el-card class="card-container">
+                <div slot="header">Research Domains Ranking</div>
                 <div>
-                  <domain-pie height="400px" :data="domainStatistics"></domain-pie>
+                  <domain-pie height="600px" :data="domainStatistics"></domain-pie>
                 </div>
               </el-card>
             </el-col>
             <el-col :md="8">
               <el-card>
+                <div slot="header">Most Influenced Authors</div>
+                <div class="hot-author-container">
+                  <div
+                    class="hot-author-item"
+                    v-for="(item, index) in hotAuthors.slice(0,4)"
+                    :key="index"
+                  >
+                    <el-avatar icon="el-icon-user-solid"></el-avatar>
+                    <div style="margin-left:5px">
+                      <el-link :underline="false" style="font-size:16px" @click="openAuthor(item.id)">{{item.name}}</el-link>
+                      <div class="hot-author-description">
+                        <el-tooltip effect="light" content="H-Index" placement="bottom">
+                          <span style="margin-left:5px">
+                            <i class="fa fa-signal"></i>
+                            {{item.hindex}}
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip effect="light" content="发表论文数" placement="bottom">
+                          <span style="margin-left:5px">
+                            <i class="fa fa-file"></i>{{item.paperNum}}</span>
+                        </el-tooltip>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <active-author-graph height="150px" :data="hotAuthors"></active-author-graph>
+              </el-card>
+              <el-card class="card-container">
                 <div slot="header">Recent Papers</div>
                 <div class="recent-paper-container">
                   <div class="recent-paper-item" v-for="(item, index) in recentPapers" :key="index">
@@ -131,13 +139,15 @@
 
 <script>
 import PaperList from "@/components/Article/LiteratureList";
-import AuthorGraphPage from '../author/AuthorGraphPage';
-import DomainPie from "@/components/Author/DomainsPieGraph";
+import AuthorGraphPage from "../author/AuthorGraphPage";
+import DomainPie from "@/components/Author/ConferencePieGraph";
+import ActiveAuthorGraph from "@/components/Affiliation/ActiveAuthorGraph";
 import { mapState } from "vuex";
 export default {
   name: "AffiliationPage",
   components: {
-    DomainPie
+    DomainPie,
+    ActiveAuthorGraph
   },
   data() {
     return {
@@ -149,7 +159,8 @@ export default {
       domainStatistics: [],
       currentTab3: null,
       currentTab2: null,
-      loading: true
+      loading: true,
+      hotAuthors: []
     };
   },
   computed: {
@@ -211,6 +222,24 @@ export default {
         }
       });
     },
+    getActiveMembers() {
+      const id = this.affiliationId;
+      const limit = 1000;
+      this.$get("/author/hotin/affiliation", {
+        id: id,
+        limit: limit
+      }).then(r => {
+        if (r.data.status) {
+          this.hotAuthors = r.data.result;
+        } else {
+          this.$message({
+            showClose: true,
+            message: r.data.result,
+            type: "warning"
+          });
+        }
+      });
+    },
     openArticle(id) {
       this.openDetailPage("article", id);
     },
@@ -263,23 +292,25 @@ export default {
       this.$get("/statistics/affiliation/hot/term", {
         id: id,
         limit: limit
-      }).then(r => {
-        if (r.data.status) {
-          this.domainStatistics = r.data.result;
-          setTimeout(() => {
-            this.loading=false;
-          }, 500);
-        } else {
-          this.$message({
-            showClose: true,
-            message: r.data.result,
-            type: "warning"
-          });
-          this.loading=false;
-        }
-      }).catch(e=>{
-        this.loading=false;
-      });
+      })
+        .then(r => {
+          if (r.data.status) {
+            this.domainStatistics = r.data.result;
+            setTimeout(() => {
+              this.loading = false;
+            }, 500);
+          } else {
+            this.$message({
+              showClose: true,
+              message: r.data.result,
+              type: "warning"
+            });
+            this.loading = false;
+          }
+        })
+        .catch(e => {
+          this.loading = false;
+        });
     }
   },
   mounted() {
@@ -287,6 +318,7 @@ export default {
     this.getAffiliationBaseInfo();
     this.getRecentPapers();
     this.getAllMembers();
+    this.getActiveMembers();
     this.getDomainStatistics();
   }
 };
@@ -311,6 +343,7 @@ export default {
     padding: 20px;
     display: flex;
     align-items: center;
+    background-color: @border-color;
     .statistic-content {
       align-items: flex-start;
       flex: 3;
@@ -347,6 +380,21 @@ export default {
   }
   .recent-paper-item {
     margin-bottom: 5px;
+  }
+  .card-container {
+    margin-top: @base-interval;
+  }
+  .hot-author-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: @base-interval;
+    .hot-author-item {
+      margin-bottom: 5px;
+      width: 50%;
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>

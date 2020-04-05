@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="author-header">
-      <el-avatar :size="96" src="static\img\Jidong_Ge.jpg"></el-avatar>
+      <el-avatar :size="96" src="static\img\ChunrongFang.jpg"></el-avatar>
       <div class="author-base">
         <div class="author-name">{{baseInfo.name}}</div>
         <el-link
