@@ -29,15 +29,18 @@ export default {
       let nodes = [];
       let index = 0; // node对应的category的下标
       this.data.forEach(node => {
+        let authorImg = "image://static/icon/KeyAuthor.png";
         nodes.push({
           name: node.name,
-          des: `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${node.name}</div>H-index: ${node.hindex}<br />G-index: ${
+          des: `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${
+            node.name
+          }</div>H-index: ${node.hindex}<br />G-index: ${
             node.gindex
           }<br />发表论文数: ${node.paperNum}<br />平均被引量: ${parseFloat(
             Number(node.avgCite).toFixed(3)
           )}`,
           symbolSize: (node.hindex >= 1 ? node.hindex : 1) * 10,
-          itemStyle: null,
+          symbol: node.hindex >= 3 ? authorImg : "circle",
           category: index,
           label: {
             show: (node.hindex >= 1 ? node.hindex : 1) * 10 > 30
