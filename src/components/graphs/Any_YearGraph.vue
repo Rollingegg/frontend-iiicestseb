@@ -25,14 +25,21 @@ export default {
     searchType: String,
     searchId: String,
     barWidth: {
-        type: Number,
-        default(){
-            return 30;
-        }
+      type: Number,
+      default() {
+        return 30;
+      }
+    }
+  },
+  watch: {
+    searchId: {
+      handler(newVal, oldVal) {
+        this.getPublishStatistics(newVal);
+      }
     }
   },
   mounted() {
-    this.getPublishStatistics();
+    this.getPublishStatistics(this.searchId);
   },
   computed: {
     category() {
@@ -109,14 +116,14 @@ export default {
     }
   },
   methods: {
-    getPublishStatistics() {
+    getPublishStatistics(searchId) {
       const pathsMap = {
         affiliation_name: "/statistics/affiliation/publish/count/per/year",
         author_name: "/statistics/author/publish/count/per/year",
         term: "/statistics/term/count/per/year"
       };
       this.$get(pathsMap[this.searchType], {
-        id: this.searchId
+        id: searchId
       }).then(r => {
         if (r.data.status) {
           this.any_YearData = r.data.result;
