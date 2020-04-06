@@ -134,7 +134,7 @@
               <el-card class="card-container">
                 <div slot="header">Top co-authors</div>
                 <div class="co-author-item" v-for="(item, index) in coAuthorList" :key="index">
-                  <el-avatar icon="el-icon-user"></el-avatar>
+                  <el-avatar icon="el-icon-user-solid"></el-avatar>
                   <div class="co-author-base">
                     <div>
                       <el-link
