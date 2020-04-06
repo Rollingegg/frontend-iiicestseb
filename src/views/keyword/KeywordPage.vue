@@ -47,16 +47,17 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">相关领域</div>
                     <div class="info-infinite-container">
-                        与其相关的研究领域
+                        与其相关的关键词
                     </div>
                 </el-card>
-
+                <!--
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">推荐会议</div>
                     <div class="info-infinite-container">
                         与该研究领域有较深关系的会议列表
                     </div>
                 </el-card>
+                -->
             </el-col>
         </el-row>
     </div>

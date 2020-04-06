@@ -23,7 +23,7 @@
 
                 let yMax = 0;
                 for (let i = 0; i < this.affiliation_times_data.length; i += 1) {
-                    chartData.push(this.affiliation_times_data[i].paperNum + 1 - this.affiliation_times_data[0].paperNum);
+                    chartData.push(this.affiliation_times_data[i].paperNum);
                     chartName.push(this.affiliation_times_data[i].name);
                     yMax = chartData[i];
                 }
