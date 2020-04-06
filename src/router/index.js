@@ -106,7 +106,7 @@ router.beforeEach((to, from, next) => {
                     asyncRouter.push({
                         path: 'upload',
                         name: 'UploadPage',
-                        component: 'excel/Excel'
+                        component: 'manage/upload/Upload'
                     });
                 }
                 save('USER_ROUTER', asyncRouter);

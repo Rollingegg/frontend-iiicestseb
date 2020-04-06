@@ -212,7 +212,7 @@
 </script>
 
 <style lang="less" scoped>
-    @import "../../../static/less/Common";
+    @import "../../../../static/less/Common";
 
     .option-area {
         display: flex;
