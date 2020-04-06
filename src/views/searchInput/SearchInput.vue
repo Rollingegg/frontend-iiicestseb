@@ -17,8 +17,6 @@
 </template>
 
 <script>
-    import GlobalFooter from '../common/GlobalFooter';
-    import GlobalNav from '../common/GlobalNavigator';
     import SearchBox from './SearchBox';
     import HotCard from './HotCard';
     import {mapState} from 'vuex';
@@ -30,8 +28,6 @@
     export default {
         name: 'Home',
         components: {
-            GlobalFooter,
-            GlobalNav,
             SearchBox,
             HotCard
         },

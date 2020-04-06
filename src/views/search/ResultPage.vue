@@ -27,10 +27,7 @@
 </template>
 
 <script>
-    import GlobalNav from '../common/GlobalNavigator';
-    import GlobalFooter from '../common/GlobalFooter';
     import SearchBox from '../searchInput/SearchBox';
-    import LCard from '@/components/Article/LiteratureCard';
     import PaperList from '../author/PaperListPage';
 
     export default {
@@ -53,10 +50,7 @@
             }
         },
         components: {
-            GlobalNav,
-            GlobalFooter,
             SearchBox,
-            LCard,
             PaperList
         },
         methods: {
