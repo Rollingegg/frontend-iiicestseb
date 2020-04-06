@@ -1,16 +1,15 @@
 <template>
     <el-header class="homeHeader">
         <a class="title" href="/">OASIS</a>
-        <IMenu v-on:expectedWarning="handleUserClick"></IMenu>
+        <head-bar v-on:expectedWarning="handleUserClick"></head-bar>
         <div v-if="hasLogin" class="user-avatar">
-            <el-button
-                icon="el-icon-bell"
-                type="text"
-                size="large"
-                style="margin-right:20px"
-            ></el-button>
+            <el-button icon="el-icon-bell"
+                       type="text"
+                       size="large"
+                       style="margin-right:20px"
+            />
             <el-dropdown class="userInfo" @command="handleUserClick">
-          <el-avatar :size="50">{{user.username}}</el-avatar>
+                <el-avatar :size="50">{{user.username}}</el-avatar>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
                     <el-dropdown-item command="setting">设置</el-dropdown-item>
@@ -18,16 +17,17 @@
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
+
         <div v-else>
             <el-button type="primary" @click="doLogin">登录</el-button>
-            <el-button @click="doRegis">注册</el-button>
+            <el-button @click="doRegister">注册</el-button>
         </div>
     </el-header>
 
 </template>
 
 <script>
-    import IMenu from '@/components/IMenu';
+    import HeadBar from './HeadBar';
     import {mapState} from 'vuex';
 
     export default {
@@ -47,18 +47,18 @@
             doLogin () {
                 this.$router.push('/login');
             },
-            doRegis () {
-                this.$router.push({name: '登录页', params: {regist: 'Regist'}});
+            doRegister () {
+                this.$router.push({name: 'LoginPage', params: {register: 'Register'}});
             },
             handleUserClick (command) {
                 if (command === 'logout') {
                     this.logout();
                 } else {
-                this.$message({
+                    this.$message({
                         showClose: true,
                         message: '功能敬请期待',
                         type: 'warning'
-                });
+                    });
                 }
             },
             logout () {
@@ -66,7 +66,7 @@
             }
         },
         components: {
-            IMenu
+            HeadBar
         }
     };
 </script>
@@ -95,7 +95,7 @@
         cursor: pointer;
     }
 
-    .user-avatar{
+    .user-avatar {
         display: flex;
         align-items: center;
         justify-content: space-between;

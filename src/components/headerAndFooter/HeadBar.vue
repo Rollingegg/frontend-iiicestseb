@@ -1,13 +1,11 @@
 <template>
-    <el-menu
-        :default-active="$route.path"
-        class="my-menu"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#145AA3"
-        text-color="#ffffff"
-        active-text-color="#CDB737"
-    >
+    <el-menu :default-active="$route.path"
+             class="my-menu"
+             mode="horizontal"
+             @select="handleSelect"
+             background-color="#145AA3"
+             text-color="#ffffff"
+             active-text-color="#CDB737">
         <el-menu-item index="/searchInput">首页</el-menu-item>
         <el-submenu index="2">
             <template slot="title">文献数据库</template>
@@ -30,7 +28,7 @@
     import {mapState} from 'vuex';
 
     export default {
-        name: 'IMenu',
+        name: 'HeadBar',
         data () {
             return {
                 activeIndex: '1'
@@ -57,7 +55,3 @@
         }
     };
 </script>
-
-<style>
-
-</style>

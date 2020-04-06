@@ -9,9 +9,8 @@
 </template>
 
 <script>
-    import GlobalFooter from './common/GlobalFooter';
-    import GlobalNav from './common/GlobalNavigator';
-    import {mapState} from 'vuex';
+    import GlobalFooter from '@/components/headerAndFooter/GlobalFooter';
+    import GlobalNav from '@/components/headerAndFooter/GlobalNavigator';
 
     export default {
         name: 'Index',
@@ -20,9 +19,6 @@
             GlobalNav
         },
         computed: {
-            ...mapState({
-                user: state => state.account.user
-            }),
             copyright () {
                 return this.$store.state.setting.copyright;
             }

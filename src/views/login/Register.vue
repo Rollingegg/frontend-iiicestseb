@@ -5,7 +5,8 @@
                 <el-input v-model="registerForm.username"
                           placeholder="账号为4-20位字符且不能有空格"
                           autocomplete="new-password"
-                          clearable></el-input>
+                          clearable
+                />
             </el-form-item>
 
             <el-popover placement="right-start" trigger="click" visible="state.passwordLevelChecked">
@@ -16,7 +17,8 @@
                     <el-progress :percentage="state.percent"
                                  :stroke-width="8"
                                  :show-text="false"
-                                 :color=" passwordLevelColor "/>
+                                 :color=" passwordLevelColor "
+                    />
                     <div style="margin-top: 8px;">
                         <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
                     </div>
@@ -27,7 +29,8 @@
                               @click="handlePasswordInputClick"
                               v-model="registerForm.password"
                               autocomplete="new-password" show-password
-                              placeholder="至少6位密码"/>
+                              placeholder="至少6位密码"
+                    />
                 </el-form-item>
             </el-popover>
 
@@ -36,17 +39,17 @@
                           show-password
                           autocomplete="new-password"
                           placeholder="确认密码"
-                          v-model="registerForm.checkPass"/>
+                          v-model="registerForm.checkPass"
+                />
             </el-form-item>
 
             <el-form-item>
-                <el-button
-                        type="primary"
-                        htmlType="submit"
-                        class="register-button"
-                        :loading="registerBtn"
-                        @click.stop.prevent="handleSubmit('registerForm')"
-                        :disabled="registerBtn">
+                <el-button type="primary"
+                           htmlType="submit"
+                           class="register-button"
+                           :loading="registerBtn"
+                           @click.stop.prevent="handleSubmit('registerForm')"
+                           :disabled="registerBtn">
                     立即注册
                 </el-button>
                 <el-link type="primary" :underline="false" class="login" @click="returnLogin">使用已有账户登录</el-link>
@@ -76,7 +79,7 @@
         3: '#52c41a'
     };
     export default {
-        name: 'Regist',
+        name: 'Register',
         components: {},
         data () {
             return {
@@ -90,17 +93,23 @@
                         required: true,
                         message: '请输入注册账号',
                         validateTrigger: ['change', 'blur']
-                    }, {validator: this.handleUsernameCheck}],
+                    }, {
+                        validator: this.handleUsernameCheck
+                    }],
                     password: [{
                         required: true,
                         message: '至少6位密码',
                         validateTrigger: ['change', 'blur']
-                    }, {validator: this.handlePasswordLevel}],
+                    }, {
+                        validator: this.handlePasswordLevel
+                    }],
                     checkPass: [{
                         required: true,
                         message: '至少6位密码',
                         validateTrigger: ['change', 'blur']
-                    }, {validator: this.handlePasswordCheck}]
+                    }, {
+                        validator: this.handlePasswordCheck
+                    }]
                 },
                 state: {
                     time: 60,
@@ -230,7 +239,7 @@
                 });
             },
             returnLogin () {
-                this.$emit('regist', 'Login');
+                this.$emit('register', 'Login');
             }
         }
     };
