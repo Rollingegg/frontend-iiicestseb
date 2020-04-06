@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
     <el-card class="card-container">
-      <component :is="cg2" height="300px" :tableData="tableData"></component>
+      <component :is="cg2" height="300px" :tableData="papersPublishPerYear"></component>
     </el-card>
   </div>
 </template>
@@ -31,7 +31,7 @@ export default {
       cg1: null,
       cg2: null,
       cg3: null,
-      tableData: [],
+      papersPublishPerYear: [],
       searchId: "",
       searchType: "",
       loading: true,
@@ -420,7 +420,7 @@ export default {
         id: id
       }).then(r => {
         if (r.data.status) {
-          this.tableData = r.data.result;
+          this.papersPublishPerYear = r.data.result;
         } else {
           this.$message({
             showClose: true,
