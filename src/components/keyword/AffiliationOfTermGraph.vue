@@ -105,7 +105,7 @@
                         symbol: 'roundRect',
                         itemStyle: {
                             normal: {
-                                color: 'red'
+                                color: 'yellow'
                             }
                         },
                         label: {
@@ -128,7 +128,7 @@
                         type: 'bar',
                         // xAxisIndex: 1, //代表使用第二个X轴刻度
                         barGap: '-100%',
-                        barWidth: '10%',
+                        barWidth: '20%',
                         data: chartData,
                         itemStyle: {
                             normal: {

@@ -31,7 +31,7 @@ export default {
       this.data.forEach(node => {
         nodes.push({
           name: node.name,
-          des: `${node.name}<br />H-index: ${node.hindex}<br />G-index: ${
+          des: `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${node.name}</div>H-index: ${node.hindex}<br />G-index: ${
             node.gindex
           }<br />发表论文数: ${node.paperNum}<br />平均被引量: ${parseFloat(
             Number(node.avgCite).toFixed(3)

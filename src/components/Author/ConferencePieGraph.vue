@@ -51,7 +51,7 @@ export default {
       return {
         tooltip: {
           trigger: "item",
-          formatter: "{b}<br/>Published Papers: {c} ({d}%)"
+          formatter: '<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">{b}</div>Published Papers: {c} ({d}%)'
         },
         legend: {
           orient: "horizontal",

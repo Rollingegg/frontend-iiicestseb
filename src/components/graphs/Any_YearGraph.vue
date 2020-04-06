@@ -95,7 +95,8 @@ export default {
         },
         yAxis: {
           splitLine: { show: false },
-          type: "value"
+          type: "value",
+          minInterval: 1
         },
         series: [
           {

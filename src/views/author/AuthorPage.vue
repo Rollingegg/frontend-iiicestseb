@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="author-header">
-      <el-avatar :size="96" src="static\img\ChunrongFang.jpg"></el-avatar>
+      <el-avatar :size="120" src="static\img\ChunrongFang.jpg"></el-avatar>
       <div class="author-base">
         <div class="author-name">{{baseInfo.name}}</div>
         <el-link
@@ -9,6 +9,7 @@
           icon="el-icon-school"
           @click="openAffiliation(baseInfo.affiliationId)"
         >{{baseInfo.affiliationName}}</el-link>
+        <div style="margin-top:5px"><el-button size="mini" type="primary" v-for="(item, index) in domainStatistics.slice(0,3)" :key="index" @click="openDomain(item.id)">{{item.name}}</el-button></div>
       </div>
     </div>
     <el-tabs
@@ -410,6 +411,7 @@ export default {
     .author-base {
       flex: 1 0;
       margin-left: @base-interval;
+      margin-top: @base-interval;
       .author-name {
         font-size: 30px;
       }
