@@ -18,6 +18,7 @@
                 </el-button>
                 <div slot="tip" class="el-upload__tip">请按照预定的模板json文件格式上传，且每次只能上传一个文件</div>
             </el-upload>
+
             <div class="button-area">
                 <el-button size="medium"
                            type="primary"
@@ -28,15 +29,19 @@
                 <el-button size="medium" type="success" @click="importActionVisible=true">后台导入</el-button>
             </div>
         </div>
+
         <el-dialog center
                    :visible.sync="importActionVisible"
                    width="70%"
                    :lock-scroll="false"
                    @close="importActionVisible = false">
             <div style="font-size:24px;border-bottom:1px solid" slot="title">选择后台导入文件</div>
+
             <el-radio-group v-model="selectedTemplate">
-                <el-radio v-for="(item, index) in templateList" :key="index" :label="index">{{item}}</el-radio>
+                <el-radio v-for="(templateItem, index) in templateList" :key="index" :label="index">{{templateItem}}
+                </el-radio>
             </el-radio-group>
+
             <div slot="footer" class="dialog-footer">
                 <el-button @click="importActionVisible = false">取 消</el-button>
                 <el-button type="primary"
@@ -46,9 +51,10 @@
                 </el-button>
             </div>
         </el-dialog>
+
         <div class="card-area">
             <!-- 表格区域 -->
-            <el-table style="width: 100%" :data="dataSource.slice((currentPage-1)*pageSize,currentPage*pageSize)">
+            <el-table style="width: 100%" :data="successData.slice((currentPage-1) * pageSize, currentPage * pageSize)">
                 <el-table-column fixed prop="title" label="论文标题" width="300" :show-overflow-tooltip="true"/>
                 <el-table-column prop="id" label="论文编号" width="50"/>
                 <el-table-column prop="conferenceId" label="会议编号" width="50"/>
@@ -61,18 +67,19 @@
                 <el-table-column prop="endPage" label="结束页" width="80"/>
             </el-table>
             <el-pagination
-                    v-if="dataSource.length"
+                    v-if="successData.length"
                     @current-change="handleCurrentChange"
                     :current-page.sync="currentPage"
                     :page-size="pageSize"
                     layout="total, prev, pager, next, jumper"
-                    :total="dataSource.length"/>
+                    :total="successData.length"/>
         </div>
         <import-result
                 @close="closeImportResult"
-                :importData="importData"
-                :errors="errors"
+                :successData="successData"
+                :errorData="errorData"
                 :times="times"
+                :active-name="resultActiveTab"
                 :importResultVisible="importResultVisible"/>
     </div>
 </template>
@@ -88,26 +95,25 @@
                 msgPromise: Promise.resolve(),
                 hasSelected: true,
                 fileList: [],
-                importData: [],
+                successData: [],
                 times: "",
-                errors: [],
+                errorData: [],
                 uploading: false,
                 importResultVisible: false,
-                dataSource: [],
                 paginationInfo: null,
                 currentPage: 1,
                 pageSize: 20,
                 templateList: [
                     "ase13_19(605).json",
                     "icse15_19(815).json",
-                    "icse10_14(1200)",
+                    "icse10_14(1200).json",
                     "icse15_19(50).json"
                 ],
                 selectedTemplate: 0,
-                importActionVisible: false
+                importActionVisible: false,
+                resultActiveTab: '1'
             };
         },
-        computed: {},
         methods: {
             addFile (file, fileList) {
                 if (file.status === "ready") {
@@ -170,14 +176,14 @@
                     .then(r => {
                         this.times = (new Date() - timeStart) / 1000;
                         if (r.data.status) {
-                            this.errors = r.data.result.errorLogs;
-                            this.importData = r.data.result.papers;
-                            this.fetch();
+                            this.errorData = r.data.result.errorLogs;
+                            this.successData = r.data.result.papers;
+                            if (this.errorData.length === 0) this.resultActiveTab = '2';
                             setTimeout(() => {
                                 this.importResultVisible = true;
                             }, 500);
                         } else {
-                            this.importData = [];
+                            this.successData = [];
                             this.handleMsg(r.data.result, "error");
                         }
                         this.uploading = false;
@@ -190,9 +196,6 @@
                         this.fileList = [];
                         this.handleMsg(r, "error");
                     });
-            },
-            fetch () {
-                this.dataSource = this.importData;
             },
             handleMsg (message, type = "info") {
                 const duration = 4000;

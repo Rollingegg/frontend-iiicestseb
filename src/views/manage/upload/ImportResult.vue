@@ -6,46 +6,46 @@
                @close="handleCancel">
         <div style="font-size:24px;border-bottom:1px solid" slot="title">导入结果</div>
         <div class="import-desc">
-            <span v-if="importData.length === 0 && errors.length === 0">
+            <span v-if="successData.length === 0 && errorData.length === 0">
                 <el-alert :closable="false" title="暂无导入记录" type="info"/>
             </span>
 
-            <span v-if="importData.length !== 0 && errors.length !== 0">
+            <span v-if="successData.length !== 0 && errorData.length !== 0">
                 <el-alert :closable="false" title="部分导入成功" type="warning">
                     <div slot>
-                        成功导入 <a>{{importData.length}}</a> 条记录，<a>{{errors.length}}</a> 条记录导入失败，共耗时 <a>{{times}}</a> 秒
+                        成功导入 <a>{{successData.length}}</a> 条记录，<a>{{errorData.length}}</a> 条记录导入失败，共耗时 <a>{{times}}</a> 秒
                     </div>
                 </el-alert>
             </span>
 
-            <span v-if="importData.length !== 0 && errors.length === 0">
+            <span v-if="successData.length !== 0 && errorData.length === 0">
                 <el-alert :closable="false" title="全部导入成功" type="success">
                     <div slot>
-                        成功导入 <a>{{importData.length}}</a> 条记录，共耗时 <a>{{times}}</a> 秒
+                        成功导入 <a>{{successData.length}}</a> 条记录，共耗时 <a>{{times}}</a> 秒
                     </div>
                 </el-alert>
             </span>
 
-            <span v-if="importData.length === 0 && errors.length !== 0">
+            <span v-if="successData.length === 0 && errorData.length !== 0">
                 <el-alert :closable="false" title="全部导入失败" type="error">
                     <div slot>
-                        <a>{{errors.length}}</a> 条记录导入失败，共耗时  <a>{{times}}</a> 秒
+                        <a>{{errorData.length}}</a> 条记录导入失败，共耗时  <a>{{times}}</a> 秒
                     </div>
                 </el-alert>
             </span>
         </div>
 
         <el-tabs v-model="activeName">
-            <el-tab-pane label="失败记录" name="1" v-if="errors.length">
+            <el-tab-pane label="失败记录" name="1" v-if="errorData.length">
                 <div style="overflow: auto;height:300px">
-                    <div v-for="(item, index) in errors" :key="index">{{item}}</div>
+                    <div v-for="(item, index) in errorData" :key="index">{{item}}</div>
                 </div>
             </el-tab-pane>
 
-            <el-tab-pane label="成功记录" name="2" v-if="importData.length">
+            <el-tab-pane label="成功记录" name="2" v-if="successData.length">
                 <el-table height="250"
                           style="width: 100%"
-                          :data="importData.slice((successCurrentPage-1)*pageSize,successCurrentPage*pageSize)">
+                          :data="successData.slice((successCurrentPage-1)*pageSize,successCurrentPage*pageSize)">
                     <el-table-column fixed prop="title" label="论文标题" width="300" :show-overflow-tooltip="true"/>
                     <el-table-column prop="id" label="论文编号" width="50"/>
                     <el-table-column prop="conferenceId" label="会议编号" width="50"/>
@@ -58,12 +58,12 @@
                     <el-table-column prop="endPage" label="结束页" width="50"/>
                 </el-table>
                 <el-pagination
-                        v-if="importData.length"
+                        v-if="successData.length"
                         @current-change="handleCurrentChange2"
                         :current-page.sync="successCurrentPage"
                         :page-size="pageSize"
                         layout="total, prev, pager, next, jumper"
-                        :total="importData.length"
+                        :total="successData.length"
                 />
             </el-tab-pane>
         </el-tabs>
@@ -76,14 +76,12 @@
                 required: true,
                 default: false
             },
-            importData: {
-                required: true
-            },
-            errors: {
-                required: true
-            },
-            times: {
-                required: true
+            successData: Array,
+            errorData: Array,
+            times: Number,
+            activeName:{
+                default: '1',
+                required: false
             }
         },
         data () {
