@@ -42,7 +42,7 @@
                           <div class="statistic-type">Members</div>
                         </div>
                         <div class="statistic-icon">
-                          <el-icon class="el-icon-user"></el-icon>
+                          <el-icon class="el-icon-user-solid"></el-icon>
                         </div>
                       </div>
                     </el-col>
@@ -120,7 +120,7 @@
                   <el-link type="primary" @click="openAuthor(item.id)">{{item.name}}</el-link>
                 </div>
                 <div>
-                  <el-icon class="el-icon-user"></el-icon>
+                  <el-icon class="el-icon-user-solid"></el-icon>
                 </div>
               </div>
             </div>

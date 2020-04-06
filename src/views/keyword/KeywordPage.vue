@@ -20,7 +20,7 @@
             :cell-style="cellStyle"
           >
             <el-table-column width="40">
-              <el-icon class="el-icon-user" />
+              <el-icon class="el-icon-user-solid" />
             </el-table-column>
             <el-table-column width="250" prop="name" label="作者" />
             <el-table-column prop="affiliationName" label="所在机构" />
@@ -56,13 +56,15 @@
         <el-card class="info-container">
           <div slot="header" class="card-head-title">相关领域</div>
           <div class="info-infinite-container">
-            <el-button
-              class="relative-term-button"
-              type="primary"
-              v-for="(item, index) in relativeTerms"
-              :key="index"
-              @click="openTermDetail(item.id)"
-            >{{item.name}}</el-button>
+            <div class="relative-term-container">
+              <el-button
+                class="relative-term-button"
+                type="primary"
+                v-for="(item, index) in relativeTerms"
+                :key="index"
+                @click="openTermDetail(item.id)"
+              >{{item.name}}</el-button>
+            </div>
           </div>
         </el-card>
         <!--
@@ -234,12 +236,13 @@ export default {
 <style lang="less" scoped>
 @head-font-size: 30px;
 @title-font-size: 24px;
+@base-interval: 20px;
 .main-container {
   .domain-content {
     .domain-title {
       font-size: @head-font-size;
       line-height: 36px;
-      margin-bottom: 20px;
+      margin-bottom: @base-interval;
     }
 
     .domain-description {
@@ -253,7 +256,7 @@ export default {
   }
 
   .info-container {
-    margin-bottom: 20px;
+    margin-bottom: @base-interval;
 
     .card-head-title {
       font-size: @title-font-size;
@@ -273,9 +276,12 @@ export default {
       height: 400px;
     }
   }
-  .relative-term-button {
-    margin: 10px 0;
-    margin-left: 10px;
+  .relative-term-container {
+    margin-top: @base-interval;
+    .relative-term-button {
+      margin: 10px 0;
+      margin-left: 10px;
+    }
   }
 }
 </style>
