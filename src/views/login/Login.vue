@@ -113,7 +113,7 @@
                                     let data = r.data.result;
                                     this.saveLoginData(data);
                                     this.setMessageAndBtnLoading();
-                                    this.$router.push('/searchInput');
+                                    this.$router.push('/searchFrame/searchHome');
                                 } else {
                                     this.setMessageAndBtnLoading(r.data.result);
                                 }
@@ -138,7 +138,7 @@
                 this.$emit('register', 'Register');
             },
             noRegister () {
-                this.$router.push('/searchInput');
+                this.$router.push('/searchFrame/searchHome');
             },
             getCaptcha () {
                 this.$message.warning('暂未开发');

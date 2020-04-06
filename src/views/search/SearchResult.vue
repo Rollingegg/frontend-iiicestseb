@@ -1,7 +1,5 @@
 <template>
     <div>
-        <search-box @do-search="doSearch"></search-box>
-
         <el-container>
             <el-aside width="auto" style="padding:20px">
                 <div class="one-line">
@@ -27,15 +25,14 @@
 </template>
 
 <script>
-    import SearchBox from '../searchInput/SearchBox';
     import PaperList from '../author/PaperListPage';
 
     export default {
-        name: 'ResPage',
+        name: 'SearchResult',
         data: function () {
             return {
                 loading: true,
-                resList: [],
+                resultList: [],
                 queryType: '',
                 queryString: '',
                 noResult: false,
@@ -46,14 +43,19 @@
         },
         computed: {
             paperCount: function () {
-                return this.resList == null ? 0 : this.resList.length;
+                return this.resultList == null ? 0 : this.resultList.length;
             }
         },
         components: {
-            SearchBox,
             PaperList
         },
+        watch:{
+            $route: "refreshData"
+        },
         methods: {
+            refreshData() {
+                this.searchParams = JSON.parse(this.$route.query.search_condition);
+            },
             handleFilter () {
                 if (this.endYear < this.startYear) {
                     this.$message({
@@ -63,14 +65,11 @@
                     });
                 } else {
                     let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
-                    newSearchParam['start_year']=this.startYear;
-                    newSearchParam['end_year']=this.endYear;
+                    newSearchParam['start_year'] = this.startYear;
+                    newSearchParam['end_year'] = this.endYear;
                     newSearchParam['page'] = 0;
                     this.searchParams = newSearchParam;
                 }
-            },
-            doSearch (params) {
-                this.searchParams = params;
             },
             reset () {
                 let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
@@ -80,7 +79,8 @@
             }
         },
         created () {
-            this.searchParams = JSON.parse(this.$route.query.search_condition);
+            this.refreshData();
+            this.$emit('showWelcome', false);
         }
     };
 </script>

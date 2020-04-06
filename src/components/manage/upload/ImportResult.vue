@@ -86,7 +86,6 @@
         },
         data () {
             return {
-                activeName: '1',
                 tableData1: [],
                 tableData2: [],
                 pageSize: 10,

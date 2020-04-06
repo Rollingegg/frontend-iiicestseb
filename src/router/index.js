@@ -37,12 +37,25 @@ let constRouter = [
         path: '/',
         component: view('Index'),
         name: 'IndexPage',
-        redirect: '/searchInput',
+        redirect: '/searchFrame/searchHome',
         children: [
             {
-                path: 'searchInput',
+                path: 'searchFrame',
                 name: 'HomePage',
-                component: view('searchInput/SearchInput')
+                component: view('search/SearchFrame'),
+                redirect: '/searchFrame/searchHome',
+                children: [
+                    {
+                        path: 'searchHome',
+                        name: 'searchHome',
+                        component: view('search/SearchHome'),
+                    },
+                    {
+                        path: 'searchResult',
+                        name: 'searchResult',
+                        component: view('search/SearchResult'),
+                    }
+                ]
             },
             {
                 path: 'searchRes',
@@ -57,7 +70,7 @@ let router = new Router({
     routes: constRouter
 });
 
-const whiteList = ['/login', '/searchInput', '/searchRes'];
+const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult'];
 
 let asyncRouter;
 

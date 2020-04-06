@@ -43,7 +43,7 @@
 </template>
 <script>
     import AdSearchBox from "./AdSearchBox";
-    import db from "../../utils/localstorage";
+    import db from "../../../utils/localstorage";
 
     export default {
         name: "SearchBox",

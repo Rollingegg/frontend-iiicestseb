@@ -20,7 +20,7 @@
     import SearchBox from './SearchBox';
     import HotCard from './HotCard';
     import {mapState} from 'vuex';
-    import db from '../../utils/localstorage';
+    import db from '../../../utils/localstorage';
 
     const heatAuthors = '发表论文数作者排行';
     const heatWords = '文献关键词热度排行';

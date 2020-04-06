@@ -25,39 +25,7 @@
         name: "fsearch",
         data () {
             return {
-                loading: false,
-                items: [
-                    {
-                        label: "篇名",
-                        val: "",
-                        shown: true
-                    },
-                    {
-                        label: "作者",
-                        val: "",
-                        shown: true
-                    },
-                    {
-                        label: "作者单位",
-                        val: "",
-                        shown: true
-                    },
-                    {
-                        label: "摘要",
-                        val: "",
-                        shown: true
-                    },
-                    {
-                        label: "DOI",
-                        val: "",
-                        shown: true
-                    },
-                    {
-                        label: "关键词",
-                        val: "",
-                        shown: true
-                    }
-                ]
+
             };
         },
         methods: {
@@ -103,7 +71,7 @@
 </script>
 
 <style lang="less">
-    @import "../../../static/less/Common.less";
+    @import "../../../../static/less/Common.less";
 
     .drawer-title {
         .content-header();

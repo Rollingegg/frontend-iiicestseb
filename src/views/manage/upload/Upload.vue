@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-    import ImportResult from "./ImportResult";
+    import ImportResult from "@/components/manage/upload/ImportResult";
 
     export default {
         components: {ImportResult},
@@ -96,7 +96,7 @@
                 hasSelected: true,
                 fileList: [],
                 successData: [],
-                times: "",
+                times: 0,
                 errorData: [],
                 uploading: false,
                 importResultVisible: false,

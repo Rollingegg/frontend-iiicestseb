@@ -56,7 +56,6 @@
 
         .el-table--enable-row-hover .el-table__body tr:hover > td {
             background: #e9f8f9;
-            border: 1px solid #f0f1ff;
             box-shadow: 0 0 1px 1px #ffffff, inset 0 0 10px 5px #f2fcf8;
         }
     }

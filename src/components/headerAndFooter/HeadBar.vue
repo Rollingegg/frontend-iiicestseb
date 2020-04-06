@@ -6,7 +6,7 @@
              background-color="#145AA3"
              text-color="#ffffff"
              active-text-color="#CDB737">
-        <el-menu-item index="/searchInput">首页</el-menu-item>
+        <el-menu-item index="/searchFrame/searchHome">首页</el-menu-item>
         <el-submenu index="2">
             <template slot="title">文献数据库</template>
             <el-menu-item index="/ase">ASE会议</el-menu-item>

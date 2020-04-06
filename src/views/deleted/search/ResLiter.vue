@@ -120,7 +120,7 @@
 </template>
 
 <script>
-    import db from '../../utils/localstorage';
+    import db from '../../../utils/localstorage';
 
     export default {
         beforeCreate () {
