@@ -1,8 +1,19 @@
 <template>
   <div>
-    <el-row>
+    <el-row v-loading="loading" element-loading-background="rgba(255,255,255,0.95)">
       <el-col :md="16" class="col-container">
-        <div class="one-line">Article Detail</div>
+        <div class="one-line">
+          <div>
+            Article Detail
+            <el-tooltip effect="light" style="margin:4px" content="Scores" placement="bottom">
+              <span style="color:#409EFF">
+                <i class="fa fa-volume-up" aria-hidden="true"></i>
+                {{score}}
+              </span>
+            </el-tooltip>
+          </div>
+          <div>Citations: {{article.citationCountPaper}}</div>
+        </div>
         <div class="main-container">
           <el-card shadow="always">
             <div class="info-container">
@@ -11,22 +22,22 @@
                 <el-col :md="4">Authors</el-col>
                 <el-col :md="20" class="author-content">
                   <el-link
-                  v-for="(item, index) in authors"
-                  :key="index"
-                  @click="openAuthor(item.id)"
-                  type="primary"
-                >{{item.name}}</el-link>
+                    v-for="(item, index) in authors"
+                    :key="index"
+                    @click="openAuthor(item.id)"
+                    type="primary"
+                  >{{item.name}}</el-link>
                 </el-col>
               </el-row>
               <el-row class="author-row">
                 <el-col :md="4">Affiliations</el-col>
                 <el-col :md="20" class="author-content">
                   <el-link
-                  v-for="(item, index) in affiliations"
-                  :key="index"
-                  @click="openAffiliation(item.affId)"
-                  type="primary"
-                >{{item.affName}}</el-link>
+                    v-for="(item, index) in affiliations"
+                    :key="index"
+                    @click="openAffiliation(item.affId)"
+                    type="primary"
+                  >{{item.affName}}</el-link>
                 </el-col>
               </el-row>
               <el-row class="info-row">
@@ -106,9 +117,18 @@
         <rec-papers :papers="recommendedPapers"></rec-papers>
       </el-col>
       <el-col :md="8" class="col-container">
-        <div class="one-line">Reference ({{references.length}})</div>
+        <div class="one-line">
+          <div>Reference ({{references.length}})</div>
+          <div>
+            <el-link :underline="false" style="font-size:24px" @click="resetArticleScore">重算评分</el-link>
+          </div>
+        </div>
         <div class="list-container">
-          <el-card v-for="(item, index) in references.slice((currentPage-1)*pageSize,currentPage*pageSize)" :key="index" class="item-container">
+          <el-card
+            v-for="(item, index) in references.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :key="index"
+            class="item-container"
+          >
             <div>
               <div class="ref-title">{{item.title}}</div>
               <div class="ref-text">{{item.refType}}</div>
@@ -139,9 +159,9 @@
 
 <script>
 import { mapState } from "vuex";
-import RecPapers from '@/components/recommendation/PaperRecommendation';
-import RecAuthors from '@/components/recommendation/AuthorRecommendation';
-import RecAffiliations from '@/components/recommendation/AffiliationRecommendation';
+import RecPapers from "@/components/recommendation/PaperRecommendation";
+import RecAuthors from "@/components/recommendation/AuthorRecommendation";
+import RecAffiliations from "@/components/recommendation/AffiliationRecommendation";
 function uniq(array) {
   let temp = [];
   let index = [];
@@ -170,9 +190,11 @@ export default {
       authors: [],
       currentPage: 1,
       pageSize: 5,
+      score: 0.0,
       recommendedPapers: [],
       recommendedAuthors: [],
-      recommendedAffiliations: []
+      recommendedAffiliations: [],
+      loading: true
     };
   },
   components: {
@@ -194,10 +216,10 @@ export default {
     })
   },
   methods: {
-    handleCurrentChange(val){
-      this.currentPage=val;
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
-    getRecommendPapers(){
+    getRecommendPapers() {
       let id = this.articleId;
       this.$get("/paper/recommend/papers", {
         paperId: id
@@ -211,7 +233,7 @@ export default {
           this.recommendedPapers = [];
         });
     },
-    getRecommendAuthors(){
+    getRecommendAuthors() {
       let id = this.articleId;
       this.$get("/paper/recommend/authors", {
         paperId: id
@@ -225,7 +247,7 @@ export default {
           this.recommendedAuthors = [];
         });
     },
-    getRecommendAffiliations(){
+    getRecommendAffiliations() {
       let id = this.articleId;
       this.$get("/paper/recommend/affiliations", {
         paperId: id
@@ -250,10 +272,52 @@ export default {
             this.keywords = r.data.result.termList;
             this.authors = r.data.result.authorList;
             this.references = r.data.result.referenceList;
+            setTimeout(() => {
+              this.loading = false;
+            }, 500);
+          } else {
+            this.loading = false;
           }
         })
         .catch(e => {
           this.article = {};
+          this.loading = false;
+        });
+    },
+    getArticleScore() {
+      let id = this.articleId;
+      this.$get("/admin/paper/score", {
+        paperId: id
+      })
+        .then(r => {
+          if (r.data.status) {
+            this.score = r.data.result.score;
+          }
+        })
+        .catch(e => {
+          this.score = 0.0;
+        });
+    },
+    resetArticleScore() {
+      let id = this.articleId;
+      this.$post("/admin/paper/score", {
+        paperId: Number(id)
+      })
+        .then(r => {
+          if (r.data.status) {
+            this.score = r.data.result.score;
+            this.$message({
+              showClose: true,
+              message: "重算评分成功",
+              type: "success"
+            });
+          }else{
+            this.$message({
+              showClose: true,
+              message: "重算评分失败",
+              type: "error"
+            });
+          }
         });
     },
     openAuthor(id) {
@@ -293,6 +357,7 @@ export default {
   mounted() {
     this.articleId = this.$route.query.id;
     this.getArticleDetail();
+    this.getArticleScore();
     this.getRecommendPapers();
     this.getRecommendAuthors();
     this.getRecommendAffiliations();

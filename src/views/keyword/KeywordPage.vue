@@ -32,7 +32,7 @@
                     </div>
                 </el-card>
 
-                <LiteratureList searchType="term" :searchId="keywordId"></LiteratureList>
+                <LiteratureList searchType="term" :searchId="String(keywordId)"></LiteratureList>
             </el-col>
 
             <el-col :md="8" class="domain-recommend">
@@ -40,7 +40,7 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">论文发表</div>
                     <div class="info-infinite-container">
-                        <any_-year-graph height="400px" :searchId='keywordId' searchType="term"></any_-year-graph>
+                        <any_-year-graph height="400px" :searchId='String(keywordId)' searchType="term"></any_-year-graph>
                     </div>
                 </el-card>
 
