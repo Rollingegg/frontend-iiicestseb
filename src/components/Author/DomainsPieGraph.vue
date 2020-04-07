@@ -1,19 +1,18 @@
 <template>
   <div>
-    <common-echart chartId="domain-pie-graph" :height="height" width="100%" :options="options"></common-echart>
+    <common-echart chartId="domain-pie-graph" :height="height" width="100%" :options="options" @on-click-echart="handleClickEchart"></common-echart>
   </div>
 </template>
 
 <script>
 import CommonEchart from "../common/CommonEchart";
+import PieBackgroundImage from "../../../static/img/pie.jpg"
 export default {
   components: {
     CommonEchart
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
   props: {
     height: String,
@@ -23,7 +22,7 @@ export default {
     optionData() {
       let arr = [];
       this.data.forEach(item => {
-        arr.push({ value: item.count, name: item.name });
+        arr.push({ value: item.count, name: item.name, termId: item.id});
       });
       return arr;
     },
@@ -34,8 +33,22 @@ export default {
       });
       return arr;
     },
-    options(){
-        return {
+    options() {
+        let piePatternSrc=PieBackgroundImage;
+        let piePatternImg = new Image();
+        piePatternImg.src = piePatternSrc;
+        let itemStyle = {
+            normal: {
+                opacity: 0.7,
+                color: {
+                    image: piePatternImg,
+                    repeat: 'repeat'
+                },
+                borderWidth: 3,
+                borderColor: '#235894'
+            }
+        };
+      return {
         tooltip: {
           trigger: "item",
           formatter: '<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">{b}</div>Published Papers: {c} ({d}%)'
@@ -49,38 +62,31 @@ export default {
           {
             name: "Domains",
             type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
+            selectedMode: "single",
+            selectedOffset: 30,
+            clockwise: true,
             label: {
-              normal: {
-                show: false,
-                position: "center"
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "30",
-                  fontWeight: "bold"
-                }
-              }
+              fontSize: 18,
+              color: "#235894"
             },
             labelLine: {
-              normal: {
-                show: false
+              lineStyle: {
+                color: "#235894"
               }
             },
-            data: this.optionData
-          }
+            data: this.optionData,
+            itemStyle: itemStyle
+          },
         ]
       };
     }
   },
   methods: {
-    
+    handleClickEchart(param){
+      this.$emit('on-click-term',param.data.termId);
+    }
   },
-  mounted() {
-    
-  }
+  mounted() {}
 };
 </script>
 

@@ -107,7 +107,7 @@
               <el-card class="card-container">
                 <div slot="header">Research Domains Ranking</div>
                 <div>
-                  <domain-pie height="300px" :data="domainStatistics"></domain-pie>
+                  <domain-pie height="300px" :data="domainStatistics" @on-click-term="openDomain"></domain-pie>
                 </div>
               </el-card>
             </el-col>
