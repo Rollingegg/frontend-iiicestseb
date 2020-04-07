@@ -32,17 +32,27 @@ export default {
         }
         this.data.vertexes.forEach(node => {
           let isCenterAuthor = node.id == centerId;
-          let symbolSize=isCenterAuthor ? maxSize : (node.size<=10?(node.size * maxSize/5):maxSize);
+          let symbolSize = isCenterAuthor
+            ? maxSize
+            : node.size <= 10
+            ? (node.size * maxSize) / 5
+            : maxSize;
+          let authorName = node.name;
           nodes.push({
             name: node.id,
             symbolSize: symbolSize,
             category: isCenterAuthor ? 0 : 1,
-            des: node.name,
+            title: authorName,
+            des: `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${
+              node.name
+            }</div>所在机构：${node.content.affiliationName}<br/>发表文章数：${
+              node.content.paperCount ? node.content.paperCount : 0
+            }<br/>评分：${node.content.score}`,
             label: {
-                show: symbolSize>30,
-                formatter: function(x){
-                    return x.data.des;
-                }
+              show: symbolSize > 30,
+              formatter: function(x) {
+                return x.data.title;
+              }
             }
           });
         });
@@ -76,6 +86,7 @@ export default {
       return {
         title: {
           text: "Significant Partnership",
+          subtext: "注：图中点大小代表合作关系紧密程度",
           textStyle: {
             fontSize: 20
           },
@@ -110,7 +121,8 @@ export default {
             },
             lineStyle: {
               width: 4,
-              color: "source"
+              color: "source",
+              curveness: 0.2
             },
             itemStyle: {
               borderColor: "#fff",

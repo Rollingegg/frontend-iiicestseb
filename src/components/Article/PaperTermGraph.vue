@@ -37,7 +37,7 @@ export default {
           nodes.push({
             name: node.id,
             symbolSize: symbolSize,
-            category: isCenter ? 0 : isPaper ? 1 : 2,
+            category: isCenter ? 0 : isPaper ? 2 : 1,
             title: title,
             des:
               `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${title}</div>` +
@@ -73,18 +73,26 @@ export default {
     options() {
       let categories = [
         { name: "中心文章" },
-        { name: "关联文章" },
-        { name: "关键词" }
+        { name: "关键词" },
+        { name: "关联文章" }
       ];
       return {
         title: {
           text: "Literatures Relationship",
+          subtext: '注：文章之间的距离代表相关程度',
           textStyle: {
             fontSize: 20
           },
           top: 0,
           left: 0
         },
+        legend: [
+          {
+            data: categories.map(function(a) {
+              return a.name;
+            })
+          }
+        ],
         animationDurationUpdate: 1500,
         animationEasingUpdate: "quinticInOut",
         tooltip: {

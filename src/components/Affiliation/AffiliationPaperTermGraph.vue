@@ -33,7 +33,7 @@ export default {
             }
             return (node.size * maxSize) / 1.5;
           })(node.id);
-          let title=isPaper ? node.content.title : node.name;
+          let title = isPaper ? node.content.title : node.name;
           nodes.push({
             name: node.id,
             symbolSize: symbolSize,
@@ -41,13 +41,17 @@ export default {
             title: title,
             des:
               `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${title}</div>` +
-              (isPaper
+              (isCenter
+                ? ``
+                : isPaper
                 ? `被引数数：${
-                    node.content.cite ? node.content.cite : 0
-                  }<br/>评分：${node.content.score}`
+                    node.content.citationCountPaper
+                      ? node.content.citationCountPaper
+                      : 0
+                  }<br/>发表年份：${node.content.chronDate}`
                 : ""),
             label: {
-              show: symbolSize > 30,
+              show: symbolSize > 20,
               formatter: function(x) {
                 return x.data.title;
               }
@@ -72,25 +76,37 @@ export default {
     },
     options() {
       let categories = [
-        { name: "中心文章" },
-        { name: "关联文章" },
-        { name: "关键词" }
+        { name: "中心机构" },
+        { name: "发表文章" },
+        { name: "研究领域" }
       ];
       return {
         title: {
           text: "Research Domains Exploration",
+          subtext: "注：距离越近代表研究领域相关性越强",
           textStyle: {
             fontSize: 20
           },
-          top: 0,
+          bottom: 0,
           left: 0
         },
+        legend: [
+          {
+            data: categories.map(function(a) {
+              return a.name;
+            })
+          }
+        ],
         animationDurationUpdate: 1500,
         animationEasingUpdate: "quinticInOut",
         tooltip: {
           formatter: function(params) {
             if (params.data.source) {
-              return `共涉及${Number(params.data.weight).toFixed(0)}次`;
+              let relation =
+                String(params.data.source).split("-")[0] == "affiliation"
+                  ? "发表"
+                  : "相关";
+              return relation;
             } else {
               return params.data.des;
             }

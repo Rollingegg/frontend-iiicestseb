@@ -218,6 +218,8 @@ export default {
     init(){
       this.authorId = this.$route.query.id;
       this.activeName= "overview";
+      this.currentTab=null;
+      this.currentTab2=null; // 让图谱重新加载渲染
       this.getAuthorBaseInfo();
       this.getAuthorStatisticsInfo();
       this.getRecentPapers();

@@ -9,19 +9,19 @@
             <author-affiliation-graph height="300px" :data="authorAffiliationGraphData"></author-affiliation-graph>
           </div>
           <div v-if="searchType==='affiliation_name'">
-            <!-- <affiliation-paper-term-graph height="600px" :data="affiliationPaperTermGraphData"></affiliation-paper-term-graph> -->
+            <affiliation-paper-term-graph height="600px" :data="affiliationPaperTermGraphData"></affiliation-paper-term-graph>
           </div>
         </el-card>
       </el-col>
       <el-col :md="8">
         <el-card>
           <div slot="header" class="graph-card-header">研究领域词云</div>
-          <component :is="cg1" height="600px" :data="domainStatistics"></component>
+          <component :is="graphComponet1" height="600px" :data="domainStatistics"></component>
         </el-card>
       </el-col>
     </el-row>
     <el-card class="card-container">
-      <component :is="cg2" height="300px" :tableData="papersPublishPerYear"></component>
+      <component :is="graphComponet2" height="300px" :tableData="papersPublishPerYear"></component>
     </el-card>
   </div>
 </template>
@@ -36,9 +36,8 @@ export default {
   name: "AuthorGraphPage",
   data() {
     return {
-      cg1: null,
-      cg2: null,
-      cg3: null,
+      graphComponet1: null,
+      graphComponet2: null,
       papersPublishPerYear: [],
       limit: 1000,
       searchId: "",
@@ -147,9 +146,8 @@ export default {
     },
     getAffiliationPaperTermGraphData() {
       const id = this.searchId;
-      this.$get("/author/graph/partner", {
-        id: id,
-        limit: this.limit
+      this.$get("/affiliation/graph/paper/with/term", {
+        id: id
       }).then(r => {
         if (r.data.status) {
           this.affiliationPaperTermGraphData = r.data.result;
@@ -169,10 +167,10 @@ export default {
         this.getAuthorPartners();
         this.getAuthorAffiliationPartners();
       }else if(this.searchType === "affiliation_name"){
-        // this.getAffiliationPaperTermGraphData();
+        this.getAffiliationPaperTermGraphData();
       }
-      this.cg2 = PaperStatisticGraph;
-      this.cg1 = TermWordCloud;
+      this.graphComponet2 = PaperStatisticGraph;
+      this.graphComponet1 = TermWordCloud;
     },
     initParams(keyword) {
       this.searchType = this.keyword["type"];
