@@ -42,15 +42,7 @@ export default {
             layout: "force",
             symbolSize: 80,
             roam: true,
-            edgeSymbol: ["circle", "arrow"],
             edgeSymbolSize: [4, 10],
-            edgeLabel: {
-              normal: {
-                textStyle: {
-                  fontSize: 20
-                }
-              }
-            },
             force: {
               repulsion: 2500,
               edgeLength: [10, 50]

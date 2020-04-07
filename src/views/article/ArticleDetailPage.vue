@@ -154,6 +154,9 @@
         <rec-affiliations :affiliations="recommendedAffiliations"></rec-affiliations>
       </el-col>
     </el-row>
+    <div style="padding:0 20px">
+      <paper-term-graph height="600px" :data="paperTermGraphData"></paper-term-graph>
+    </div>
   </div>
 </template>
 
@@ -162,13 +165,14 @@ import { mapState } from "vuex";
 import RecPapers from "@/components/recommendation/PaperRecommendation";
 import RecAuthors from "@/components/recommendation/AuthorRecommendation";
 import RecAffiliations from "@/components/recommendation/AffiliationRecommendation";
+import PaperTermGraph from "@/components/Article/PaperTermGraph";
 function uniq(array) {
   let temp = [];
   let index = [];
   let l = array.length;
   for (let i = 0; i < l; i++) {
     for (let j = i + 1; j < l; j++) {
-      if (array[i] === array[j]) {
+      if (array[i].affId === array[j].affId) {
         i++;
         j = i;
       }
@@ -194,21 +198,25 @@ export default {
       recommendedPapers: [],
       recommendedAuthors: [],
       recommendedAffiliations: [],
+      paperTermGraphData: {},
       loading: true
     };
   },
   components: {
     RecPapers,
     RecAuthors,
-    RecAffiliations
+    RecAffiliations,
+    PaperTermGraph
   },
   computed: {
     affiliations() {
-      // TODO 需要提取机构ID
-      let affiliations = [{ affName: "Nanjing University", affId: 1 }];
-      // this.authors.forEach(item => {
-      //   affiliations.push({affName:item.affiliationName,affId:item.affiliationId});
-      // });
+      let affiliations = [];
+      this.authors.forEach(item => {
+        affiliations.push({
+          affName: item.affiliationName,
+          affId: item.affiliationId
+        });
+      });
       return uniq(affiliations);
     },
     ...mapState({
@@ -302,23 +310,32 @@ export default {
       let id = this.articleId;
       this.$post("/admin/paper/score", {
         paperId: Number(id)
-      })
-        .then(r => {
-          if (r.data.status) {
-            this.score = r.data.result.score;
-            this.$message({
-              showClose: true,
-              message: "重算评分成功",
-              type: "success"
-            });
-          }else{
-            this.$message({
-              showClose: true,
-              message: "重算评分失败",
-              type: "error"
-            });
-          }
-        });
+      }).then(r => {
+        if (r.data.status) {
+          this.score = r.data.result.score;
+          this.$message({
+            showClose: true,
+            message: "重算评分成功",
+            type: "success"
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: "重算评分失败",
+            type: "error"
+          });
+        }
+      });
+    },
+    getPaperTermGraphData() {
+      let id = this.articleId;
+      this.$get("/paper/graph/paper-term-paper/center", {
+        id: id
+      }).then(r => {
+        if (r.data.status) {
+          this.paperTermGraphData = r.data.result;
+        }
+      });
     },
     openAuthor(id) {
       // TODO 把调用方法处的传入参数改为id
@@ -361,6 +378,7 @@ export default {
     this.getRecommendPapers();
     this.getRecommendAuthors();
     this.getRecommendAffiliations();
+    this.getPaperTermGraphData();
   }
 };
 </script>

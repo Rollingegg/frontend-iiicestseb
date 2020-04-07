@@ -52,7 +52,7 @@
               <el-card class="card-container">
                 <div slot="header">Research Domains Ranking</div>
                 <div>
-                  <domain-pie height="600px" :data="domainStatistics"></domain-pie>
+                  <domain-pie height="600px" :data="domainStatistics" @on-click-term="openDomain"></domain-pie>
                 </div>
               </el-card>
             </el-col>
@@ -145,7 +145,7 @@
 <script>
 import PaperList from "@/components/paper/PaperListWrapper";
 import AuthorGraphPage from "../author/AuthorGraphPage";
-import DomainPie from "@/components/Author/ConferencePieGraph";
+import DomainPie from "@/components/Author/DomainsPieGraph";
 import ActiveAuthorGraph from "@/components/Affiliation/ActiveAuthorGraph";
 import { mapState } from "vuex";
 export default {

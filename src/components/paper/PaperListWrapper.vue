@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="20">
-        <el-col :md="16">
+        <el-col>
             <div v-loading="gettingResult" element-loading-background="rgba(255,255,255,0.95)">
                 <div class="one-line">
                     <div>Papers({{paperCount}})</div>
@@ -30,11 +30,13 @@
             </div>
         </el-col>
 
+        <!--
         <el-col :md="8">
-            <div class="one-line">
-                <div>Filter in Results</div>
-            </div>
-        </el-col>
+                    <div class="one-line">
+                        <div>Filter in Results</div>
+                    </div>
+                </el-col>
+                -->
 
     </el-row>
 </template>

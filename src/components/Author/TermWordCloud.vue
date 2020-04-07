@@ -67,7 +67,7 @@ export default {
             // Text size range which the value in data will be mapped to.
             // Default to have minimum 12px and maximum 60px size.
 
-            sizeRange: [6, 60],
+            sizeRange: [8, 60],
 
             // Text rotation range and step in degree. Text will be rotated randomly in range [-90, 90] by rotationStep 45
 

@@ -107,7 +107,7 @@
               <el-card class="card-container">
                 <div slot="header">Research Domains Ranking</div>
                 <div>
-                  <domain-pie height="300px" :data="domainStatistics"></domain-pie>
+                  <domain-pie height="300px" :data="domainStatistics" @on-click-term="openDomain"></domain-pie>
                 </div>
               </el-card>
             </el-col>
@@ -218,6 +218,8 @@ export default {
     init(){
       this.authorId = this.$route.query.id;
       this.activeName= "overview";
+      this.currentTab=null;
+      this.currentTab2=null; // 让图谱重新加载渲染
       this.getAuthorBaseInfo();
       this.getAuthorStatisticsInfo();
       this.getRecentPapers();
