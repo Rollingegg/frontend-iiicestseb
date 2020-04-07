@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import LCard from "@/components/Article/LiteratureCard";
+    import LCard from "@/components/paper/LiteratureCard";
 
     export default {
         name: "PaperList",
@@ -114,18 +114,18 @@
                     term: "termKeyword",
                     all: "allKeyword",
                     page: "page",
+                    type: "type",
                     limit: "limit",
                     start_year: "chronDateMinKeyword",
                     end_year: "chronDateMaxKeyword"
                 };
-                this.params.type = keyword.type;
                 for (const key in keyword) {
-                    if (keyword.hasOwnProperty(key) && key !== "type") {
+                    if (keyword.hasOwnProperty(key)) {
                         this.params[paramsMap[key]] = keyword[key];
                     }
                 }
             },
-            deletedPaper(deleted){
+            deletedPaper (deleted) {
                 console.log(deleted);
                 this.fetch()
             }

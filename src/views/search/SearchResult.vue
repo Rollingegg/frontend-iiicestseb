@@ -18,14 +18,14 @@
             </el-aside>
 
             <el-main>
-                <paper-list :keyword="searchParams"></paper-list>
+                <paper-list :keyword="searchParams" :isById="false"></paper-list>
             </el-main>
         </el-container>
     </div>
 </template>
 
 <script>
-    import PaperList from '../author/PaperListPage';
+    import PaperList from '@/components/paper/PaperListWrapper';
 
     export default {
         name: 'SearchResult',
@@ -49,11 +49,11 @@
         components: {
             PaperList
         },
-        watch:{
+        watch: {
             $route: "refreshData"
         },
         methods: {
-            refreshData() {
+            refreshData () {
                 this.searchParams = JSON.parse(this.$route.query.search_condition);
             },
             handleFilter () {

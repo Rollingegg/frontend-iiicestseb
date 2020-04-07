@@ -37,7 +37,7 @@
           </div>
         </el-card>
 
-        <LiteratureList searchType="term" :searchId="String(keywordId)"></LiteratureList>
+        <LiteratureList searchType="term" :isById="true" :searchId="String(keywordId)"></LiteratureList>
       </el-col>
 
       <el-col :md="8" class="domain-recommend">
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import LiteratureList from "@/components/Article/LiteratureList";
+import LiteratureList from "@/components/paper/PaperListWrapper";
 import AffiliationOfTermGraph from "@/components/keyword/AffiliationOfTermGraph";
 import Any_YearGraph from "@/components/graphs/Any_YearGraph";
 

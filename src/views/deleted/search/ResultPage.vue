@@ -28,7 +28,7 @@
 
 <script>
     import SearchBox from '../searchInput/SearchBox';
-    import PaperList from '../../author/PaperListPage';
+    import PaperList from '../author/PaperListPage';
 
     export default {
         name: 'ResPage',

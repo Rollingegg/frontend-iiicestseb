@@ -157,7 +157,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab!==null" :is="currentTab" searchType="author_name" :searchId="String(authorId)"></component>
+        <component v-if="currentTab!==null" :is="currentTab" searchType="author_name" :isById="true" :searchId="String(authorId)"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
@@ -168,7 +168,7 @@
 
 <script>
 // const PaperList = resolve => require(['./PaperListPage.vue'], resolve);
-import PaperList from "@/components/Article/LiteratureList";
+import PaperList from "@/components/paper/PaperListWrapper";
 import AuthorGraphPage from "./AuthorGraphPage";
 import DomainPie from "@/components/Author/DomainsPieGraph";
 import ConferencePie from "@/components/Author/ConferencePieGraph";

@@ -133,7 +133,7 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab2!==null" :is="currentTab2" searchType="affiliation_name" :searchId="String(affiliationId)"></component>
+        <component v-if="currentTab2!==null" :is="currentTab2" searchType="affiliation_name" :isById="true" :searchId="String(affiliationId)"></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <component v-if="currentTab3!==null" :is="currentTab3" :keyword="keyword"></component>
@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import PaperList from "@/components/Article/LiteratureList";
+import PaperList from "@/components/paper/PaperListWrapper";
 import AuthorGraphPage from "../author/AuthorGraphPage";
 import DomainPie from "@/components/Author/ConferencePieGraph";
 import ActiveAuthorGraph from "@/components/Affiliation/ActiveAuthorGraph";
