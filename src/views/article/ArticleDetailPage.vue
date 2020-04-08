@@ -329,8 +329,12 @@ export default {
     },
     getPaperTermGraphData() {
       let id = this.articleId;
+      const limit=200;
+      const minDegree=5;
       this.$get("/paper/graph/paper-term-paper/center", {
-        id: id
+        id: id,
+        paperNumLimit: limit,
+        paperDegreeLimit: minDegree
       }).then(r => {
         if (r.data.status) {
           this.paperTermGraphData = r.data.result;

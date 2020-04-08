@@ -18,9 +18,36 @@ export default {
     data: Object
   },
   computed: {
-    nodes() {
+    // nodes() {
+    //   return nodes;
+    // },
+    edges() {
+      let edges = [];
+      if (this.data.edges) {
+        this.data.edges.forEach(edge => {
+          edges.push({
+            source: edge.source,
+            target: edge.target,
+            weight: edge.weight
+          });
+        });
+      }
+      return edges;
+    },
+    options() {
       let nodes = [];
+      let categories = [
+        { name: "中心文章" },
+        // { name: "关键词" },
+        {
+          name: "关联文章",
+          itemStyle: {
+            color: "rgba(64,158,255, 0.5)"
+          }
+        }
+      ];
       if (this.data.vertexes) {
+        let categoryIndex = 1; //初始下标是1
         this.data.vertexes.forEach(node => {
           let isPaper = node.type == "paper";
           let isCenter = node.id == this.data.centerId;
@@ -33,11 +60,15 @@ export default {
             }
             return (node.size * maxSize) / 1.5;
           })(node.id);
-          let title=isPaper ? node.content.title : node.name;
+          let title = isPaper ? node.content.title : node.name;
+          if (!isPaper) {
+            categoryIndex++;
+            categories.push({ name: node.name });
+          }
           nodes.push({
             name: node.id,
             symbolSize: symbolSize,
-            category: isCenter ? 0 : isPaper ? 2 : 1,
+            category: isCenter ? 0 : isPaper ? 1 : categoryIndex,
             title: title,
             des:
               `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${title}</div>` +
@@ -55,31 +86,20 @@ export default {
           });
         });
       }
-      return nodes;
-    },
-    edges() {
-      let edges = [];
-      if (this.data.edges) {
-        this.data.edges.forEach(edge => {
-          edges.push({
-            source: edge.source,
-            target: edge.target,
-            weight: edge.weight
-          });
-        });
+      let seletedItem = {};
+      const showLimit = 3;
+      for (let i = 0; i < categories.length; i++) {
+        let key_name = categories[i].name;
+        if (i > showLimit + 1) {
+          seletedItem[key_name] = false;
+        } else {
+          seletedItem[key_name] = true;
+        }
       }
-      return edges;
-    },
-    options() {
-      let categories = [
-        { name: "中心文章" },
-        { name: "关键词" },
-        { name: "关联文章" }
-      ];
       return {
         title: {
           text: "Literatures Relationship",
-          subtext: '注：文章之间的距离代表相关程度',
+          subtext: "注：文章之间的距离代表相关程度",
           textStyle: {
             fontSize: 20
           },
@@ -90,7 +110,10 @@ export default {
           {
             data: categories.map(function(a) {
               return a.name;
-            })
+            }),
+            orient: "vertical",
+            right: 0,
+            selected: seletedItem
           }
         ],
         animationDurationUpdate: 1500,
@@ -108,7 +131,7 @@ export default {
           {
             type: "graph",
             layout: "force",
-            data: this.nodes,
+            data: nodes,
             links: this.edges,
             categories: categories,
             // 聚焦点及其相邻边
@@ -116,7 +139,7 @@ export default {
             roam: true,
             draggable: true,
             force: {
-              repulsion: 1000
+              repulsion: 200
             },
             lineStyle: {
               width: 2,
