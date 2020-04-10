@@ -2,7 +2,9 @@
     <el-container id="container" direction="vertical">
         <global-nav/>
         <el-main>
+        <transition name="el-fade-in">
             <router-view/>
+        </transition>
         </el-main>
         <global-footer :copyright="copyright"/>
     </el-container>

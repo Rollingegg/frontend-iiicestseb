@@ -67,7 +67,10 @@ let constRouter = [
 
 let router = new Router({
     mode: 'history',
-    routes: constRouter
+    routes: constRouter,
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 }
+    }
 });
 
 const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult'];
