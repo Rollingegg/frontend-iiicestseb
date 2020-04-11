@@ -106,9 +106,9 @@
                 }
             },
             gettingResult (news, olds) {
-                console.log(news);
-                console.log("===");
-                console.log(olds);
+                // console.log(news);
+                // console.log("===");
+                // console.log(olds);
             }
         },
         methods: {
@@ -118,7 +118,7 @@
             },
             fetch () {
                 this.gettingResult = true;
-                console.log(this.gettingResult);
+                // console.log(this.gettingResult);
                 if (this.isById) {
                     // todo:后端接口这里需要改名
                     let paramName = this.searchType !== 'term' ? 'id' : "termId";
@@ -203,7 +203,7 @@
                 }
             },
             deletedPaper (deleted) {
-                console.log(deleted);
+                // console.log(deleted);
                 this.fetch()
             }
         },
