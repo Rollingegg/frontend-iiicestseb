@@ -9,7 +9,16 @@
           icon="el-icon-school"
           @click="openAffiliation(baseInfo.affiliationId)"
         >{{baseInfo.affiliationName}}</el-link>
-        <div style="margin-top:5px"><el-button size="mini" type="primary" v-for="(item, index) in domainStatistics.slice(0,3)" :key="index" @click="openDomain(item.id)">{{item.name}}</el-button></div>
+        <div>
+          <el-button
+            size="mini"
+            type="primary"
+            v-for="(item, index) in domainStatistics.slice(0,3)"
+            :key="index"
+            @click="openDomain(item.id)"
+            style="margin-top:5px"
+          >{{item.name}}</el-button>
+        </div>
       </div>
     </div>
     <el-tabs
@@ -59,9 +68,7 @@
                     <el-col :md="12">
                       <div class="statistic-card">
                         <div class="statistic-content">
-                          <div
-                            class="statistic-num"
-                          >{{parseFloat(Number(statisticInfo.hindex).toFixed(1))}}</div>
+                          <div class="statistic-num">{{statisticInfo.hindex}}</div>
                           <div>H-Index</div>
                         </div>
                         <div class="statistic-icon">
@@ -84,9 +91,7 @@
                     <el-col :md="12">
                       <div class="statistic-card">
                         <div class="statistic-content">
-                          <div
-                            class="statistic-num"
-                          >{{parseFloat(Number(statisticInfo.gindex).toFixed(1))}}</div>
+                          <div class="statistic-num">{{statisticInfo.gindex}}</div>
                           <div>G-Index</div>
                         </div>
                         <div class="statistic-icon">
@@ -116,11 +121,15 @@
                 <div slot="header">Recent Papers</div>
                 <div class="recent-paper-container">
                   <div class="recent-paper-item" v-for="(item, index) in recentPapers" :key="index">
-                    <div><el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link></div>
-                    <div><el-link
-                      icon="el-icon-date"
-                      :underline="false"
-                    >{{String(item.chronDate).substr(0,4)}}</el-link></div>
+                    <div>
+                      <el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link>
+                    </div>
+                    <div>
+                      <el-link
+                        icon="el-icon-date"
+                        :underline="false"
+                      >{{String(item.chronDate).substr(0,4)}}</el-link>
+                    </div>
                   </div>
                 </div>
               </el-card>
@@ -156,7 +165,13 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="Papers" name="papers">
-        <component v-if="currentTab!==null" :is="currentTab" searchType="author_name" :isById="true" :searchId="String(authorId)"></component>
+        <component
+          v-if="currentTab!==null"
+          :is="currentTab"
+          searchType="author_name"
+          :isById="true"
+          :searchId="String(authorId)"
+        ></component>
       </el-tab-pane>
       <el-tab-pane label="SchGraph" name="graph">
         <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
@@ -214,11 +229,11 @@ export default {
     refreshData(newVal, oldVa) {
       this.init();
     },
-    init(){
+    init() {
       this.authorId = this.$route.query.id;
-      this.activeName= "overview";
-      this.currentTab=null;
-      this.currentTab2=null; // 让图谱重新加载渲染
+      this.activeName = "overview";
+      this.currentTab = null;
+      this.currentTab2 = null; // 让图谱重新加载渲染
       this.getAuthorBaseInfo();
       this.getAuthorStatisticsInfo();
       this.getRecentPapers();
