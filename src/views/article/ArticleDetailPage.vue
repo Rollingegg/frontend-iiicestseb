@@ -5,10 +5,10 @@
         <div class="one-line">
           <div>
             Article Detail
-            <el-tooltip effect="light" style="margin:4px" content="Scores" placement="bottom">
+            <el-tooltip effect="light" style="margin:4px" content="论文的评分" placement="bottom">
               <span style="color:#409EFF">
                 <i class="fa fa-volume-up" aria-hidden="true"></i>
-                {{score}}
+                {{parseFloat(Number(score)).toFixed(4)}}
               </span>
             </el-tooltip>
           </div>
@@ -119,7 +119,7 @@
       <el-col :md="8" class="col-container">
         <div class="one-line">
           <div>Reference ({{references.length}})</div>
-          <div>
+          <div v-if="isAdmin">
             <el-link :underline="false" style="font-size:24px" @click="resetArticleScore">重算评分</el-link>
           </div>
         </div>
@@ -156,7 +156,7 @@
     </el-row>
     <div style="padding:12px">
       <el-card shadow="always">
-      <paper-term-graph height="600px" :data="paperTermGraphData"></paper-term-graph>
+        <paper-term-graph height="600px" :data="paperTermGraphData"></paper-term-graph>
       </el-card>
     </div>
   </div>
@@ -223,7 +223,10 @@ export default {
     },
     ...mapState({
       user: state => state.account.user
-    })
+    }),
+    isAdmin() {
+      return !this.$isEmpty(this.user) && this.user.privilegeLevel === "管理员";
+    }
   },
   methods: {
     handleCurrentChange(val) {
@@ -331,8 +334,8 @@ export default {
     },
     getPaperTermGraphData() {
       let id = this.articleId;
-      const limit=200;
-      const minDegree=5;
+      const limit = 200;
+      const minDegree = 5;
       this.$get("/paper/graph/paper-term-paper/center", {
         id: id,
         paperNumLimit: limit,
