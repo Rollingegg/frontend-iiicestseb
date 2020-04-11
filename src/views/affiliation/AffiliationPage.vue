@@ -95,12 +95,11 @@
                 <div slot="header">Recent Papers</div>
                 <div class="recent-paper-container">
                   <div class="recent-paper-item" v-for="(item, index) in recentPapers" :key="index">
-                    <el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link>
-                    <el-link
+                    <div><el-link type="primary" @click="openArticle(item.id)">{{item.title}}</el-link></div>
+                    <div><el-link
                       icon="el-icon-date"
                       :underline="false"
-                      style="float:right"
-                    >{{String(item.chronDate).substr(0,4)}}</el-link>
+                    >{{String(item.chronDate).substr(0,4)}}</el-link></div>
                   </div>
                 </div>
               </el-card>
@@ -385,6 +384,8 @@ export default {
   }
   .recent-paper-item {
     margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
   }
   .card-container {
     margin-top: @base-interval;

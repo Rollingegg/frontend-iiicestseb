@@ -23,6 +23,7 @@ export default {
     nodes() {
       let nodes = [];
       if (this.data.vertexes) {
+        // let rank = 0;
         this.data.vertexes.forEach(node => {
           let isPaper = node.type == "paper";
           let isCenter = node.id == this.data.centerId;
@@ -33,7 +34,8 @@ export default {
             } else if (isPaper) {
               return node.size > 0.5 ? maxSize / 5 : (node.size * maxSize) / 10;
             }
-            return (node.size * maxSize) / 1.5;
+            // rank++;
+            return (node.size * maxSize);
           })(node.id);
           let title = isPaper ? node.content.title : node.name;
           nodes.push({
@@ -51,7 +53,7 @@ export default {
                       ? node.content.citationCountPaper
                       : 0
                   }<br/>发表年份：${node.content.chronDate}`
-                : ""),
+                : ``),
             label: {
               show: symbolSize > 20,
               formatter: function(x) {
@@ -79,8 +81,16 @@ export default {
     options() {
       let categories = [
         { name: "中心机构" },
-        { name: "发表文章" },
-        { name: "研究领域" }
+        { name: "发表文章",
+          itemStyle: {
+            color: "rgba(64,158,255, 0.5)"
+          } 
+        },
+        { name: "研究领域",
+          itemStyle: {
+            color: "#E6A23C"
+          } 
+        }
       ];
       return {
         title: {

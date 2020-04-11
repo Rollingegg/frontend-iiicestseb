@@ -150,12 +150,14 @@
             small
           ></el-pagination>
         </div>
-        <rec-authors :authors="recommendedAuthors"></rec-authors>
-        <rec-affiliations :affiliations="recommendedAffiliations"></rec-affiliations>
+        <!-- <rec-authors :authors="recommendedAuthors"></rec-authors> -->
+        <!-- <rec-affiliations :affiliations="recommendedAffiliations"></rec-affiliations> -->
       </el-col>
     </el-row>
-    <div style="padding:0 20px">
+    <div style="padding:12px">
+      <el-card shadow="always">
       <paper-term-graph height="600px" :data="paperTermGraphData"></paper-term-graph>
+      </el-card>
     </div>
   </div>
 </template>
@@ -193,7 +195,7 @@ export default {
       keywords: [],
       authors: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       score: 0.0,
       recommendedPapers: [],
       recommendedAuthors: [],
@@ -342,15 +344,12 @@ export default {
       });
     },
     openAuthor(id) {
-      // TODO 把调用方法处的传入参数改为id
       this.openDetailPage("author", id);
     },
     openAffiliation(id) {
-      // TODO 把调用方法处的传入参数改为id
       this.openDetailPage("affiliation", id);
     },
     openDomain(id) {
-      // TODO 把调用方法处的传入参数改为id
       this.openDetailPage("keyword", id);
     },
     openDetailPage(detailType, queryId) {
@@ -380,8 +379,8 @@ export default {
     this.getArticleDetail();
     this.getArticleScore();
     this.getRecommendPapers();
-    this.getRecommendAuthors();
-    this.getRecommendAffiliations();
+    // this.getRecommendAuthors();
+    // this.getRecommendAffiliations();
     this.getPaperTermGraphData();
   }
 };
