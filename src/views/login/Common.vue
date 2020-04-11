@@ -8,20 +8,26 @@
                 </div>
                 <div class="desc"></div>
             </div>
-            <component :is="componentName" @regist="handleRegist" class="main-content"></component>
+
+            <component :is="componentName" @register="handleRegister" class="main-content"/>
         </div>
+
         <global-footer :copyright="copyright"/>
     </div>
 </template>
 
 <script>
-    import GlobalFooter from '../common/GlobalFooter';
+    import GlobalFooter from '@/components/headerAndFooter/GlobalFooter';
     import Login from './Login';
-    import Regist from './Regist';
+    import Register from './Register';
 
     export default {
         name: 'Common',
-        components: {GlobalFooter, Login, Regist},
+        components: {
+            GlobalFooter,
+            Login,
+            Register
+        },
         data () {
             return {
                 componentName: this.getPage()
@@ -37,12 +43,12 @@
         },
         methods: {
             getPage () {
-                if (this.$isEmpty(this.$route.params.regist)) {
+                if (this.$isEmpty(this.$route.params.register)) {
                     return 'Login';
                 }
-                return this.$route.params.regist;
+                return this.$route.params.register;
             },
-            handleRegist (val) {
+            handleRegister (val) {
                 this.componentName = val;
             }
         }
@@ -55,7 +61,7 @@
         flex-direction: column;
         height: 100vh;
         overflow: auto;
-        background: #f0f2f5 url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') no-repeat center 110px;
+        background: #f0f2f5 url('~/static/img/common.svg') no-repeat center 110px;
         background-size: 100%;
 
         .content {

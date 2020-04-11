@@ -1,184 +1,203 @@
 <template>
-    <div class="login">
-        <a-form @submit.prevent="doLogin" :form="form">
-            <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;" :activeKey="activeKey"
-                    @change="handleTabsChange">
-                <a-tab-pane tab="账户密码登录" key="1">
-                    <a-form-item>
-                        <a-input size="large"
-                                 v-decorator="['username',{rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]">
-                            <a-icon slot="prefix" type="user"></a-icon>
-                        </a-input>
-                    </a-form-item>
+  <div class="login">
+    <el-form :model="loginForm" ref="loginForm" size="large" :rules="rules">
+      <el-tabs v-model="activeTab" stretch>
+        <el-tab-pane label="账户密码登录" name="username">
+          <el-form-item prop="username">
+            <el-input v-model="loginForm.username" clearable>
+              <i slot="prefix" class="el-icon-user" />
+            </el-input>
+          </el-form-item>
 
-                    <a-form-item>
-                        <a-input size="large" type="password"
-                                 v-decorator="['password',{rules: [{ required: true, message: '请输入密码', whitespace: true}]}]">
-                            <a-icon slot="prefix" type="lock"></a-icon>
-                        </a-input>
-                    </a-form-item>
-                </a-tab-pane>
+          <el-form-item prop="password">
+            <el-input
+              type="password"
+              v-model="loginForm.password"
+              clearable
+              @keyup.enter.native="doLogin('loginForm')"
+            >
+              <i slot="prefix" class="el-icon-lock" />
+            </el-input>
+          </el-form-item>
+        </el-tab-pane>
 
-                <a-tab-pane tab="手机号登录" key="2">
-                    <a-form-item>
-                        <a-input size="large">
-                            <a-icon slot="prefix" type="mobile"></a-icon>
-                        </a-input>
-                    </a-form-item>
-                    <a-form-item>
-                        <a-row :gutter="8" style="margin: 0 -4px">
-                            <a-col :span="16">
-                                <a-input size="large">
-                                    <a-icon slot="prefix" type="mail"></a-icon>
-                                </a-input>
-                            </a-col>
-                            <a-col :span="8" style="padding-left: 4px">
-                                <a-button style="width: 100%" class="captcha-button" size="large" @click="getCaptcha">
-                                    获取验证码
-                                </a-button>
-                            </a-col>
-                        </a-row>
-                    </a-form-item>
-                </a-tab-pane>
-            </a-tabs>
+        <el-tab-pane label="手机号登录" name="phone">
+          <el-form-item prop="tel">
+            <el-input size="large" v-model="loginForm.tel">
+              <i slot="prefix" class="el-icon-mobile-phone" />
+            </el-input>
+          </el-form-item>
 
-            <a-form-item>
-                <a-button :loading="loading" style="width: 100%; margin-top: 4px" size="large" htmlType="submit"
-                          type="primary">
-                    登录
-                </a-button>
-            </a-form-item>
-            <div>
-                <a style="float: left" @click="noRegist">游客登陆</a>
-            </div>
-            <div>
-                <a style="float: right" @click="regist">注册账户</a>
-            </div>
-        </a-form>
-    </div>
+          <el-form-item prop="smscode">
+            <el-row :gutter="8" style="margin: 0 -4px">
+              <el-col :span="16">
+                <el-input v-model="loginForm.smscode">
+                  <i slot="prefix" class="el-icon-connection" />
+                </el-input>
+              </el-col>
+              <el-col :span="8" style="padding-left: 4px">
+                <el-button style="width: 100%" class="captcha-button" @click="getCaptcha">获取验证码</el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
+        </el-tab-pane>
+      </el-tabs>
+
+      <el-form-item>
+        <el-button
+          :loading="loading"
+          style="width: 100%;"
+          @click="doLogin('loginForm')"
+          type="primary"
+        >登录</el-button>
+      </el-form-item>
+      <div>
+        <el-link type="primary" :underline="false" style="float: left" @click="noRegister">游客登陆</el-link>
+      </div>
+      <div>
+        <el-link type="primary" :underline="false" style="float: right" @click="register">注册账户</el-link>
+      </div>
+    </el-form>
+  </div>
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
+import { mapMutations, mapState } from "vuex";
 
-    export default {
-        beforeCreate () {
-            this.form = this.$form.createForm(this);
-        },
-        name: 'Login',
-        data () {
-            return {
-                loading: false,
-                activeKey: '1'
-            };
-        },
-        computed: {
-            systemName () {
-                return this.$store.state.setting.systemName;
-            },
-            copyright () {
-                return this.$store.state.setting.copyright;
-            }
-        },
-        created () {
-            this.$db.clear();
-            this.$router.options.routes = [];
-        },
-        methods: {
-            doLogin () {
-                if (this.activeKey === '1') {
-                    // 用户名密码登录
-                    this.form.validateFields(['username', 'password'], (errors, values) => {
-                        if (!errors) {
-                            this.loading = true;
-                            let name = values.username;
-                            let password = values.password;
-                            this.$postJson('user/login', {
-                                username: name,
-                                password: password
-                            }).then((r) => {
-                                if (r.data.status) {
-                                    let data = r.data.result;
-                                    this.saveLoginData(data);
-                                    setTimeout(() => {
-                                        this.loading = false;
-                                    }, 500);
-                                    this.$router.push('/searchInput');
-                                } else {
-                                    this.$message.error('用户名或者密码错误');
-                                    setTimeout(() => {
-                                        this.loading = false;
-                                    }, 500);
-                                }
-                            }).catch((e) => {
-                                console.error(e);
-                                setTimeout(() => {
-                                    this.loading = false;
-                                }, 500);
-                            });
-                        }
-                    });
-                }
-                if (this.activeKey === '2') {
-                    // 手机验证码登录
-                    this.$message.warning('暂未开发');
-                }
-            },
-            regist () {
-                this.$emit('regist', 'Regist');
-            },
-            noRegist () {
-                this.$router.push('/searchInput');
-            },
-            getCaptcha () {
-                this.$message.warning('暂未开发');
-            },
-            handleTabsChange (val) {
-                this.activeKey = val;
-            },
-            ...mapMutations({
-                // setToken: 'account/setToken',
-                // setExpireTime: 'account/setExpireTime',
-                // setPermissions: 'account/setPermissions',
-                // setRoles: 'account/setRoles',
-                setUser: 'account/setUser',
-                // setTheme: 'setting/setTheme',
-                // setLayout: 'setting/setLayout',
-                // setMultipage: 'setting/setMultipage',
-                // fixSiderbar: 'setting/fixSiderbar',
-                // fixHeader: 'setting/fixHeader',
-                setColor: 'setting/setColor'
-            }),
-            saveLoginData (data) {
-                // this.setToken(data.token);
-                // this.setExpireTime(data.exipreTime);
-                this.setUser(data);
-                // this.setPermissions(data.permissions);
-                // this.setRoles(data.roles);
-                // this.setTheme(data.config.theme);
-                // this.setLayout(data.config.layout);
-                // this.setMultipage(data.config.multiPage === '1');
-                // this.fixSiderbar(data.config.fixSiderbar === '1');
-                // this.fixHeader(data.config.fixHeader === '1');
-                // this.setColor(data.config.color);
-            }
-        }
+export default {
+  name: "Login",
+  data() {
+    return {
+      isReload: false,
+      loading: false,
+      activeTab: "username",
+      loginForm: {
+        username: "",
+        password: "",
+        tel: "",
+        smscode: ""
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
     };
+  },
+  computed: {
+    ...mapState({
+      user: state => state.account.user
+    })
+  },
+  created() {
+    this.$db.clear();
+    if (this.user.username) {
+      return window.location.reload();
+    }
+    this.isReload = true;
+  },
+  methods: {
+    doLogin(formName) {
+      if (this.activeTab === "username") {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.loading = true;
+            let name = this.loginForm.username;
+            let password = this.loginForm.password;
+            if (
+              !(
+                this.handleUsernameCheck(name) &&
+                this.handlePasswordLevel(password)
+              )
+            ) {
+              this.setMessageAndBtnLoading("用户名或者密码错误");
+              return;
+            }
+
+            this.$postJson("user/login", {
+              username: name,
+              password: password
+            })
+              .then(r => {
+                if (r.data.status) {
+                  let data = r.data.result;
+                  this.saveLoginData(data);
+                  this.setMessageAndBtnLoading();
+                  this.$router.push("/searchFrame/searchHome");
+                } else {
+                  this.setMessageAndBtnLoading(r.data.result);
+                }
+              })
+              .catch(() => {
+                this.setMessageAndBtnLoading();
+              });
+          }
+        });
+      }
+      if (this.activeTab === "phone") {
+        // 手机验证码登录
+        this.$message.warning("暂未开发");
+      }
+    },
+    setMessageAndBtnLoading(message) {
+      setTimeout(() => {
+        this.loading = false;
+        message && this.$message.error(message);
+      }, 500);
+    },
+    register() {
+      this.$emit("register", "Register");
+    },
+    noRegister() {
+      this.$router.push("/searchFrame/searchHome");
+    },
+    getCaptcha() {
+      this.$message.warning("暂未开发");
+    },
+    handleUsernameCheck(name) {
+      return (
+        name.length &&
+        name.length < 21 &&
+        name.length > 3 &&
+        name.indexOf(" ") === -1
+      );
+    },
+    handlePasswordLevel(value) {
+      if (value.length < 6 || value.length > 20) return !1;
+      let level = 0;
+      return (
+        /[0-9]/.test(value) && level++,
+        /[a-zA-Z]/.test(value) && level++,
+        /[^0-9a-zA-Z_]/.test(value) && level++,
+        level >= 1
+      );
+    },
+    ...mapMutations({
+      setExpireTime: "account/setExpireTime",
+      setUser: "account/setUser"
+    }),
+    saveLoginData(data) {
+      this.setExpireTime(Date.now() + 3600000);
+      this.setUser(data);
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
-    .login {
-        .icon {
-            font-size: 24px;
-            color: rgba(0, 0, 0, 0.2);
-            margin-left: 16px;
-            vertical-align: middle;
-            cursor: pointer;
-            transition: color 0.3s;
+.login {
+  .icon {
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.2);
+    margin-left: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
 
-            &:hover {
-                color: #1890ff;
-            }
-        }
+    &:hover {
+      color: #1890ff;
     }
+  }
+}
 </style>

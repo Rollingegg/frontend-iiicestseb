@@ -10,23 +10,22 @@ import request from './utils/request';
 import userfulFunctions from './utils/usefulFunction';
 import './utils/install';
 
-import VueApexCharts from 'vue-apexcharts';
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.config.productionTip = false;
-Vue.use(Antd);
-Vue.use(db);
-Vue.use(VueApexCharts);
-Vue.use(ElementUI);
+import 'font-awesome/css/font-awesome.css'
 
-Vue.component('apexchart', VueApexCharts);
+import echarts from 'echarts';
+import moment from 'moment';
+
+Vue.config.productionTip = false;
+Vue.use(db);
+Vue.use(ElementUI);
 
 Vue.use({
     install (Vue) {
         Vue.prototype.$db = db;
+        Vue.prototype.$echarts = echarts;
     }
 });
 
@@ -39,6 +38,9 @@ Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
 Vue.prototype.$isEmpty = userfulFunctions.isEmpty;
+Vue.prototype.$debounce = userfulFunctions.fnDebounce;
+Vue.prototype.$throttle = userfulFunctions.fnThrottle;
+Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */
 new Vue({

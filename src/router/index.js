@@ -2,24 +2,18 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
-
-// import pages, @=src
+/*
+import pages, @=src
 import LoginView from '@/views/login/Common';
 import searchInputView from '@/views/searchInput/SearchInput';
 import searchResultView from '@/views/search/ResultPage';
-import uploadView from '@/views/manage/Upload';
-// import ResLiter from '@/components/ResLiter';
-// import LiteratureCard from '@/components/LiteratureCard';
-
-// import utils
-// import db from '@/utils/localstorage';
-// import request from '@/utils/request';
-/*
-import MenuView from '@/views/common/MenuView'
-import PageView from '@/views/common/PageView'
-
-import EmptyPageView from '@/views/common/EmptyPageView'
-import HomePageView from '@/views/HomePage'
+import IndexView from '@/views/Index';
+import articleDetailView from '@/views/article/ArticleDetailPage';
+import uploadView from '@/views/excel/Excel';
+import authorDetailView from '@/views/author/AuthorPage';
+import affiliationDetailView from '@/views/affiliation/AffiliationPage';
+import keywordDetailView from '@/views/keyword/KeywordPage';
+import noFoundDetailView from '@/views/error/404';
 */
 
 // 全局Router异常处理
@@ -36,37 +30,50 @@ Vue.use(Router);
 let constRouter = [
     {
         path: '/login',
-        name: '登录页',
-        component: LoginView
+        name: 'LoginPage',
+        component: view('login/Common')
     },
     {
-        path: '/searchInput',
-        name: '搜索输入页',
-        component: searchInputView
-    },
-    {
-        path: '/index',
-        name: '首页',
-        redirect: '/searchInput'
-    },
-    {
-        path: '/searchRes',
-        name: '搜索结果页',
-        component: searchResultView
-    },
-    {
-        path: '/upload',
-        name: '文献管理页',
-        component: uploadView
+        path: '/',
+        component: view('Index'),
+        name: 'IndexPage',
+        redirect: '/searchFrame/searchHome',
+        children: [
+            {
+                path: 'searchFrame',
+                name: 'HomePage',
+                component: view('search/SearchFrame'),
+                redirect: '/searchFrame/searchHome',
+                children: [
+                    {
+                        path: 'searchHome',
+                        name: 'searchHome',
+                        component: view('search/SearchHome'),
+                    },
+                    {
+                        path: 'searchResult',
+                        name: 'searchResult',
+                        component: view('search/SearchResult'),
+                    }
+                ]
+            },
+            {
+                path: 'searchRes',
+                name: 'SearchResultPage',
+                component: view('search/ResultPage')
+            }]
     }
-
 ];
 
 let router = new Router({
-    routes: constRouter
+    mode: 'history',
+    routes: constRouter,
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 }
+    }
 });
 
-const whiteList = ['/login', '/searchInput', '/searchRes'];
+const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult'];
 
 let asyncRouter;
 
@@ -77,91 +84,49 @@ let asyncRouter;
  * @param next 处理函数
  */
 router.beforeEach((to, from, next) => {
+    let user = get('USER');
+
     // 检测白名单
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (!user && whiteList.indexOf(to.path) !== -1) {
         next();
         return;
     }
 
-    // let token = get('USER_TOKEN');
-    let user = get('USER');
     let userRouter = get('USER_ROUTER');
-    if (/* token.length && */ user) {
+    if (user) {
         if (!asyncRouter) {
             if (!userRouter) {
-                let mocRouter = [{
-                    path: '/',
-                    name: '主页',
-                    component: 'MenuView',
-                    icon: 'none',
-                    redirect: '/index',
-                    children: [{
-                        path: '/searchInput',
-                        name: '搜索主页',
-                        component: 'HomePageView',
-                        icon: 'home',
-                        meta: {closeable: false, isShow: true}
-                    }, {
-                        path: '/system',
-                        name: '系统管理',
-                        component: 'PageView',
-                        icon: 'appstore-o',
-                        meta: {closeable: true},
-                        children: [{
-                            path: '/system/user',
-                            name: '用户管理',
-                            component: 'system/user/User',
-                            icon: '',
-                            meta: {closeable: true}
-                        }, {
-                            path: '/system/role',
-                            name: '角色管理',
-                            component: 'system/role/Role',
-                            icon: '',
-                            meta: {closeable: true}
-                        }, {
-                            path: '/system/menu',
-                            name: '菜单管理',
-                            component: 'system/menu/Menu',
-                            icon: '',
-                            meta: {closeable: true}
-                        }, {
-                            path: '/system/dept',
-                            name: '部门管理',
-                            component: 'system/dept/Dept',
-                            icon: '',
-                            meta: {closeable: true}
-                        }]
-                    }, {
-                        path: '/others',
-                        name: '其他模块',
-                        component: 'PageView',
-                        icon: 'coffee',
-                        meta: {closeable: true},
-                        children: [{
-                            path: '/others/excel',
-                            name: '导入导出',
-                            component: 'others/Excel',
-                            meta: {closeable: true}
-                        }]
-                    }, {
-                        path: '/profile',
-                        name: '个人中心',
-                        component: 'personal/Profile',
-                        icon: 'none',
-                        meta: {closeable: true, isShow: false}
-                    }]
-                }, {path: '*', name: '404', component: 'error/404'}];
-                asyncRouter = mocRouter;
+                asyncRouter = [
+                    {
+                        path: 'authorDetail',
+                        name: 'AuthorPage',
+                        component: 'author/AuthorPage'
+                    },
+                    {
+                        path: 'affiliationDetail',
+                        name: 'AffiliationPage',
+                        component: 'affiliation/AffiliationPage'
+                    },
+                    {
+                        path: 'keywordDetail',
+                        name: 'TermPage',
+                        component: 'keyword/KeywordPage'
+                    },
+                    {
+                        path: 'articleDetail',
+                        name: 'ArticlePage',
+                        component: 'article/ArticleDetailPage'
+                    }
+                ];
+                if (user.privilegeLevel === '管理员') {
+                    asyncRouter.push({
+                        path: 'upload',
+                        name: 'UploadPage',
+                        component: 'manage/upload/Upload'
+                    });
+                }
                 save('USER_ROUTER', asyncRouter);
                 go(to, next);
-                /* request.get(`menu/${user.username}`).then((res) => {
-                    asyncRouter = res.data;
-                    save('USER_ROUTER', asyncRouter);
-                    go(to, next);
-                }).catch(err => {
-                    console.error(err);
-                }); */
             } else {
                 asyncRouter = userRouter;
                 go(to, next);
@@ -176,41 +141,27 @@ router.beforeEach((to, from, next) => {
 
 function go (to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
-    router.addRoutes(asyncRouter);
+    asyncRouter.forEach((r) => {
+            router.options.routes[1].children.push(r);
+        }
+    );
+    router.options.routes.push({
+        path: '*',
+        name: '404',
+        component: view('error/404')
+    });
+    router.addRoutes(router.options.routes);
     next({
         ...to,
         replace: true
-    });
-}
-
-function get (name) {
-    return JSON.parse(localStorage.getItem(name));
-}
-
-function save (name, data) {
-    localStorage.setItem(name, JSON.stringify(data));
+    })
 }
 
 function filterAsyncRouter (routes) {
-    return /* JSON.stringify(routes) */routes.filter((route) => {
+    return routes.filter((route) => {
         let component = route.component;
         if (component) {
-            switch (route.component) {
-                /* case 'MenuView':
-                    route.component = MenuView;
-                    break;
-                case 'PageView':
-                    route.component = PageView;
-                    break;
-                case 'EmptyPageView':
-                    route.component = EmptyPageView;
-                    break;
-                case 'HomePageView':
-                    route.component = HomePageView;
-                    break; */
-                default:
-                    route.component = view(component);
-            }
+            route.component = view(component);
             if (route.children && route.children.length) {
                 route.children = filterAsyncRouter(route.children);
             }
@@ -220,11 +171,15 @@ function filterAsyncRouter (routes) {
 }
 
 function view (path) {
-    return function (resolve) {
-        import(`@/views/${path}.vue`).then(mod => {
-            resolve(mod);
-        });
-    };
+    return resolve => require(["@/views/" + path + ""], resolve)
+}
+
+function get (name) {
+    return JSON.parse(localStorage.getItem(name));
+}
+
+function save (name, data) {
+    localStorage.setItem(name, JSON.stringify(data));
 }
 
 export default router;
