@@ -139,7 +139,7 @@ export default {
             roam: true,
             draggable: true,
             force: {
-              repulsion: 200
+              repulsion: 1000
             },
             lineStyle: {
               width: 2,
