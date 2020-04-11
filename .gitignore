@@ -21,3 +21,6 @@ yarn-error.log*
 *.sw?
 
 *.lock
+
+# vscode code counter
+.VSCodeCounter
