@@ -26,6 +26,8 @@
 
 <script>
     import PaperList from '@/components/paper/PaperListWrapper';
+    const orginStartYear='2010';
+    const orginEndYear='2020';
 
     export default {
         name: 'SearchResult',
@@ -36,8 +38,8 @@
                 queryType: '',
                 queryString: '',
                 noResult: false,
-                startYear: '2011',
-                endYear: '2019',
+                startYear: orginStartYear,
+                endYear: orginEndYear,
                 searchParams: {}
             };
         },
@@ -72,9 +74,11 @@
                 }
             },
             reset () {
+                this.startYear=orginStartYear;
+                this.endYear=orginEndYear;
                 let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
-                newSearchParam['start_year'] = null;
-                newSearchParam['end_year'] = null;
+                newSearchParam['start_year'] = orginStartYear;
+                newSearchParam['end_year'] = orginEndYear;
                 this.searchParams = newSearchParam;
             }
         },
