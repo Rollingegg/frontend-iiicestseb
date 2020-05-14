@@ -23,7 +23,7 @@
 
                 <div class="no-info" v-else>
                     <div class="no-data">
-                        <img src="/static/img/nodata02.png"/>
+                        <img src="/static/img/nodata02.png" alt="没有数据哦"/>
                         <br/>什么也没找到 T^T
                     </div>
                 </div>
@@ -44,6 +44,16 @@
 <script>
     import LCard from "./LiteratureCard";
 
+    /**
+     * 文献列表,对文献card的封装，根据提供的选项请求文献数据
+     * @module components/paper
+     * @param {Boolean} [isById] - 是否根据ID检索
+     * @param {String} [searchType] - 检索关键词名，可选
+     * @param {String} [searchId] - 检索对象的ID，可选
+     * @param {Object} [keyword] - 关键字，可选
+     * @example 调用示例
+     * <PaperListWrapper searchType="author_name" :isById="true" :searchId="1" />
+     */
     export default {
         name: "PaperListWrapper",
         components: {

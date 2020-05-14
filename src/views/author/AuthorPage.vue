@@ -27,16 +27,15 @@
                  @tab-click="switchTab"
                  class="main-container">
             <el-tab-pane label="Overview" name="overview">
-                <OverviewPane :loading="loading"
-                              :base-info="baseInfo"
-                              :author-id="authorId"
-                              :domain-statistics="domainStatistics"
-                              @clickItem="openDetailPage"/>
+                <overview-pane :loading="loading"
+                               :base-info="baseInfo"
+                               :author-id="authorId"
+                               :domain-statistics="domainStatistics"
+                               @clickItem="openDetailPage"/>
             </el-tab-pane>
 
             <el-tab-pane label="Papers" name="papers">
-                <component v-if="currentTab!==null"
-                           :is="currentTab"
+                <component :is="paperListTab"
                            searchType="author_name"
                            :isById="true"
                            :searchId="String(authorId)"
@@ -44,24 +43,27 @@
             </el-tab-pane>
 
             <el-tab-pane label="SchGraph" name="graph">
-                <component v-if="currentTab2!==null" :is="currentTab2" :keyword="keyword"></component>
+                <component :is="AuthorGraphTab"
+                           :keyword="keyword"
+                />
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
+    import OverviewPane from "@/components/Author/OverviewPane";
     import PaperList from "@/components/paper/PaperListWrapper";
     import AuthorGraphPage from "./AuthorGraphPage";
-    import ConferencePie from "@/components/Author/ConferencePieGraph";
-    import OverviewPane from "@/components/Author/OverviewPane";
     import {mapState} from "vuex";
 
     export default {
         name: "AuthorPage",
         components: {
-            OverviewPane,
-            ConferencePie,
+            OverviewPane
+        },
+        mounted () {
+            this.init();
         },
         data () {
             return {
@@ -72,8 +74,8 @@
                 statisticInfo: {},
                 recentPapers: [],
                 domainStatistics: [],
-                currentTab: null,
-                currentTab2: null,
+                paperListTab: null,
+                AuthorGraphTab: null,
                 loading: true
             };
         },
@@ -95,8 +97,8 @@
             init () {
                 this.authorId = this.$route.query.id;
                 this.activeName = "overview";
-                this.currentTab = null;
-                this.currentTab2 = null; // 让图谱重新加载渲染
+                this.paperListTab = null;
+                this.AuthorGraphTab = null; // 让图谱重新加载渲染
                 this.getAuthorBaseInfo();
                 this.getDomainStatistics();
             },
@@ -125,10 +127,10 @@
             switchTab (tab) {
                 switch (tab.name) {
                     case "papers":
-                        this.currentTab = PaperList;
+                        this.paperListTab = PaperList;
                         break;
                     case "graph":
-                        this.currentTab2 = AuthorGraphPage;
+                        this.AuthorGraphTab = AuthorGraphPage;
                         break;
                     default:
                         break;
@@ -174,9 +176,6 @@
                     this.loading = false;
                 });
             }
-        },
-        mounted () {
-            this.init();
         }
     };
 </script>

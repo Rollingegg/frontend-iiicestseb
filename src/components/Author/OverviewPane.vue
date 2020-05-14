@@ -135,6 +135,16 @@
     import DomainPie from "@/components/Author/DomainsPieGraph";
     import ConferencePie from "@/components/Author/ConferencePieGraph";
 
+    /**
+     * 作者的详情tab
+     * @module components/author
+     * @param {Number} [authorId] - 作者ID
+     * @param {Boolean} [loading] - 是否加载中
+     * @param {Object} [baseInfo] - 作者的基本信息
+     * @param {Object} [domainStatistics] - 作者的领域信息
+     * @example 调用示例
+     * <overview-pane :loading="loading" :base-info="baseInfo" :author-id="authorId" :domain-statistics="domainStatistics" @clickItem="openDetailPage"/>
+     */
     export default {
         name: "OverviewPane",
         components: {
