@@ -43,8 +43,9 @@
             </el-tab-pane>
 
             <el-tab-pane label="SchGraph" name="graph">
-                <component :is="AuthorGraphTab"
-                           :keyword="keyword"
+                <component :is="SchGraphTab"
+                           searchType="author_name"
+                           :searchId="String(authorId)"
                 />
             </el-tab-pane>
         </el-tabs>
@@ -54,7 +55,7 @@
 <script>
     import OverviewPane from "@/components/Author/OverviewPane";
     import PaperList from "@/components/paper/PaperListWrapper";
-    import AuthorGraphPage from "./AuthorGraphPage";
+    import SchGraph from "@/components/graphs/SchGraph";
     import {mapState} from "vuex";
 
     export default {
@@ -75,7 +76,7 @@
                 recentPapers: [],
                 domainStatistics: [],
                 paperListTab: null,
-                AuthorGraphTab: null,
+                SchGraphTab: null,
                 loading: true
             };
         },
@@ -98,7 +99,7 @@
                 this.authorId = this.$route.query.id;
                 this.activeName = "overview";
                 this.paperListTab = null;
-                this.AuthorGraphTab = null; // 让图谱重新加载渲染
+                this.SchGraphTab = null; // 让图谱重新加载渲染
                 this.getAuthorBaseInfo();
                 this.getDomainStatistics();
             },
@@ -130,7 +131,7 @@
                         this.paperListTab = PaperList;
                         break;
                     case "graph":
-                        this.AuthorGraphTab = AuthorGraphPage;
+                        this.SchGraphTab = SchGraph;
                         break;
                     default:
                         break;
