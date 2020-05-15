@@ -52,7 +52,7 @@
      * @module components/paper
      * @param {Boolean} [isById] - 是否根据ID检索
      * @param {String} [searchType] - 检索关键词名，可选
-     * @param {String} [searchId] - 检索对象的ID，可选
+     * @param {Number} [searchId] - 检索对象的ID，可选
      * @param {Object} [keyword] - 关键字，可选
      * @example 调用示例
      *
@@ -92,7 +92,7 @@
                 require: false,
             },
             searchId: {
-                type: String,
+                type: Number,
                 require: false,
             },
             isById: Boolean,

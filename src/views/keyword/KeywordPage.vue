@@ -35,7 +35,7 @@
                     </div>
                 </el-card>
 
-                <literature-list searchType="term" :isById="true" :searchId="String(keywordId)"></literature-list>
+                <paper-list searchType="term" :isById="true" :searchId="Number(keywordId)"></paper-list>
             </el-col>
 
             <el-col :md="8" class="domain-recommend">
@@ -80,14 +80,14 @@
 </template>
 
 <script>
-    import LiteratureList from "@/components/paper/PaperListWrapper";
+    import PaperList from "@/components/paper/PaperListWrapper";
     import AffiliationOfTermGraph from "@/components/keyword/AffiliationOfTermGraph";
     import Any_YearGraph from "@/components/graphs/Any_YearGraph";
 
     export default {
         name: "KeywordPage",
         components: {
-            LiteratureList,
+            PaperList,
             AffiliationOfTermGraph,
             Any_YearGraph
         },
@@ -106,11 +106,6 @@
                 times_yaer_data: {},
                 loading: true
             };
-        },
-        computed: {
-            keywordAndLimitation () {
-                return {type: this.type, term: this.researchDomain, limit: 5};
-            }
         },
         watch: {
             $route: "refreshData"
@@ -270,8 +265,7 @@
                 border: 1px solid #e8e8e8;
                 border-radius: 4px;
                 overflow: auto;
-                padding: 8px @title-font-size;
-                padding-top: 0;
+                padding: 0 @title-font-size 8px;
                 height: 400px;
             }
         }
@@ -280,8 +274,7 @@
             margin-top: @base-interval;
 
             .relative-term-button {
-                margin: 10px 0;
-                margin-left: 10px;
+                margin: 10px 0 10px 10px;
             }
         }
     }

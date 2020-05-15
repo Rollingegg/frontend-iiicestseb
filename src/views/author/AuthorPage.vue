@@ -38,14 +38,14 @@
                 <component :is="paperListTab"
                            searchType="author_name"
                            :isById="true"
-                           :searchId="String(authorId)"
+                           :searchId="Number(authorId)"
                 />
             </el-tab-pane>
 
             <el-tab-pane label="SchGraph" name="graph">
                 <component :is="SchGraphTab"
                            searchType="author_name"
-                           :searchId="String(authorId)"
+                           :searchId="Number(authorId)"
                 />
             </el-tab-pane>
         </el-tabs>
