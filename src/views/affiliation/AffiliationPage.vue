@@ -45,12 +45,18 @@
             </el-tab-pane>
 
             <el-tab-pane label="Papers" name="papers">
-                <component v-if="currentTab2!==null" :is="currentTab2" searchType="affiliation_name" :isById="true"
-                           :searchId="String(affiliationId)"></component>
+                <component :is="paperListTab"
+                           searchType="affiliation_name"
+                           :isById="true"
+                           :searchId="Number(affiliationId)"
+                />
             </el-tab-pane>
 
             <el-tab-pane label="SchGraph" name="graph">
-                <component v-if="currentTab3!==null" :is="currentTab3" :keyword="keyword"></component>
+                <component :is="SchGraphTab"
+                           searchType="affiliation_name"
+                           :searchId="Number(affiliationId)"
+                />
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -58,7 +64,7 @@
 
 <script>
     import PaperList from "@/components/paper/PaperListWrapper";
-    import AuthorGraphPage from "../author/AuthorGraphPage";
+    import SchGraph from "@/components/graphs/SchGraph";
     import DomainPie from "@/components/Author/DomainsPieGraph";
     import AffiliationOverviewPane from "@/components/Affiliation/AffiliationOverviewPane";
     import {mapState} from "vuex";
@@ -75,8 +81,8 @@
                 affiliationId: this.$route.query.id,
                 baseInfo: {},
                 totalMembers: [],
-                currentTab3: null,
-                currentTab2: null,
+                SchGraphTab: null,
+                paperListTab: null,
             };
         },
         mounted () {
@@ -150,10 +156,10 @@
             handleClick (tab) {
                 switch (tab.name) {
                     case "papers":
-                        this.currentTab2 = PaperList;
+                        this.paperListTab = PaperList;
                         break;
                     case "graph":
-                        this.currentTab3 = AuthorGraphPage;
+                        this.SchGraphTab = SchGraph;
                         break;
                     default:
                         break;
