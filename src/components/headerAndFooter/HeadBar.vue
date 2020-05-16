@@ -27,13 +27,16 @@
 <script>
     import {mapState} from 'vuex';
 
+    /**
+     * @description 首部功能条
+     *
+     * @version 1.0
+     * @author dwxh
+     * @example
+     * <head-bar />
+     */
     export default {
         name: 'HeadBar',
-        data () {
-            return {
-                activeIndex: '1'
-            };
-        },
         computed: {
             ...mapState({
                 user: state => state.account.user
@@ -43,7 +46,7 @@
             }
         },
         methods: {
-            handleSelect (key, keyPath) {
+            handleSelect (key) {
                 if (key === '4') {
                     window.open('https://ieeexplore.ieee.org/');
                 } else {

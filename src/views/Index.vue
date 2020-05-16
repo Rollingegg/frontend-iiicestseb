@@ -2,9 +2,9 @@
     <el-container id="container" direction="vertical">
         <global-nav/>
         <el-main>
-        <transition name="el-fade-in">
-            <router-view/>
-        </transition>
+            <transition name="el-fade-in">
+                <router-view/>
+            </transition>
         </el-main>
         <global-footer :copyright="copyright"/>
     </el-container>
@@ -14,6 +14,13 @@
     import GlobalFooter from '@/components/headerAndFooter/GlobalFooter';
     import GlobalNav from '@/components/headerAndFooter/GlobalNavigator';
 
+    /**
+     * @description 主体页面框架，通过路由引入子页面
+     * @version 1.0
+     * @author dwxh
+     * @example
+     * <global-navigator />
+     */
     export default {
         name: 'Index',
         components: {

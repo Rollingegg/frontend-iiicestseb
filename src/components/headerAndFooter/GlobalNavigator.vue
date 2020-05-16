@@ -1,7 +1,7 @@
 <template>
     <el-header class="homeHeader">
         <a class="title" href="/">OASIS</a>
-        <head-bar v-on:expectedWarning="handleUserClick"></head-bar>
+        <head-bar v-on:expectedWarning="handleUserClick"/>
         <div v-if="hasLogin" class="user-avatar">
             <el-button icon="el-icon-bell"
                        type="text"
@@ -30,10 +30,18 @@
     import HeadBar from './HeadBar';
     import {mapState} from 'vuex';
 
+    /**
+     * @description 全局首部
+     * @version 1.0
+     * @author dwxh
+     * @requires HeadBar
+     * @example
+     * <global-navigator />
+     */
     export default {
         name: 'GlobalNav',
-        data () {
-            return {};
+        components: {
+            HeadBar
         },
         computed: {
             ...mapState({
@@ -64,9 +72,6 @@
             logout () {
                 this.$router.push('/login');
             }
-        },
-        components: {
-            HeadBar
         }
     };
 </script>
