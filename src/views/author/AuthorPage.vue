@@ -27,8 +27,7 @@
                  @tab-click="switchTab"
                  class="main-container">
             <el-tab-pane label="Overview" name="overview">
-                <overview-pane :loading="loading"
-                               :base-info="baseInfo"
+                <overview-pane :base-info="baseInfo"
                                :author-id="authorId"
                                :domain-statistics="domainStatistics"
                                @clickItem="openDetailPage"/>
@@ -77,7 +76,6 @@
                 domainStatistics: [],
                 paperListTab: null,
                 SchGraphTab: null,
-                loading: true
             };
         },
         computed: {
@@ -162,19 +160,13 @@
                 }).then(r => {
                     if (r.data.status) {
                         this.domainStatistics = r.data.result;
-                        setTimeout(() => {
-                            this.loading = false;
-                        }, 500);
                     } else {
                         this.$message({
                             showClose: true,
                             message: r.data.result,
                             type: "warning"
                         });
-                        this.loading = false;
                     }
-                }).catch(() => {
-                    this.loading = false;
                 });
             }
         }

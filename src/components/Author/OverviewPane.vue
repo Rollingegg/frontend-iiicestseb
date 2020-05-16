@@ -86,19 +86,7 @@
             </el-col>
 
             <el-col :md="8">
-                <el-card>
-                    <div slot="header">Recent Papers</div>
-                    <div class="recent-paper-container">
-                        <div class="recent-paper-item" v-for="(paper, index) in recentPapers" :key="index">
-                            <el-link type="primary" @click="clickArticle(paper.id)">
-                                {{paper.title}}
-                            </el-link>
-                            <el-link icon="el-icon-date" :underline="false">
-                                {{String(paper.chronDate).substr(0,4)}}
-                            </el-link>
-                        </div>
-                    </div>
-                </el-card>
+                <recent-paper :recent-papers="recentPapers" @clickArticle="clickArticle"/>
 
                 <el-card class="card-container">
                     <div slot="header">Conferences Attendance</div>
@@ -108,7 +96,7 @@
                 <el-card class="card-container">
                     <div slot="header">Top co-authors</div>
                     <div class="co-author-item" v-for="(coAuthor, index) in coAuthorList" :key="index">
-                        <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        <el-avatar icon="el-icon-user-solid"/>
                         <div class="co-author-base">
                             <div>
                                 <el-link :underline="false"
@@ -134,25 +122,28 @@
 <script>
     import DomainPie from "@/components/Author/DomainsPieGraph";
     import ConferencePie from "@/components/Author/ConferencePieGraph";
+    import RecentPaper from "@/components/paper/RecentPaper";
 
     /**
      * 作者的详情tab
+     * @version 1.1
      * @module components/author
      * @param {Number} [authorId] - 作者ID
-     * @param {Boolean} [loading] - 是否加载中
      * @param {Object} [baseInfo] - 作者的基本信息
      * @param {Object} [domainStatistics] - 作者的领域信息
      * @example 调用示例
-     * <overview-pane :loading="loading" :base-info="baseInfo" :author-id="authorId" :domain-statistics="domainStatistics" @clickItem="openDetailPage"/>
+     * <overview-pane :base-info="baseInfo" :author-id="authorId" :domain-statistics="domainStatistics" @clickItem="openDetailPage"/>
      */
     export default {
         name: "OverviewPane",
         components: {
             DomainPie,
-            ConferencePie
+            ConferencePie,
+            RecentPaper
         },
         data () {
             return {
+                loading: true,
                 statisticInfo: {},
                 recentPapers: [],
                 coAuthorList: []
@@ -168,7 +159,6 @@
         },
         props: {
             authorId: 0,
-            loading: true,
             baseInfo: {},
             domainStatistics: {},
         },
@@ -177,8 +167,12 @@
                 this.init();
             }
         },
+        mounted () {
+            this.init();
+        },
         methods: {
             init () {
+                this.loading = true;
                 this.getAuthorStatisticsInfo();
                 this.getRecentPapers();
                 this.getTopCoAuthors();
@@ -226,13 +220,19 @@
                 }).then(r => {
                     if (r.data.status) {
                         this.coAuthorList = r.data.result;
+                        setTimeout(() => {
+                            this.loading = false;
+                        }, 500);
                     } else {
                         this.$message({
                             showClose: true,
                             message: r.data.result,
                             type: "warning"
                         });
+                        this.loading = false;
                     }
+                }).catch(() => {
+                    this.loading = false;
                 });
             },
             clickDomain (id) {
@@ -247,9 +247,6 @@
             clickAffiliation (id) {
                 this.$emit("clickItem", "affiliation", id);
             }
-        },
-        mounted () {
-            this.init();
         }
     }
 </script>
