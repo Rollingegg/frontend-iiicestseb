@@ -2,13 +2,12 @@
     <el-card shadow="always" :loading="loading">
         <div class="card-head-title" slot="header">{{title}}</div>
 
-        <el-table
-                :data="authorList"
-                stripe
-                style="width: 100%"
-                @cell-click="openAuthor"
-                :cell-style="cellStyle"
-                v-if="String(title).indexOf('作者')!==-1">
+        <el-table :data="authorList"
+                  stripe
+                  style="width: 100%"
+                  @cell-click="openAuthor"
+                  :cell-style="cellStyle"
+                  v-if="searchType===1">
             <el-table-column min-width="10%">
                 <el-avatar icon="el-icon-user-solid" size="small" fit="fit"/>
             </el-table-column>
@@ -17,13 +16,12 @@
             <el-table-column min-width="20%" sortable prop="publishNum" label="文章数"/>
         </el-table>
 
-        <el-table
-                :data="wordList"
-                stripe
-                style="width: 100%"
-                @cell-click="openTerm"
-                :cell-style="cellStyle"
-                v-else-if="String(title).indexOf('关键词')!==-1">
+        <el-table :data="wordList"
+                  stripe
+                  style="width: 100%"
+                  @cell-click="openTerm"
+                  :cell-style="cellStyle"
+                  v-else-if="searchType===2">
             <el-table-column min-width="70%" sortable prop="name" label="关键词"/>
             <el-table-column min-width="20%" sortable prop="hot" label="文章数"/>
         </el-table>
@@ -32,6 +30,14 @@
 
 <script>
     const limit = 8;
+    /**
+     * @description 推荐内容卡片，根据参数决定需要展示的内容
+     * @param {String} title 标题
+     * @param {Number} searchType 推荐类型<br/>- 1: 显示作者的推荐信息<br/>- 2: 显示关键词的推荐信息
+     * @event open-page 根据用户点击打开对应详情页面<br/>- String: 要打开的页面类型[affiliation, author, keyword]<br/>- Number: 相应的id
+     * @version 1.0
+     * @author dwxh
+     */
     export default {
         name: "HotCard",
         created () {
@@ -47,41 +53,44 @@
         props: {
             title: {
                 type: String,
-                default () {
-                    return "发表文章最多的学者";
-                }
-            }
+            },
+            searchType: Number
         },
         methods: {
             getData () {
-                if (this.title.indexOf("关键词") !== -1) {
-                    this.$get("statistics/hotTerms", {
-                        num: limit
-                    })
-                        .then(r => {
+                switch (this.searchType) {
+                    case 1: {
+                        this.$get("/statistics/maxPublishAuthor", {
+                            num: limit
+                        })
+                            .then(r => {
+                                if (r.data.status) {
+                                    this.authorList = r.data.result;
+                                } else {
+                                    this.authorList = [];
+                                }
+                            })
+                            .catch(e => {
+                                this.authorList = [];
+                            });
+                        break;
+                    }
+                    case 2: {
+                        this.$get("statistics/hotTerms", {
+                            num: limit
+                        }).then(r => {
                             if (r.data.status) {
                                 this.wordList = r.data.result;
                             } else {
                                 this.wordList = [];
                             }
-                        })
-                        .catch(e => {
+                        }).catch(e => {
                             this.wordList = [];
                         });
-                } else {
-                    this.$get("/statistics/maxPublishAuthor", {
-                        num: limit
-                    })
-                        .then(r => {
-                            if (r.data.status) {
-                                this.authorList = r.data.result;
-                            } else {
-                                this.authorList = [];
-                            }
-                        })
-                        .catch(e => {
-                            this.authorList = [];
-                        });
+                        break;
+                    }
+                    default:
+                        break
                 }
             },
             openAuthor (row, col) {
@@ -94,7 +103,6 @@
                 }
             },
             openTerm (row, col) {
-                console.log(row);
                 if (col.label === "关键词") {
                     this.$emit("open-page", "keyword", row.id);
                 }

@@ -18,7 +18,7 @@
             </el-aside>
 
             <el-main>
-                <paper-list :keyword="searchParams" :isById="false"></paper-list>
+                <paper-list :keyword="searchParams" :isById="false"/>
             </el-main>
         </el-container>
     </div>
@@ -26,9 +26,16 @@
 
 <script>
     import PaperList from '@/components/paper/PaperListWrapper';
-    const orginStartYear='2010';
-    const orginEndYear='2020';
 
+    const initStartYear = '2010';
+    const initEndYear = '2020';
+    /**
+     * @description 搜索结构的展示页面框架，使用PaperList组件进行具体展示
+     * @see PaperList
+     * @event showWelcome 该页面不需要展示欢迎信息<br/>- false
+     * @version 1.0
+     * @author dwxh
+     */
     export default {
         name: 'SearchResult',
         data: function () {
@@ -38,8 +45,8 @@
                 queryType: '',
                 queryString: '',
                 noResult: false,
-                startYear: orginStartYear,
-                endYear: orginEndYear,
+                startYear: initStartYear,
+                endYear: initEndYear,
                 searchParams: {}
             };
         },
@@ -53,6 +60,10 @@
         },
         watch: {
             $route: "refreshData"
+        },
+        created () {
+            this.refreshData();
+            this.$emit('showWelcome', false);
         },
         methods: {
             refreshData () {
@@ -74,17 +85,13 @@
                 }
             },
             reset () {
-                this.startYear=orginStartYear;
-                this.endYear=orginEndYear;
+                this.startYear = initStartYear;
+                this.endYear = initEndYear;
                 let newSearchParam = JSON.parse(JSON.stringify(this.searchParams));
-                newSearchParam['start_year'] = orginStartYear;
-                newSearchParam['end_year'] = orginEndYear;
+                newSearchParam['start_year'] = initStartYear;
+                newSearchParam['end_year'] = initEndYear;
                 this.searchParams = newSearchParam;
             }
-        },
-        created () {
-            this.refreshData();
-            this.$emit('showWelcome', false);
         }
     };
 </script>

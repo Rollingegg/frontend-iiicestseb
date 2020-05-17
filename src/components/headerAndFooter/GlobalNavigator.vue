@@ -34,7 +34,7 @@
      * @description 全局首部
      * @version 1.0
      * @author dwxh
-     * @requires HeadBar
+     * @see HeadBar 首部功能条
      * @example
      * <global-navigator />
      */
