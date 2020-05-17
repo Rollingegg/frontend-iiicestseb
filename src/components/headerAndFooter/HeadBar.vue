@@ -55,3 +55,11 @@
         }
     };
 </script>
+<style lang="less">
+    .my-menu {
+        border-bottom: 0 !important;
+        .el-menu-item {
+            border-bottom: 0 !important;
+        }
+    }
+</style>

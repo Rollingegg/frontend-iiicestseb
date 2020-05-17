@@ -8,7 +8,6 @@
                         v-model="queryWord"
                         :fetch-suggestions="searchSuggest"
                         placeholder="开始您的学术探索之旅"
-                        highlight-first-item
                         clearable
                         class="input-with-select"
                         @clear="clearSearch"

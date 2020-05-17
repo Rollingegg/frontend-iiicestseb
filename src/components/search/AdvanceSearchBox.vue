@@ -118,3 +118,23 @@
         }
     };
 </script>
+
+<style lang="less" scoped>
+    @import "../../../static/less/Common.less";
+
+    .drawer-title {
+        .content-header();
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .search-condition {
+        margin: 20px;
+    }
+
+    .content-bottom {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
