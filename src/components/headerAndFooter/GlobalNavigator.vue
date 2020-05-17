@@ -1,9 +1,9 @@
 <template>
-    <el-header class="homeHeader">
+    <el-header class="homeHeader" id="homeHeader" :class="{'isFixed':isTabBar}">
         <a class="title" href="/">OASIS</a>
         <head-bar v-on:expectedWarning="handleUserClick"></head-bar>
         <div v-if="hasLogin" class="user-avatar">
-            <el-button icon="el-icon-bell"
+            <el-button icon="el-icon-message-solid"
                        type="text"
                        size="large"
                        style="margin-right:20px"
@@ -33,7 +33,9 @@
     export default {
         name: 'GlobalNav',
         data () {
-            return {};
+            return {
+                isTabBar: false
+            };
         },
         computed: {
             ...mapState({
@@ -63,7 +65,17 @@
             },
             logout () {
                 this.$router.push('/login');
+            },
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                this.isTabBar=(scrollTop > 400);
             }
+        },
+        mounted () {
+            window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
         },
         components: {
             HeadBar
@@ -99,5 +111,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .isFixed {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 10;
     }
 </style>
