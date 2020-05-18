@@ -21,6 +21,13 @@
     import Login from './Login';
     import Register from './Register';
 
+    /**
+     * @description 登陆注册页面框架，通过路由引入子页面
+     * @version 1.0
+     * @author dwxh
+     * @see Login 登陆页面
+     * @see Register 注册页面
+     */
     export default {
         name: 'Common',
         components: {

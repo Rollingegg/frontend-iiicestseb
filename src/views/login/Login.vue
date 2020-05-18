@@ -63,6 +63,12 @@
 <script>
     import {mapMutations, mapState} from "vuex";
 
+    /**
+     * @description 登陆页面
+     * @version 1.0
+     * @author dwxh
+     * @event register 切换页面，根据参数决定需要切到的页面名<br/> - Register: 注册页面
+     */
     export default {
         name: "Login",
         data () {
