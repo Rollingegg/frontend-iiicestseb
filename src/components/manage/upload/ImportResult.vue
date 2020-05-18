@@ -57,19 +57,29 @@
                     <el-table-column prop="startPage" label="起始页" width="50"/>
                     <el-table-column prop="endPage" label="结束页" width="50"/>
                 </el-table>
-                <el-pagination
-                        v-if="successData.length"
-                        @current-change="handleCurrentChange2"
-                        :current-page.sync="successCurrentPage"
-                        :page-size="pageSize"
-                        layout="total, prev, pager, next, jumper"
-                        :total="successData.length"
+                <el-pagination v-if="successData.length"
+                               @current-change="handleCurrentChange2"
+                               :current-page.sync="successCurrentPage"
+                               :page-size="pageSize"
+                               layout="total, prev, pager, next, jumper"
+                               :total="successData.length"
                 />
             </el-tab-pane>
         </el-tabs>
     </el-dialog>
 </template>
 <script>
+    /**
+     * @description 数据导入后的结果页面
+     * @version 1.0
+     * @author dwxh
+     * @param {Boolean} importResultVisible 结果是否可见
+     * @param {Array} successData 导入成功的数据
+     * @param {Array} errorData 导入失败的数据
+     * @param {Number} times 系统处理需要的时间
+     * @param {Number} activeName 展示的tab，默认是失败tab
+     * @event close 结果被关闭事件
+     */
     export default {
         props: {
             importResultVisible: {
@@ -79,7 +89,7 @@
             successData: Array,
             errorData: Array,
             times: Number,
-            activeName:{
+            activeName: {
                 default: '1',
                 required: false
             }
