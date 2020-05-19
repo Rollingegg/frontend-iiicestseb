@@ -84,15 +84,15 @@
             doAdvancedSearch (params) {
                 this.notifySearch('advanced', params);
             },
-            notifySearch (qureyType, queryField) {
+            notifySearch (queryType, queryField) {
                 // 统一处理两种搜索
                 let params = queryField;
-                if (qureyType !== 'advanced') {
+                if (queryType !== 'advanced') {
                     let par = {};
-                    par[qureyType] = queryField;
+                    par[queryType] = queryField;
                     params = par;
                 }
-                params.type = qureyType;
+                params.type = queryType;
                 this.$emit('do-search', params);
             },
             // TODO: 1.推荐，或者考虑删除

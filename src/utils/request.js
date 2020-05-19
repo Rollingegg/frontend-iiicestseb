@@ -16,7 +16,7 @@ moment.locale('zh-cn');
 let BACKEND_REQUEST = axios.create({
     baseURL: process.env.BASE_API,
     responseType: 'json',
-    validateStatus (status) {
+    validateStatus(status) {
         // 200 外的状态码都认定为失败
         return status === 200;
     }
@@ -28,13 +28,24 @@ BACKEND_REQUEST.interceptors.request.use((config) => {
     let now = Date.now();
     // 让token早10秒种过期，提升“请重新登录”弹窗体验
     if (now - expireTime >= -10) {
-        MessageBox.alert('很抱歉，登录已过期，请重新登录',{
+        MessageBox.alert('很抱歉，登录已过期，请重新登录', {
             title: '登录已过期',
-            confirmButtonText: '退出登陆',
+            showCancelButton: false,
+            confirmButtonText: '退出登录',
             type: 'error',
-        }).then(() => {
+            beforeClose: (action, instance, done) => {
+                instance.confirmButtonLoading = true;
+                instance.confirmButtonText = '退出中...';
                 db.clear();
                 location.reload();
+                setTimeout(() => {
+                    done();
+                    setTimeout(() => {
+                        instance.confirmButtonLoading = false;
+                    }, 3000);
+                }, 300);
+            }
+        }).then(() => {
             }
         ).catch(function (reason) {
             console.log('catch:', reason);
@@ -81,14 +92,14 @@ BACKEND_REQUEST.interceptors.response.use((config) => {
 });
 
 const request = {
-    postJson (url, params) {
+    postJson(url, params) {
         return BACKEND_REQUEST.post(url, params, {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8'
             }
         });
     },
-    post (url, params) {
+    post(url, params) {
         return BACKEND_REQUEST.post(url, params, {
             transformRequest: [(params) => {
                 let result = '';
@@ -104,7 +115,7 @@ const request = {
             }
         });
     },
-    put (url, params) {
+    put(url, params) {
         return BACKEND_REQUEST.put(url, params, {
             transformRequest: [(params) => {
                 let result = '';
@@ -120,7 +131,7 @@ const request = {
             }
         });
     },
-    get (url, params) {
+    get(url, params) {
         let _params;
         if (Object.is(params, undefined)) {
             _params = '';
@@ -134,7 +145,7 @@ const request = {
         }
         return BACKEND_REQUEST.get(`${url}${_params.substr(0, _params.length - 1)}`);
     },
-    delete (url, params) {
+    delete(url, params) {
         let _params;
         if (Object.is(params, undefined)) {
             _params = '';
@@ -148,7 +159,7 @@ const request = {
         }
         return BACKEND_REQUEST.delete(`${url}${_params.substr(0, _params.length - 1)}`);
     },
-    export (url, params = {}) {
+    export(url, params = {}) {
         Message.info({
             showClose: true,
             message: '导出数据中'
@@ -188,7 +199,7 @@ const request = {
             });
         });
     },
-    download (url, params, filename) {
+    download(url, params, filename) {
         Message.info({
             showClose: true,
             message: '文件传输中'
@@ -227,7 +238,7 @@ const request = {
             });
         });
     },
-    upload (url, params) {
+    upload(url, params) {
         return BACKEND_REQUEST.post(url, params, {
             headers: {
                 'Content-Type': 'multipart/form-data'
