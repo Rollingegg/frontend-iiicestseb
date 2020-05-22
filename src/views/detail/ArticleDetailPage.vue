@@ -162,10 +162,10 @@
 
 <script>
     import {mapState} from "vuex";
-    import PaperRecommend from "@/components/recommendation/PaperRecommendation";
-    import AuthorRecommend from "@/components/recommendation/AuthorRecommendation";
-    import AffiliationRecommend from "@/components/recommendation/AffiliationRecommendation";
-    import PaperTermGraph from "@/components/Article/PaperTermGraph";
+    import PaperRecommend from "@/components/article/PaperRecommendation";
+    // import AuthorRecommend from "@/components/article/AuthorRecommendation";
+    // import AffiliationRecommend from "@/components/article/AffiliationRecommendation";
+    import PaperTermGraph from "@/components/article/PaperTermGraph";
 
     function uniq (array) {
         let temp = [];
@@ -182,6 +182,14 @@
         return temp;
     }
 
+    /**
+     * @description 论文详情页面，使用路由接受参数
+     * @param {Number} affiliationId 文章id
+     * @version 1.0
+     * @author dwxh
+     * @see PaperRecommend 相关文章推荐
+     * @see PaperTermGraph 文章关键词图
+     */
     export default {
         name: "ArticlePage",
         data () {
@@ -203,9 +211,18 @@
         },
         components: {
             PaperRecommend,
-            AuthorRecommend,
-            AffiliationRecommend,
+            // AuthorRecommend,
+            // AffiliationRecommend,
             PaperTermGraph
+        },
+        mounted () {
+            this.articleId = this.$route.query.id;
+            this.getArticleDetail();
+            this.getArticleScore();
+            this.getRecommendPapers();
+            // this.getRecommendAuthors();
+            // this.getRecommendAffiliations();
+            this.getPaperTermGraphData();
         },
         computed: {
             affiliations () {
@@ -363,15 +380,6 @@
                     });
                 }
             }
-        },
-        mounted () {
-            this.articleId = this.$route.query.id;
-            this.getArticleDetail();
-            this.getArticleScore();
-            this.getRecommendPapers();
-            // this.getRecommendAuthors();
-            // this.getRecommendAffiliations();
-            this.getPaperTermGraphData();
         }
     };
 </script>

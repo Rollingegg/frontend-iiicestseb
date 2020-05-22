@@ -8,6 +8,14 @@
 <script>
     import CommonEchart from "../common/CommonEchart";
 
+    /**
+     * @description 文章关键字图
+     * @param {String} height 图高度
+     * @param {Array} data 数据
+     * @version 1.0
+     * @author dwxh
+     * @see CommonEchart Echart包装
+     */
     export default {
         components: {
             CommonEchart
@@ -44,11 +52,11 @@
                 if (this.data.vertexes) {
                     let categoryIndex = 1; //初始下标是1
                     this.data.vertexes.forEach(node => {
-                        let isPaper = node.type == "paper";
-                        let isCenter = node.id == this.data.centerId;
+                        let isPaper = node.type === "paper";
+                        let isCenter = node.id === this.data.centerId;
                         let maxSize = 50;
                         let symbolSize = (id => {
-                            if (id == this.data.centerId) {
+                            if (id === this.data.centerId) {
                                 return maxSize;
                             } else if (isPaper) {
                                 return node.size > 0.5 ? maxSize / 5 : (node.size * maxSize) / 10;
