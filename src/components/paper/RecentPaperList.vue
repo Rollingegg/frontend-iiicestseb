@@ -15,8 +15,16 @@
 </template>
 
 <script>
+
+    /**
+     * @description 最近发表文章列表
+     * @param {Array} recentPapers 最近发表文章
+     * @version 1.0
+     * @author dwxh
+     * @event clickArticle 点击文章，跳转到文章详情页面<br/>- {Number} 文章id
+     */
     export default {
-        name: "RecentPaper",
+        name: "RecentPaperList",
         props: {
             recentPapers: Array
         },
@@ -27,7 +35,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

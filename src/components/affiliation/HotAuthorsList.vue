@@ -36,10 +36,18 @@
 </template>
 
 <script>
-    import ActiveAuthorGraph from "@/components/Affiliation/ActiveAuthorGraph";
+    import ActiveAuthorGraph from "@/components/affiliation/ActiveAuthorGraph";
 
+    /**
+     * @description 热门作者
+     * @param {Array} hotAuthors 作者列表
+     * @version 1.0
+     * @author dwxh
+     * @see ActiveAuthorGraph 活跃作者图
+     * @event clickAuthor 点击作者，需要进行页面跳转 <br/>- {Number} 作者id
+     */
     export default {
-        name: "HotAuthors",
+        name: "HotAuthorsList",
         components: {
             ActiveAuthorGraph
         },

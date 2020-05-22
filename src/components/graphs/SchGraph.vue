@@ -24,26 +24,31 @@
         </el-row>
 
         <el-card class="card-container">
-            <paper-statistic-graph height="300px" :tableData="papersPublishPerYear"/>
+            <paper-year-graph height="300px" :tableData="papersPublishPerYear"/>
         </el-card>
     </div>
 </template>
 
 <script>
-    import PaperStatisticGraph from "@/components/graphs/PaperStatisticGraph";
-    import TermWordCloud from "@/components/Author/TermWordCloud";
     import AuthorPartnerGraph from "@/components/Author/AuthorPartnerGraph";
     import AuthorAffiliationGraph from "@/components/Author/AuthorAffiliationGraph";
-    import AffiliationPaperTermGraph from "@/components/Affiliation/AffiliationPaperTermGraph";
+    import AffiliationPaperTermGraph from "@/components/affiliation/AffiliationPaperTermGraph";
+    import TermWordCloud from "@/components/graphs/TermWordCloud";
+    import PaperYearGraph from "@/components/graphs/PaperYearGraph";
 
     /**
      * 学术图相关页面
      *
      * @version 1.0
      * @author dwxh
-     * @module components/graphs
      * @param {Number} [searchId] - 被检索的ID
      * @param {String} [searchType] - 检索类型： 作者/机构
+     * @see AuthorPartnerGraph 作者合作关系图
+     * @see AuthorAffiliationGraph 作者和同机构作者关系图
+     * @see AuthorAffiliationGraph 作者和同机构作者关系图
+     * @see AffiliationPaperTermGraph 机构和论文关键字图谱
+     * @see TermWordCloud 关键词词云
+     * @see PaperYearGraph 论文-年柱图
      * @example
      * <SchGraphTab searchType="author_name" searchId="String(1)"/>
      *
@@ -66,7 +71,7 @@
             AuthorPartnerGraph,
             AuthorAffiliationGraph,
             AffiliationPaperTermGraph,
-            PaperStatisticGraph,
+            PaperYearGraph,
             TermWordCloud
         },
         props: {

@@ -122,7 +122,7 @@
 <script>
     import DomainPie from "@/components/Author/DomainsPieGraph";
     import ConferencePie from "@/components/Author/ConferencePieGraph";
-    import RecentPaper from "@/components/paper/RecentPaper";
+    import RecentPaper from "@/components/paper/RecentPaperList";
 
     /**
      * 作者的详情tab

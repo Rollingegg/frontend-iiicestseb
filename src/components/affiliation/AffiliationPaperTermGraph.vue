@@ -1,5 +1,5 @@
 <template>
-    <common-echart chartId="author-partner-graph"
+    <common-echart chartId="affiliation-paper-term-graph"
                    :height="height"
                    width="100%"
                    :options="options"/>
@@ -9,7 +9,7 @@
     import CommonEchart from "../common/CommonEchart";
 
     /**
-     * @description 作者合作关系图
+     * @description 机构和论文关键字图谱
      * @param {String} height 图高度
      * @param {Array} data 数据
      * @version 1.0
@@ -17,7 +17,6 @@
      * @see CommonEchart Echart包装
      */
     export default {
-        name: "AuthorPartnerGraph",
         components: {
             CommonEchart
         },
@@ -28,35 +27,39 @@
         computed: {
             nodes () {
                 let nodes = [];
-                let maxSize = 50;
                 if (this.data.vertexes) {
-                    let centerId = "";
-                    let typeNum = String(this.data.centerId).split("-");
-                    if (isNaN(typeNum[0])) {
-                        centerId = this.data.centerId;
-                    } else {
-                        centerId = typeNum[1] + "-" + typeNum[0];
-                    }
                     this.data.vertexes.forEach(node => {
-                        let isCenterAuthor = node.id == centerId;
-                        let symbolSize = isCenterAuthor
-                            ? maxSize
-                            : node.size <= 10
-                                ? (node.size * maxSize) / 5
-                                : maxSize;
-                        let authorName = node.name;
+                        let isPaper = node.type === "paper";
+                        let isCenter = node.id === this.data.centerId;
+                        let maxSize = 50;
+                        let symbolSize = (id => {
+                            if (id === this.data.centerId) {
+                                return maxSize;
+                            } else if (isPaper) {
+                                return node.size > 0.5 ? maxSize / 5 : (node.size * maxSize) / 10;
+                            }
+                            // rank++;
+                            return (node.size * maxSize);
+                        })(node.id);
+                        let title = isPaper ? node.content.title : node.name;
                         nodes.push({
                             name: node.id,
                             symbolSize: symbolSize,
-                            category: isCenterAuthor ? 0 : 1,
-                            title: authorName,
-                            des: `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${
-                                node.name
-                            }</div>所在机构：${node.content.affiliationName}<br/>发表文章数：${
-                                node.content.paperCount ? node.content.paperCount : 0
-                            }<br/>评分：${node.content.score}`,
+                            category: isCenter ? 0 : isPaper ? 1 : 2,
+                            title: title,
+                            des:
+                                `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px">${title}</div>` +
+                                (isCenter
+                                    ? ``
+                                    : isPaper
+                                        ? `被引数数：${
+                                            node.content.citationCountPaper
+                                                ? node.content.citationCountPaper
+                                                : 0
+                                        }<br/>发表年份：${node.content.chronDate}`
+                                        : ``),
                             label: {
-                                show: symbolSize > 30,
+                                show: symbolSize > 20,
                                 formatter: function (x) {
                                     return x.data.title;
                                 }
@@ -71,16 +74,7 @@
                 if (this.data.edges) {
                     this.data.edges.forEach(edge => {
                         edges.push({
-                            source: (str => {
-                                let sourceId = "";
-                                let typeNum = String(str).split("-");
-                                if (isNaN(typeNum[0])) {
-                                    sourceId = str;
-                                } else {
-                                    sourceId = typeNum[1] + "-" + typeNum[0];
-                                }
-                                return sourceId;
-                            })(edge.source),
+                            source: edge.source,
                             target: edge.target,
                             weight: edge.weight
                         });
@@ -89,18 +83,39 @@
                 return edges;
             },
             options () {
-                let categories = [{name: "该作者"}, {name: "合作者"}];
+                let categories = [
+                    {name: "中心机构"},
+                    {
+                        name: "发表文章",
+                        itemStyle: {
+                            color: "rgba(64,158,255, 0.5)"
+                        }
+                    },
+                    {
+                        name: "研究领域",
+                        itemStyle: {
+                            color: "#E6A23C"
+                        }
+                    }
+                ];
                 return {
                     title: {
-                        text: "Significant Partnership",
-                        subtext: "注：图中点大小代表合作关系紧密程度",
+                        text: "Research Domains Exploration",
+                        subtext: "注：距离越近代表研究领域相关性越强",
                         textStyle: {
                             fontSize: 20
                         },
-                        top: 0,
+                        bottom: 0,
                         left: 0
                     },
-                    chartId: 'author-partner-graph',
+                    legend: [
+                        {
+                            data: categories.map(function (a) {
+                                return a.name;
+                            })
+                        }
+                    ],
+                    chartId: this.chartId,
                     backgroundColor: 'white',
                     toolbox: {
                         feature: {
@@ -144,7 +159,9 @@
                     tooltip: {
                         formatter: function (params) {
                             if (params.data.source) {
-                                return `共合作${Number(params.data.weight).toFixed(0)}篇论文`;
+                                return String(params.data.source).split("-")[0] === "affiliation"
+                                    ? "发表"
+                                    : "相关";
                             } else {
                                 return params.data.des;
                             }
@@ -162,13 +179,12 @@
                             roam: true,
                             draggable: true,
                             force: {
-                                repulsion: 1000,
-                                edgeLength: 100
+                                repulsion: 1000
                             },
                             lineStyle: {
-                                width: 4,
+                                width: 2,
                                 color: "source",
-                                curveness: 0.2
+                                curveness: 0.3
                             },
                             itemStyle: {
                                 borderColor: "#fff",
@@ -179,7 +195,7 @@
                             emphasis: {
                                 label: {
                                     position: "inside",
-                                    show: false
+                                    show: true
                                 }
                             }
                         }
