@@ -9,7 +9,7 @@
     import CommonEchart from "../common/CommonEchart";
 
     /**
-     * @description 论文-会议饼图
+     * @description 作者论文-会议饼图
      * @param {String} height 图高度
      * @param {Array} tableData 数据
      * @version 1.0

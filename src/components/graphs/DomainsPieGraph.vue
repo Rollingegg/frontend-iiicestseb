@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <common-echart chartId="domain-pie-graph"
-                       :height="height" width="100%"
-                       :options="options"
-                       @on-click-echart="handleClickEchart"/>
-    </div>
+    <common-echart chartId="domain-pie-graph"
+                   :height="height" width="100%"
+                   :options="options"
+                   @on-click-echart="handleClickEchart"/>
 </template>
 
 <script>
