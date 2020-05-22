@@ -30,8 +30,8 @@
 </template>
 
 <script>
-    import AuthorPartnerGraph from "@/components/Author/AuthorPartnerGraph";
-    import AuthorAffiliationGraph from "@/components/Author/AuthorAffiliationGraph";
+    import AuthorPartnerGraph from "@/components/author/AuthorPartnerGraph";
+    import AuthorAffiliationGraph from "@/components/author/AuthorAffiliationGraph";
     import AffiliationPaperTermGraph from "@/components/affiliation/AffiliationPaperTermGraph";
     import TermWordCloud from "@/components/graphs/TermWordCloud";
     import PaperYearGraph from "@/components/graphs/PaperYearGraph";

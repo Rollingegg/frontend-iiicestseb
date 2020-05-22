@@ -184,7 +184,7 @@
 
     /**
      * @description 论文详情页面，使用路由接受参数
-     * @param {Number} affiliationId 文章id
+     * @param {Number} articleId 文章id
      * @version 1.0
      * @author dwxh
      * @see PaperRecommend 相关文章推荐

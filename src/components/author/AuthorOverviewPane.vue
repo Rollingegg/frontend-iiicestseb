@@ -120,22 +120,24 @@
 </template>
 
 <script>
-    import DomainPie from "@/components/Author/DomainsPieGraph";
-    import ConferencePie from "@/components/Author/ConferencePieGraph";
+    import DomainPie from "@/components/graphs/DomainsPieGraph";
     import RecentPaper from "@/components/paper/RecentPaperList";
+    import ConferencePie from "@/components/author/ConferencePieGraph";
 
     /**
      * 作者的详情tab
      * @version 1.1
-     * @module components/author
      * @param {Number} [authorId] - 作者ID
      * @param {Object} [baseInfo] - 作者的基本信息
      * @param {Object} [domainStatistics] - 作者的领域信息
+     * @see DomainPie 关键词饼图
+     * @see RecentPaper 最近发表文章列表
+     * @see ConferencePie 各个会议论文占比饼图
      * @example 调用示例
      * <overview-pane :base-info="baseInfo" :author-id="authorId" :domain-statistics="domainStatistics" @clickItem="openDetailPage"/>
      */
     export default {
-        name: "OverviewPane",
+        name: "AuthorOverviewPane",
         components: {
             DomainPie,
             ConferencePie,
