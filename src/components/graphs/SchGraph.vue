@@ -24,7 +24,9 @@
         </el-row>
 
         <el-card class="card-container">
-            <paper-year-graph height="300px" :tableData="papersPublishPerYear"/>
+            <paper-year-graph height="300px"
+                              :search-type="searchType"
+                              :search-id="searchId"/>
         </el-card>
     </div>
 </template>
@@ -58,7 +60,6 @@
         name: "AuthorGraphPage",
         data () {
             return {
-                papersPublishPerYear: [],
                 limit: 1000,
                 loading: true,
                 domainStatistics: [],
@@ -83,7 +84,6 @@
         },
         methods: {
             initGraphData () {
-                this.getPublishStatistics();
                 this.getDomainStatistics();
                 if (this.searchType === "author_name") {
                     this.getAuthorPartners();
@@ -91,27 +91,6 @@
                 } else {
                     this.getAffiliationPaperTermGraphData();
                 }
-            },
-            getPublishStatistics () {
-                const pathsMap = {
-                    affiliation_name: "/statistics/affiliation/publish/count/per/year",
-                    author_name: "/statistics/author/publish/count/per/year",
-                };
-                const searchPath = pathsMap[this.searchType];
-                const id = this.searchId;
-                this.$get(searchPath, {
-                    id: id
-                }).then(r => {
-                    if (r.data.status) {
-                        this.papersPublishPerYear = r.data.result;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: r.data.result,
-                            type: "warning"
-                        });
-                    }
-                });
             },
             getDomainStatistics () {
                 const pathsMap = {

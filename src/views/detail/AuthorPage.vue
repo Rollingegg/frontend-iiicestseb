@@ -63,8 +63,8 @@
      * @version 1.0
      * @author dwxh
      * @see AuthorOverview 作者信息总览tab
-     * @see PaperList 机构发布文章tab
-     * @see SchGraph 机构的图谱tab
+     * @see PaperList 作者发布文章tab
+     * @see SchGraph 作者的图谱tab
      */
     export default {
         name: "AuthorPage",

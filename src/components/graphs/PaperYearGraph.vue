@@ -11,7 +11,9 @@
     /**
      * @description 论文-年柱图
      * @param {String} height 图高度
-     * @param {Array} tableData 数据
+     * @param {String} searchId 主体id
+     * @param {String} searchType 主体类型
+     * @param {String} barWidth 可选，柱宽度
      * @version 1.0
      * @author dwxh
      * @see CommonEchart Echart包装
@@ -24,12 +26,49 @@
             return {
                 optionData: {},
                 yearBase: "2010",
-                yearEnd: "2020"
+                yearEnd: "2020",
+                tableData: []
             };
         },
         props: {
             height: String,
-            tableData: Array
+            searchId: Number,
+            searchType: String,
+            barWidth: {
+                type: String,
+                required: false,
+                default: "60"
+            }
+        },
+        watch: {
+            searchId () {
+                this.getPublishStatistics();
+            }
+        },
+        mounted () {
+            this.getPublishStatistics();
+        },
+        methods: {
+            getPublishStatistics () {
+                const pathsMap = {
+                    affiliation_name: "/statistics/affiliation/publish/count/per/year",
+                    author_name: "/statistics/author/publish/count/per/year",
+                    term: "/statistics/term/count/per/year"
+                };
+                this.$get(pathsMap[this.searchType], {
+                    id: this.searchId
+                }).then(r => {
+                    if (r.data.status) {
+                        this.tableData = r.data.result;
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: "warning"
+                        });
+                    }
+                });
+            }
         },
         computed: {
             category () {
@@ -87,7 +126,7 @@
                         {
                             name: "papers",
                             type: "bar",
-                            barWidth: 60,
+                            barWidth: this.barWidth,
                             itemStyle: {
                                 barBorderRadius: 5,
                                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
