@@ -2,12 +2,19 @@
     <div class="footer">
         <div class="copyright">
             Copyright ©
-            <span v-html="copyright"></span>
+            <span v-html="copyright"/>
         </div>
     </div>
 </template>
 
 <script>
+    /**
+     * @description 全局尾部
+     * @version 1.0
+     * @author dwxh
+     * @example
+     * <global-footer copyright="All Rights Reserved"/>
+     */
     export default {
         name: 'GlobalFooter',
         props: ['copyright']

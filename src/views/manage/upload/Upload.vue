@@ -86,6 +86,12 @@
 <script>
     import ImportResult from "@/components/manage/upload/ImportResult";
 
+    /**
+     * @description 数据导入页面，使用 ImportResult 来展示结果
+     * @see ImportResult
+     * @version 1.0
+     * @author dwxh
+     */
     export default {
         components: {ImportResult},
         data () {

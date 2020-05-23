@@ -17,6 +17,13 @@
     import GlobalNav from '@/components/headerAndFooter/GlobalNavigator';
     import Feedback from "@/components/common/Feedback";
 
+    /**
+     * @description 主体页面框架，通过路由引入子页面
+     * @version 1.0
+     * @author dwxh
+     * @see GlobalNav 页面首部
+     * @see GlobalFooter 页面尾部
+     */
     export default {
         name: 'Index',
         components: {

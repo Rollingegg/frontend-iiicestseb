@@ -1,7 +1,7 @@
 <template>
     <el-header class="homeHeader" id="homeHeader" :class="{'isFixed':isTabBar}">
         <a class="title" href="/">OASIS</a>
-        <head-bar v-on:expectedWarning="handleUserClick"></head-bar>
+        <head-bar v-on:expectedWarning="handleUserClick"/>
         <div v-if="hasLogin" class="user-avatar">
             <el-button icon="el-icon-message-solid"
                        type="text"
@@ -30,6 +30,14 @@
     import HeadBar from './HeadBar';
     import {mapState} from 'vuex';
 
+    /**
+     * @description 全局首部
+     * @version 1.0
+     * @author dwxh
+     * @see HeadBar 首部功能条
+     * @example
+     * <global-navigator />
+     */
     export default {
         name: 'GlobalNav',
         data () {

@@ -27,10 +27,10 @@
                  @tab-click="switchTab"
                  class="main-container">
             <el-tab-pane label="Overview" name="overview">
-                <overview-pane :base-info="baseInfo"
-                               :author-id="authorId"
-                               :domain-statistics="domainStatistics"
-                               @clickItem="openDetailPage"/>
+                <author-overview :base-info="baseInfo"
+                                 :author-id="authorId"
+                                 :domain-statistics="domainStatistics"
+                                 @clickItem="openDetailPage"/>
             </el-tab-pane>
 
             <el-tab-pane label="Papers" name="papers">
@@ -52,15 +52,24 @@
 </template>
 
 <script>
-    import OverviewPane from "@/components/Author/OverviewPane";
+    import AuthorOverview from "@/components/author/AuthorOverviewPane";
     import PaperList from "@/components/paper/PaperListWrapper";
     import SchGraph from "@/components/graphs/SchGraph";
     import {mapState} from "vuex";
 
+    /**
+     * @description 作者详情页面，使用路由接受参数
+     * @param {Number} authorId 作者id
+     * @version 1.0
+     * @author dwxh
+     * @see AuthorOverview 作者信息总览tab
+     * @see PaperList 作者发布文章tab
+     * @see SchGraph 作者的图谱tab
+     */
     export default {
         name: "AuthorPage",
         components: {
-            OverviewPane
+            AuthorOverview
         },
         mounted () {
             this.init();

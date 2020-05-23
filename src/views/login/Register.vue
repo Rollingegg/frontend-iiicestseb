@@ -78,6 +78,13 @@
         2: '#ff7e05',
         3: '#52c41a'
     };
+
+    /**
+     * @description 注册页面
+     * @version 1.0
+     * @author dwxh
+     * @event register 切换页面，根据参数决定需要切到的页面名<br/> - Login: 登陆页面
+     */
     export default {
         name: 'Register',
         components: {},

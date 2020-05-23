@@ -3,7 +3,7 @@
         <div :class="{'homepage':isSearchMainPage}">
             <div class="welcome" v-show="isSearchMainPage">{{welcomeMessage}}</div>
 
-            <SearchBox @do-search="doSearch"></SearchBox>
+            <search-box @do-search="doSearch"/>
 
             <div v-show="isSearchMainPage" class="home-guide">
                 <el-button size="large" icon="el-icon-arrow-down" type="primary" circle @click="scrollDown"></el-button>
@@ -18,12 +18,22 @@
     import SearchBox from '@/components/search/SearchBox';
     import {mapState} from 'vuex';
 
+    /**
+     * @description 检索框架页面，引入了搜索框，通过 *子页面* 引入 **推荐页面** 和 **搜索结果页面**
+     * @see SearchBox
+     * @event do-search 用户点击检索按钮<br/>- json: 检索条件
+     * @version 1.0
+     * @author dwxh
+     */
     export default {
         name: 'SearchMain',
         components: {
             SearchBox,
         },
-        data() {
+        mounted () {
+            this.welcome();
+        },
+        data () {
             return {
                 welcomeMessage: '',
                 isSearchMainPage: true
@@ -88,9 +98,6 @@
                     behavior: 'smooth'
                 })
             }
-        },
-        mounted() {
-            this.welcome();
         }
     };
 </script>

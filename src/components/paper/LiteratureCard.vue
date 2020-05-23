@@ -10,7 +10,7 @@
             </div>
 
             <div class="abstract">
-                <mul-wrapper class="document-abstract" :index=article.id :content=article.paperAbstract></mul-wrapper>
+                <mul-wrapper class="document-abstract" :index=article.id :content=article.paperAbstract />
             </div>
 
             <div class="keywords">
@@ -28,8 +28,7 @@
                 Download
             </el-link>
             <span class="citation">Citations( <span class="citation-cnt">{{article.citationCountPaper}}</span> )</span>
-
-            <el-button  v-if="isAdmin" type="danger" class="delete-btn" icon="el-icon-delete" circle @click="deletePaper"></el-button>
+            <el-button  v-if="isAdmin" type="danger" class="delete-btn" icon="el-icon-delete" circle @click="deletePaper"/>
             <el-link type="primary" class="viewmore-link" @click="openArticle(article.id)">View More</el-link>
         </div>
     </el-card>
@@ -39,6 +38,15 @@
     import MulWrapper from '../common/MultipleLines';
     import {mapState} from 'vuex';
 
+    /**
+     * 文献详情,调用 MultipleLines 展示多行内容
+     *
+     * @see MulWrapper
+     * @version 1.0
+     * @author dwxh
+     * @param {Object} [article] - 文章详情对象
+     * @event deletedPaper 删除了文章，需要更新页面 <br/>-{Boolean}: 是否删除成功
+     */
     export default {
         name: 'LCard',
         components: {

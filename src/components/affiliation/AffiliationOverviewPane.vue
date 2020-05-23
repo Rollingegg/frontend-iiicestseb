@@ -53,10 +53,21 @@
 </template>
 
 <script>
-    import RecentPaper from "@/components/paper/RecentPaper";
-    import DomainPie from "@/components/Author/DomainsPieGraph";
-    import HotAuthors from "@/components/Affiliation/HotAuthors";
+    import RecentPaper from "@/components/paper/RecentPaperList";
+    import DomainPie from "@/components/graphs/DomainsPieGraph";
+    import HotAuthors from "@/components/affiliation/HotAuthorsList";
 
+    /**
+     * @description 机构详情组件
+     * @param {Number} affiliationId 机构id
+     * @param {Object} baseInfo 机构基本信息
+     * @version 1.0
+     * @author dwxh
+     * @see RecentPaper 最近发布文章
+     * @see HotAuthors 最近热门作者
+     * @see DomainPie 关键词图
+     * @event clickItem 点击相关词，需要进行页面跳转 <br/>- {String} 跳转到的新页面 <br/>- {Number} 跳转id
+     */
     export default {
         name: "AffiliationOverviewPane",
         data () {
@@ -94,9 +105,6 @@
             },
             clickAuthor (id) {
                 this.$emit("clickItem", "author", id);
-            },
-            clickAffiliation (id) {
-                this.$emit("clickItem", "affiliation", id);
             },
             getDomainStatistics () {
                 const id = this.affiliationId;

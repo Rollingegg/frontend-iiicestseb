@@ -3,21 +3,19 @@
         <el-button round size="large" @click="showDrawer">
             高级检索
         </el-button>
-        <el-drawer
-                size="40%"
-                :closable="false"
-                @close="onClose"
-                :visible.sync="visible">
+        <el-drawer size="40%"
+                   :closable="false"
+                   @close="onClose"
+                   :visible.sync="visible">
             <div class="drawer-title">输入检索条件</div>
 
             <div class="search-condition">
-                <el-input
-                        clearable
-                        placeholder="请输入内容"
-                        v-for="(option, index) in searchOptions"
-                        :key="index"
-                        v-model="option.val"
-                        v-show="option.shown">
+                <el-input clearable
+                          placeholder="请输入内容"
+                          v-for="(option, index) in searchOptions"
+                          :key="index"
+                          v-model="option.val"
+                          v-show="option.shown">
                     <div style="width:50px" slot="prepend">{{option.label}}</div>
                     <el-button slot="append" icon="el-icon-remove" @click="remove(index)"></el-button>
                 </el-input>
@@ -31,6 +29,14 @@
     </div>
 </template>
 <script>
+    /**
+     * @description 高级检索框
+     * @event doAdvancedSearch 用户点击检索按钮<br/>- json: 检索条件
+     * @version 1.0
+     * @author dwxh
+     * @example
+     * <ad-search-box @doAdvancedSearch="doAdvancedSearchFunction"/>
+     */
     export default {
         name: 'AdvanceSearchBox',
         data () {
@@ -88,7 +94,7 @@
                 }
                 if (isValid) {
                     this.loading = true;
-                    this.$emit("do-advanced-search", {
+                    this.$emit("doAdvancedSearch", {
                         title: this.searchOptions[0].val,
                         author_name: this.searchOptions[1].val,
                         affiliation_name: this.searchOptions[2].val,

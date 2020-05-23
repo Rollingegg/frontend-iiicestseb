@@ -28,7 +28,7 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">活跃机构</div>
                     <div class="info-infinite-container">
-                        <AffiliationOfTermGraph
+                        <affiliation-of-term-graph
                                 height="400px"
                                 :affiliation_times_data="affiliation_times_data"
                         />
@@ -42,12 +42,11 @@
                 <el-card class="info-container">
                     <div slot="header" class="card-head-title">论文发表</div>
                     <div class="info-infinite-container">
-                        <any_-year-graph
-                                height="400px"
-                                :barWidth="25"
-                                :searchId="String(keywordId)"
-                                searchType="term"
-                        ></any_-year-graph>
+                        <paper-year-graph height="400px"
+                                          search-type="term"
+                                          barWidth="25"
+                                          :search-id="Number(this.keywordId)"
+                        />
                     </div>
                 </el-card>
 
@@ -55,13 +54,12 @@
                     <div slot="header" class="card-head-title">相关领域</div>
                     <div class="info-infinite-container">
                         <div class="relative-term-container">
-                            <el-button
-                                    class="relative-term-button"
-                                    type="primary"
-                                    v-for="(item, index) in relativeTerms"
-                                    :key="index"
-                                    @click="openTermDetail(item.id)"
-                            >{{item.name}}
+                            <el-button class="relative-term-button"
+                                       type="primary"
+                                       v-for="(item, index) in relativeTerms"
+                                       :key="index"
+                                       @click="openTermDetail(item.id)">
+                                {{item.name}}
                             </el-button>
                         </div>
                     </div>
@@ -82,14 +80,26 @@
 <script>
     import PaperList from "@/components/paper/PaperListWrapper";
     import AffiliationOfTermGraph from "@/components/keyword/AffiliationOfTermGraph";
-    import Any_YearGraph from "@/components/graphs/Any_YearGraph";
+    import PaperYearGraph from "@/components/graphs/PaperYearGraph";
 
+    /**
+     * @description 关键词详情页面，使用路由接受参数
+     * @param {Number} authorId 关键词id
+     * @version 1.0
+     * @author dwxh
+     * @see AffiliationOfTermGraph 关键词的机构排行图
+     * @see PaperList 相关文章
+     * @see PaperYearGraph 论文-年柱图
+     */
     export default {
         name: "KeywordPage",
         components: {
             PaperList,
             AffiliationOfTermGraph,
-            Any_YearGraph
+            PaperYearGraph
+        },
+        mounted () {
+            this.init();
         },
         data () {
             return {
@@ -220,9 +230,6 @@
                     }
                 });
             }
-        },
-        mounted () {
-            this.init();
         }
     };
 </script>
@@ -243,9 +250,6 @@
                 overflow: auto;
                 height: 100px;
                 font-size: 14px;
-            }
-
-            .domain-recommend {
             }
         }
 

@@ -2,27 +2,25 @@
     <div style="padding:0 15%">
         <el-row type="flex" justify="space-between">
             <el-col :span="20">
-                <el-autocomplete
-                        style="width:100%"
-                        popper-class="my-autocomplete"
-                        v-model="queryWord"
-                        :fetch-suggestions="searchSuggest"
-                        placeholder="开始您的学术探索之旅"
-                        clearable
-                        class="input-with-select"
-                        @clear="clearSearch"
-                        @keyup.enter.native="doSimpleSearch(getSelect(),queryWord)">
+                <el-autocomplete style="width:100%"
+                                 popper-class="my-autocomplete"
+                                 v-model="queryWord"
+                                 :fetch-suggestions="searchSuggest"
+                                 placeholder="开始您的学术探索之旅"
+                                 clearable
+                                 class="input-with-select"
+                                 @clear="clearSearch"
+                                 @keyup.enter.native="doSimpleSearch(getSelect(),queryWord)">
 
                     <el-select v-model="select" slot="prepend">
-                        <el-option v-for="(item, index) in selectItems" :key="index" :value="item"></el-option>
+                        <el-option v-for="(item, index) in selectItems" :key="index" :value="item"/>
                     </el-select>
 
-                    <el-button
-                            :loading="loading"
-                            slot="append"
-                            type="primary"
-                            icon="el-icon-search"
-                            @click="doSimpleSearch(getSelect(),queryWord)"/>
+                    <el-button :loading="loading"
+                               slot="append"
+                               type="primary"
+                               icon="el-icon-search"
+                               @click="doSimpleSearch(getSelect(),queryWord)"/>
 
                     <template slot-scope="{ item }">
                         <div class="name">
@@ -35,7 +33,7 @@
             </el-col>
 
             <el-col :span="3">
-                <ad-search-box @do-advanced-search="doAdvancedSearch"/>
+                <ad-search-box @doAdvancedSearch="doAdvancedSearch"/>
             </el-col>
         </el-row>
     </div>
@@ -44,6 +42,15 @@
     import AdSearchBox from "./AdvanceSearchBox";
     import db from "@/utils/localstorage";
 
+    /**
+     * @description 检索框，引入了高级检索框
+     * @see AdSearchBox
+     * @event do-search 用户点击检索按钮<br/>- json: 检索条件
+     * @version 1.0
+     * @author dwxh
+     * @example
+     * <search-box @do-search="doSearchFunction"/>
+     */
     export default {
         name: "SearchBox",
         data: function () {
@@ -54,6 +61,13 @@
                 select: "全选",
                 selectItems: ["全选", "作者", "标题", "摘要", "机构", "DOI", "关键词"]
             };
+        },
+        mounted () {
+            // TODO: 1.推荐，或者考虑删除
+            this.recommends = this.loadAll();
+        },
+        components: {
+            AdSearchBox
         },
         methods: {
             getSelect () {
@@ -95,14 +109,6 @@
                 params.type = queryType;
                 this.$emit('do-search', params);
             },
-            // TODO: 1.推荐，或者考虑删除
-            searchSuggest (queryString, callback) {
-                let recommends = this.recommends;
-                let results = queryString
-                    ? recommends.filter(this.createFilter(queryString))
-                    : recommends;
-                callback(results);
-            },
             createFilter (queryString) {
                 return recommend => {
                     return (
@@ -112,6 +118,14 @@
             },
             clearSearch () {
                 db.remove("SEARCH_WORD");
+            },
+            // TODO: 1.推荐，或者考虑删除
+            searchSuggest (queryString, callback) {
+                let recommends = this.recommends;
+                let results = queryString
+                    ? recommends.filter(this.createFilter(queryString))
+                    : recommends;
+                callback(results);
             },
             // TODO: 1.推荐，或者考虑删除
             loadAll () {
@@ -126,13 +140,6 @@
                     {id: 8, value: "Python"}
                 ];
             }
-        },
-        mounted () {
-            // TODO: 1.推荐，或者考虑删除
-            this.recommends = this.loadAll();
-        },
-        components: {
-            AdSearchBox
         }
     };
 </script>

@@ -7,9 +7,9 @@
                 </div>
 
                 <div v-if="!noResult">
-                    <LCard :key="index"
+                    <l-card :key="index"
                            :article="item"
-                           v-on:deletedPaper="deletedPaper"
+                           @deletedPaper="deletedPaper"
                            v-for="(item, index) of paperList"
                     />
                     <!--todo:需要分页！-->
@@ -45,11 +45,11 @@
     import LCard from "./LiteratureCard";
 
     /**
-     * 文献列表,对文献card的封装，根据提供的选项请求文献数据
+     * 文献列表,对多个文献card的封装，根据提供的选项请求文献数据
      *
+     * @see LCard
      * @version 1.0
      * @author dwxh
-     * @module components/paper
      * @param {Boolean} [isById] - 是否根据ID检索
      * @param {String} [searchType] - 检索关键词名，可选
      * @param {Number} [searchId] - 检索对象的ID，可选
@@ -101,6 +101,10 @@
                 require: false,
             }
         },
+        mounted () {
+            this.isById ? this.initIdParams() : this.initSearchParams(this.keyword);
+            this.fetch();
+        },
         computed: {
             paperCount: function () {
                 return this.paperTotalNumber;
@@ -118,11 +122,6 @@
                     this.initSearchParams(newValue);
                     this.fetch();
                 }
-            },
-            gettingResult (news, olds) {
-                // console.log(news);
-                // console.log("===");
-                // console.log(olds);
             }
         },
         methods: {
@@ -220,10 +219,6 @@
                 // console.log(deleted);
                 this.fetch()
             }
-        },
-        mounted () {
-            this.isById ? this.initIdParams() : this.initSearchParams(this.keyword);
-            this.fetch();
         }
     };
 </script>

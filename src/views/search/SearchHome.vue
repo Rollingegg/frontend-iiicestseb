@@ -2,11 +2,11 @@
     <div>
         <el-row :gutter="120" style="margin: 0 40px;margin-top:60px">
             <el-col :md="12">
-                <HotCard :title="heatAuthors" @open-page="openDetailPage"/>
+                <hot-card title="发表论文数作者排行" :search-type="1" @open-page="openDetailPage"/>
             </el-col>
 
             <el-col :md="12">
-                <HotCard :title="heatWords" @open-page="openDetailPage"/>
+                <hot-card title="文献关键词热度排行" :search-type="2" @open-page="openDetailPage"/>
             </el-col>
         </el-row>
     </div>
@@ -17,19 +17,17 @@
     import {mapState} from 'vuex';
     import db from '@/utils/localstorage';
 
-    const heatAuthors = '发表论文数作者排行';
-    const heatWords = '文献关键词热度排行';
-
+    /**
+     * @description 系统默认展示的主页面，显示推荐内容
+     * @see HotCard
+     * @event showWelcome 该页面需要展示欢迎信息<br/>- true
+     * @version 1.0
+     * @author dwxh
+     */
     export default {
         name: 'SearchHome',
         components: {
             HotCard
-        },
-        data () {
-            return {
-                heatAuthors: heatAuthors,
-                heatWords: heatWords
-            };
         },
         computed: {
             ...mapState({

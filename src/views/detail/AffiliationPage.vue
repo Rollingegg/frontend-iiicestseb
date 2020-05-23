@@ -13,7 +13,7 @@
                  class="main-container">
 
             <el-tab-pane label="Overview" name="overview">
-                <affiliation-overview-pane :base-info="baseInfo"
+                <affiliation-overview :base-info="baseInfo"
                                            :affiliation-id="Number(affiliationId)"
                                            @clickItem="openDetailPage"/>
             </el-tab-pane>
@@ -63,17 +63,24 @@
 </template>
 
 <script>
+    import AffiliationOverview from "@/components/affiliation/AffiliationOverviewPane";
     import PaperList from "@/components/paper/PaperListWrapper";
     import SchGraph from "@/components/graphs/SchGraph";
-    import DomainPie from "@/components/Author/DomainsPieGraph";
-    import AffiliationOverviewPane from "@/components/Affiliation/AffiliationOverviewPane";
     import {mapState} from "vuex";
 
+    /**
+     * @description 机构页面，使用路由接受参数
+     * @param {Number} affiliationId 机构id
+     * @version 1.0
+     * @author dwxh
+     * @see AffiliationOverview 机构总览tab
+     * @see PaperList 机构发布文章tab
+     * @see SchGraph 机构的图谱tab
+     */
     export default {
         name: "AffiliationPage",
         components: {
-            AffiliationOverviewPane,
-            DomainPie,
+            AffiliationOverview
         },
         data () {
             return {

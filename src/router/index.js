@@ -100,22 +100,22 @@ router.beforeEach((to, from, next) => {
                     {
                         path: 'authorDetail',
                         name: 'AuthorPage',
-                        component: 'author/AuthorPage'
+                        component: 'detail/AuthorPage'
                     },
                     {
                         path: 'affiliationDetail',
                         name: 'AffiliationPage',
-                        component: 'affiliation/AffiliationPage'
+                        component: 'detail/AffiliationPage'
                     },
                     {
                         path: 'keywordDetail',
                         name: 'TermPage',
-                        component: 'keyword/KeywordPage'
+                        component: 'detail/KeywordPage'
                     },
                     {
                         path: 'articleDetail',
                         name: 'ArticlePage',
-                        component: 'article/ArticleDetailPage'
+                        component: 'detail/ArticleDetailPage'
                     }
                 ];
                 if (user.privilegeLevel === '管理员') {
