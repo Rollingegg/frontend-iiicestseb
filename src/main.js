@@ -7,7 +7,7 @@ import store from './store';
 
 import db from './utils/localstorage';
 import request from './utils/request';
-import userfulFunctions from './utils/usefulFunction';
+import usefulFunctions from './utils/usefulFunction';
 import './utils/install';
 
 import ElementUI from 'element-ui';
@@ -37,9 +37,9 @@ Vue.prototype.$delete = request.delete;
 Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
-Vue.prototype.$isEmpty = userfulFunctions.isEmpty;
-Vue.prototype.$debounce = userfulFunctions.fnDebounce;
-Vue.prototype.$throttle = userfulFunctions.fnThrottle;
+Vue.prototype.$isEmpty = usefulFunctions.isEmpty;
+Vue.prototype.$debounce = usefulFunctions.fnDebounce;
+Vue.prototype.$throttle = usefulFunctions.fnThrottle;
 Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */

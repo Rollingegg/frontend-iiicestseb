@@ -1,5 +1,4 @@
-
-function isEmpty (obj) {
+function isEmpty(obj) {
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 
     // null and undefined are "empty"
@@ -25,37 +24,49 @@ function isEmpty (obj) {
     return true;
 }
 
-function fnDebounce(fn,delay){
-    let timer = null; 
-    return function() {
-        if(timer){
-            clearTimeout(timer); 
+function fnDebounce(fn, delay) {
+    let timer = null;
+    return function () {
+        if (timer) {
+            clearTimeout(timer);
         }
-        timer = setTimeout(fn,delay); 
+        timer = setTimeout(fn, delay);
     }
 }
 
-function fnThrottle(method, delay, duration) {
-    let timer;
-    let begin = new Date().getTime();
-    return function() {
-      let current = new Date().getTime();
-      clearTimeout(timer);
-      if (current - begin >= duration) {
-        method();
-        begin = current;
-      } else {
-        timer = setTimeout(function() {
-          method();
-        }, delay);
-      }
-    };
+function fnThrottle(method, delay) {
+    // last为上一次触发回调的时间, timer是定时器
+    let last = 0, timer = null
+    // 将throttle处理结果当作函数返回
+
+    return function () {
+        // 保留调用时的this上下文
+        let context = this
+        // 保留调用时传入的参数
+        let args = arguments
+        // 记录本次触发回调的时间
+        let now = +new Date()
+
+        // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+        if (now - last < delay) {
+            // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
+            clearTimeout(timer)
+            timer = setTimeout(function () {
+                last = now
+                method.apply(context, args)
+            }, delay)
+        } else {
+            // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
+            last = now
+            method.apply(context, args)
+        }
+    }
 }
 
-const userfulFunctions = {
+const usefulFunctions = {
     isEmpty,
     fnDebounce,
     fnThrottle
 };
 
-export default userfulFunctions;
+export default usefulFunctions;

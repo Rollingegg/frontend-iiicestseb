@@ -84,7 +84,7 @@
             },
             scrollDown() {
                 window.scrollTo({
-                    top: window.screen.height - 60,
+                    top: window.screen.height - 220,
                     behavior: 'smooth'
                 })
             }
