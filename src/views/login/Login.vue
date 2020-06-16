@@ -105,7 +105,7 @@
         methods: {
             doLogin (formName) {
                 if (this.activeTab === "username") {
-                    this.$refs[formName].validate(valid => {
+                    this.$refs[formName].validate(async valid => {
                         if (valid) {
                             this.loading = true;
                             let name = this.loginForm.username;
@@ -120,21 +120,23 @@
                                 return;
                             }
 
-                            this.$postJson("user/login", {
-                                username: name,
-                                password: password
-                            }).then(r => {
-                                if (r.data.status) {
+                            // 使用了async/await改写原先的promise链式调用写法
+                            try{
+                                const r = await this.$postJson("user/login", {
+                                    username: name,
+                                    password: password
+                                });
+                                if(r.data.status){
                                     let data = r.data.result;
                                     this.saveLoginData(data);
                                     this.setMessageAndBtnLoading();
-                                    this.$router.push("/searchFrame/searchHome");
+                                    await this.$router.push("/searchFrame/searchHome");
                                 } else {
                                     this.setMessageAndBtnLoading(r.data.result);
                                 }
-                            }).catch(() => {
+                            } catch (e) {
                                 this.setMessageAndBtnLoading();
-                            });
+                            }
                         }
                     });
                 }
