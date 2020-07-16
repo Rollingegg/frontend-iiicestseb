@@ -14,7 +14,7 @@
         </el-submenu>
         <el-submenu index="/admin" v-if="isAdmin">
             <template slot="title">后台管理</template>
-            <el-menu-item index="/article/manage">文献管理</el-menu-item>
+            <el-menu-item index="/articleManage">文献管理</el-menu-item>
             <el-menu-item index="/user/manage">用户管理</el-menu-item>
             <el-menu-item index="/upload">上传数据</el-menu-item>
         </el-submenu>

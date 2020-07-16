@@ -124,6 +124,11 @@ router.beforeEach((to, from, next) => {
                         name: 'UploadPage',
                         component: 'manage/upload/Upload'
                     });
+                    asyncRouter.push({
+                        path: 'articleManage',
+                        name: 'SpiderPage',
+                        component: 'manage/spider/ArticleSpider'
+                    });
                 }
                 save('USER_ROUTER', asyncRouter);
                 go(to, next);
