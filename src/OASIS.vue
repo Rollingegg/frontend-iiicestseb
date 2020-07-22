@@ -43,12 +43,12 @@
         font-size: .97rem;
     }
 
-    p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        white-space: nowrap;
-    }
+    /*p {*/
+    /*    overflow: hidden;*/
+    /*    text-overflow: ellipsis;*/
+    /*    word-break: break-all;*/
+    /*    white-space: nowrap;*/
+    /*}*/
 
     .copyright-link, :visited, :link {
         color: #409EFF;

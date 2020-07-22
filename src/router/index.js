@@ -56,11 +56,6 @@ let constRouter = [
                         component: view('search/SearchResult'),
                     }
                 ]
-            },
-            {
-                path: 'searchRes',
-                name: 'SearchResultPage',
-                component: view('search/ResultPage')
             }]
     }
 ];
@@ -116,6 +111,11 @@ router.beforeEach((to, from, next) => {
                         path: 'articleDetail',
                         name: 'ArticlePage',
                         component: 'detail/ArticleDetailPage'
+                    },
+                    {
+                        path: 'rank/experts',
+                        name: 'ExpertsRankPage',
+                        component: 'rank/ExpertsRank'
                     }
                 ];
                 if (user.privilegeLevel === '管理员') {
@@ -176,8 +176,14 @@ function filterAsyncRouter (routes) {
 }
 
 function view (path) {
-    return resolve => require(["@/views/" + path + ""], resolve)
+    // return resolve => require(["@/views/" + path + ""], resolve)
+    return function (resolve) {
+        import(`@/views/${path}.vue`).then(mod => {
+            resolve(mod)
+        })
+    }
 }
+
 
 function get (name) {
     return JSON.parse(localStorage.getItem(name));

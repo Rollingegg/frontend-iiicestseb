@@ -80,10 +80,10 @@
             }
         },
         mounted () {
-            window.addEventListener('scroll', this.$throttle(this.handleScroll,1000)); // Dom树加载完毕
+            window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
         },
         destroyed () {
-            window.removeEventListener('scroll', this.$throttle(this.handleScroll,1000)) // 销毁页面时清除
+            window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
         },
         components: {
             HeadBar
