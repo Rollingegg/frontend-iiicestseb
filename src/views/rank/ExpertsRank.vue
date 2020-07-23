@@ -10,14 +10,15 @@
             <el-menu-item index="/rank/experts/sociability">Sociability</el-menu-item>
             <el-menu-item index="/rank/experts/diversity">Diversity</el-menu-item>
         </el-menu>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-top: 20px">
             <el-col :md="16">
-                <div v-for="(item,index) in Array(20).fill(0)" :key="index">{{item}}</div>
+                <router-view/>
             </el-col>
             <el-col :md="8">
-                <el-card header="HELP">
+                <el-card >
+                    <div slot="header" style="font-size: 20px;text-align: center">HELP</div>
                     <div>
-                        <h4>Experts' Statistics</h4>
+                        <div style="font-size: 16px;font-weight: 700">Experts' Statistics</div>
                         <p>We calculate several features of authors, including h-index: , A-Index, G-Index, Total
                             citation number, Diversity, Sociability, Activity, New Star and Rising Star. <a
                                     href="https://www.aminer.cn/ranks/ranks-res-help" target="_blank">please click

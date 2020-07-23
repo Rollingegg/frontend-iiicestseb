@@ -56,6 +56,19 @@ let constRouter = [
                         component: view('search/SearchResult'),
                     }
                 ]
+            },
+            {
+                path: 'rank/experts',
+                name: 'ExpertsRankPage',
+                component: ()=>import('@/views/rank/ExpertsRank'),
+                redirect: 'rank/experts/',
+                children: [
+                    {
+                        path: '/',
+                        name: 'ExpertsRankOverviewPage',
+                        component: ()=>import('@/views/rank/ExpertsRankOverview'),
+                    }
+                ]
             }]
     }
 ];
@@ -111,11 +124,6 @@ router.beforeEach((to, from, next) => {
                         path: 'articleDetail',
                         name: 'ArticlePage',
                         component: 'detail/ArticleDetailPage'
-                    },
-                    {
-                        path: 'rank/experts',
-                        name: 'ExpertsRankPage',
-                        component: 'rank/ExpertsRank'
                     }
                 ];
                 if (user.privilegeLevel === '管理员') {
