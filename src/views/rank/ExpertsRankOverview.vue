@@ -8,7 +8,7 @@
                 <div class="rank-experts-card-row2"><span class="rank-experts-card-text">h-index</span></div>
                 <div class="rank-experts-card-row3"><span class="rank-experts-card-text">排名</span></div>
             </div>
-            <rank-author-item v-for="(v,i) in Array(3).fill(0)" :key="i"/>
+            <rank-author-item v-for="(v,i) in hIndexData" :key="i" :author-info="v"/>
         </div>
     </div>
 </template>
@@ -20,6 +20,40 @@
         name: "ExpertsRankOverview",
         components: {
             RankAuthorItem
+        },
+        data(){
+            return {
+                loading: true,
+                hIndexData: []
+            }
+        },
+        mounted() {
+          this.fetchRankData()
+        },
+        methods:{
+            async fetchRankData(){
+                this.loading=true
+                try {
+                    const r=await this.$get('rank/overview')
+                    console.log(r)
+                    if(r.status){
+                        this.hIndexData=r.data.hIndex
+                    }else{
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: "warning"
+                        });
+                    }
+                }catch (e) {
+                    this.$message({
+                        showClose: true,
+                        message: e,
+                        type: "warning"
+                    });
+                }
+                this.loading=false
+            }
         }
     }
 </script>

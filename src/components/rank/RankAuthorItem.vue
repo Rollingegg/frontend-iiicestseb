@@ -11,10 +11,10 @@
                     <span>{{authorInfo.hIndex}}</span>
                     <el-divider direction="vertical"></el-divider>
                     <span class="rank-experts-card-stat-des">论文数：</span>
-                    <span>{{authorInfo.hIndex}}</span>
+                    <span>{{authorInfo.paperNum}}</span>
                     <el-divider direction="vertical"></el-divider>
                     <span class="rank-experts-card-stat-des">引用数：</span>
-                    <span>{{authorInfo.hIndex}}</span>
+                    <span>{{authorInfo.references}}</span>
                 </div>
                 <el-link :underline="false"
                          icon="el-icon-school">
@@ -31,8 +31,8 @@
                 </div>
             </div>
         </div>
-        <div class="rank-experts-card-row2">{{statisticNum}}</div>
-        <div class="rank-experts-card-row3">{{rank}}</div>
+        <div class="rank-experts-card-row2">{{authorInfo.hIndex}}</div>
+        <div class="rank-experts-card-row3">{{authorInfo.rank}}</div>
     </div>
 </template>
 
@@ -58,18 +58,6 @@
                             'Monte Carlo',
                             'Cross Section']
                     }
-                }
-            },
-            statisticNum: {
-                type: Number,
-                default() {
-                    return 269;
-                }
-            },
-            rank: {
-                type: Number,
-                default() {
-                    return 1;
                 }
             }
         }

@@ -18,6 +18,8 @@ import 'font-awesome/css/font-awesome.css'
 import echarts from 'echarts';
 import moment from 'moment';
 
+process.env.Mock && require('./mock.js')
+
 Vue.config.productionTip = false;
 Vue.use(db);
 Vue.use(ElementUI);
