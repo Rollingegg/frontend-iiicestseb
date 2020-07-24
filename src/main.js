@@ -18,7 +18,7 @@ import 'font-awesome/css/font-awesome.css'
 import echarts from 'echarts';
 import moment from 'moment';
 
-process.env.Mock && require('./mock.js')
+process.env.Mock && require('./mock')
 
 Vue.config.productionTip = false;
 Vue.use(db);
@@ -40,8 +40,6 @@ Vue.prototype.$export = request.export;
 Vue.prototype.$download = request.download;
 Vue.prototype.$upload = request.upload;
 Vue.prototype.$isEmpty = usefulFunctions.isEmpty;
-Vue.prototype.$debounce = usefulFunctions.fnDebounce;
-Vue.prototype.$throttle = usefulFunctions.fnThrottle;
 Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */

@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="$route.path"
+    <el-menu :default-active="activeMenu"
              class="my-menu"
              mode="horizontal"
              @select="handleSelect"
@@ -15,7 +15,7 @@
         <el-submenu index="3">
             <template slot="title">排行榜</template>
             <el-menu-item index="/rank/experts">学者排名</el-menu-item>
-            <el-menu-item index="/affiliationsRank">机构排名</el-menu-item>
+            <el-menu-item index="/rank/affiliations">机构排名</el-menu-item>
         </el-submenu>
         <el-submenu index="/admin" v-if="isAdmin">
             <template slot="title">后台管理</template>
@@ -46,6 +46,15 @@
             ...mapState({
                 user: state => state.account.user
             }),
+            activeMenu() {
+                const route = this.$route
+                const { meta, path } = route
+                // if set path, the sidebar will highlight the path you set
+                if (meta.activeMenu) {
+                    return meta.activeMenu
+                }
+                return path
+            },
             isAdmin () {
                 return !this.$isEmpty(this.user) && this.user.privilegeLevel === '管理员';
             }

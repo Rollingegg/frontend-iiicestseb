@@ -67,6 +67,13 @@ let constRouter = [
                         path: '/',
                         name: 'ExpertsRankOverviewPage',
                         component: ()=>import('@/views/rank/ExpertsRankOverview'),
+                        meta: {activeMenu: '/rank/experts'}
+                    },
+                    {
+                        path: '/:rankType',
+                        name: 'ExpertsRankViewPage',
+                        component: ()=>import('@/views/rank/ExpertsRankView'),
+                        meta: {activeMenu: '/rank/experts'}
                     }
                 ]
             }]

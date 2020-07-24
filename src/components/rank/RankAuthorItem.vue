@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="rank-experts-card-row2">{{authorInfo.hIndex}}</div>
+        <div class="rank-experts-card-row2">{{authorInfo.statisticNum}}</div>
         <div class="rank-experts-card-row3">{{authorInfo.rank}}</div>
     </div>
 </template>
