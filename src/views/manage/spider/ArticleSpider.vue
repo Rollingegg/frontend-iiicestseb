@@ -20,7 +20,7 @@
                             v-model="endYear"
                             placeholder="结束年份"
             ></el-date-picker>
-            
+
             <el-button type="primary">启动任务</el-button>
 
         </div>
@@ -109,6 +109,9 @@
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.execute-container{
+    display: flex;
+    justify-content: space-between;
+}
 </style>

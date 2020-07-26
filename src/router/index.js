@@ -2,25 +2,22 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
-/*
-import pages, @=src
-import LoginView from '@/views/login/Common';
-import searchInputView from '@/views/searchInput/SearchInput';
-import searchResultView from '@/views/search/ResultPage';
-import IndexView from '@/views/Index';
-import articleDetailView from '@/views/article/ArticleDetailPage';
-import uploadView from '@/views/excel/Excel';
-import authorDetailView from '@/views/author/AuthorPage';
-import affiliationDetailView from '@/views/affiliation/AffiliationPage';
-import keywordDetailView from '@/views/keyword/KeywordPage';
-import noFoundDetailView from '@/views/error/404';
-*/
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+NProgress.configure({
+    easing: 'ease',  // 动画方式
+    speed: 500,  // 递增进度条的速度
+    showSpinner: false, // 是否显示加载ico
+    trickleSpeed: 200, // 自动递增间隔
+    minimum: 0.3 // 初始化时的最小百分比
+})
 
 // 全局Router异常处理
 const originalPush = Router.prototype.push;
-Router.prototype.push = function push (location) {
+Router.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => {
-        if (typeof err !== 'undefined') {
+        if (typeof err!=='undefined') {
             console.warn(err.stack);
         }
     });
@@ -60,19 +57,19 @@ let constRouter = [
             {
                 path: 'rank/experts',
                 name: 'ExpertsRankPage',
-                component: ()=>import('@/views/rank/ExpertsRank'),
+                component: () => import('@/views/rank/ExpertsRank'),
                 redirect: 'rank/experts/overview',
                 children: [
                     {
                         path: 'overview',
                         name: 'ExpertsRankOverviewPage',
-                        component: ()=>import('@/views/rank/ExpertsRankOverview'),
+                        component: () => import('@/views/rank/ExpertsRankOverview'),
                         meta: {activeMenu: '/rank/experts'}
                     },
                     {
                         path: ':rankType',
                         name: 'ExpertsRankViewPage',
-                        component: ()=>import('@/views/rank/ExpertsRankView'),
+                        component: () => import('@/views/rank/ExpertsRankView'),
                         meta: {activeMenu: '/rank/experts'}
                     }
                 ]
@@ -83,8 +80,8 @@ let constRouter = [
 let router = new Router({
     mode: 'history',
     routes: constRouter,
-    scrollBehavior (to, from, savedPosition) {
-        return { x: 0, y: 0 }
+    scrollBehavior(to, from, savedPosition) {
+        return {x: 0, y: 0}
     }
 });
 
@@ -92,17 +89,21 @@ const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResu
 
 let asyncRouter;
 
-// 导航守卫，渲染动态路由
 /**
+ * 导航守卫，渲染动态路由
  * @param to 目的路径
  * @param from 来源路径
  * @param next 处理函数
  */
 router.beforeEach((to, from, next) => {
+    // 每次切换页面时，调用进度条
+    NProgress.start();
+    // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
+    NProgress.inc(); //这会以随机数量递增，且永远达不到100%，也可以设指定增量
     let user = get('USER');
 
     // 检测白名单
-    if (!user && whiteList.indexOf(to.path) !== -1) {
+    if (!user && whiteList.indexOf(to.path)!== -1) {
         next();
         return;
     }
@@ -133,7 +134,7 @@ router.beforeEach((to, from, next) => {
                         component: 'detail/ArticleDetailPage'
                     }
                 ];
-                if (user.privilegeLevel === '管理员') {
+                if (user.privilegeLevel==='管理员') {
                     asyncRouter.push({
                         path: 'upload',
                         name: 'UploadPage',
@@ -159,11 +160,16 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-function go (to, next) {
+router.afterEach(() => {
+    // finish progress bar
+    NProgress.done()
+})
+
+function go(to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
     asyncRouter.forEach((r) => {
-            router.options.routes[1].children.push(r);
-        }
+                router.options.routes[1].children.push(r);
+            }
     );
     router.options.routes.push({
         path: '*',
@@ -177,7 +183,7 @@ function go (to, next) {
     })
 }
 
-function filterAsyncRouter (routes) {
+function filterAsyncRouter(routes) {
     return routes.filter((route) => {
         let component = route.component;
         if (component) {
@@ -190,7 +196,7 @@ function filterAsyncRouter (routes) {
     });
 }
 
-function view (path) {
+function view(path) {
     // return resolve => require(["@/views/" + path + ""], resolve)
     return function (resolve) {
         import(`@/views/${path}.vue`).then(mod => {
@@ -200,11 +206,11 @@ function view (path) {
 }
 
 
-function get (name) {
+function get(name) {
     return JSON.parse(localStorage.getItem(name));
 }
 
-function save (name, data) {
+function save(name, data) {
     localStorage.setItem(name, JSON.stringify(data));
 }
 
