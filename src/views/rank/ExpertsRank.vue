@@ -1,8 +1,8 @@
 <template>
     <div>
         <div style="font-size: 28px">科研人员排名</div>
-        <el-menu :default-active="$route.path" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="/rank/experts">全部</el-menu-item>
+        <el-menu :default-active="this.$route.params.rankType||'overview'" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="overview">全部</el-menu-item>
             <el-menu-item index="h-index">H-index</el-menu-item>
             <el-menu-item index="g-index">G-index</el-menu-item>
             <el-menu-item index="citation">Citation</el-menu-item>
@@ -35,8 +35,12 @@
         name: "ExpertsRank",
         methods: {
             handleSelect(key) {
-                if (!this.$route.path.endsWith(key)) {
-                    this.$router.push({name: 'ExpertsRankViewPage',params:{rankType: key}});
+                if(`/rank/experts/${key}`!==this.$route.path) {
+                    if (key!=='overview') {
+                        this.$router.push({name: 'ExpertsRankViewPage', params: {rankType: key}});
+                    } else {
+                        this.$router.push({name: 'ExpertsRankOverviewPage'})
+                    }
                 }
             }
         }

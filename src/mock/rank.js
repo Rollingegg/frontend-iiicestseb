@@ -28,29 +28,29 @@ const rankData = function () {
     }
 }
 
-const rankList = function (opt) {
-    const len = 100
-    let rankData = []
-    const {page, size, rankType} = JSON.parse(opt.body)
-    for (let i = 0; i < len; i++) {
-        const keywords = []
-        const len = Random.integer(2, 8)
-        for (let j = 0; j < len; j++) {
-            keywords.push(Random.word(4, 10))
-        }
-        let newRankItem = {
-            name: Random.name(),
-            hIndex: Random.integer(1, 100),
-            paperNum: Random.integer(1, 100),
-            references: Random.integer(100, 1000),
-            affiliation: Random.sentence(10, 30),
-            keywords: keywords,
-            statisticNum: Random.integer(1, 100),
-            rank: i + 1
-        }
-        rankData.push(newRankItem)
+const len = 100
+let rankAuthors = []
+for (let i = 0; i < len; i++) {
+    const keywords = []
+    const len = Random.integer(2, 8)
+    for (let j = 0; j < len; j++) {
+        keywords.push(Random.word(4, 10))
     }
-    return {records: rankData.slice(page * size, (page + 1) * size), total: len}
+    let newRankItem = {
+        name: Random.name(),
+        hIndex: Random.integer(1, 100),
+        paperNum: Random.integer(1, 100),
+        references: Random.integer(100, 1000),
+        affiliation: Random.sentence(10, 30),
+        keywords: keywords,
+        statisticNum: Random.integer(1, 100),
+        rank: i + 1
+    }
+    rankAuthors.push(newRankItem)
+}
+const rankList = function (opt) {
+    const {page, size, rankType} = JSON.parse(opt.body)
+    return {records: rankAuthors.slice(page * size, (page + 1) * size), total: len}
 }
 
 export default {

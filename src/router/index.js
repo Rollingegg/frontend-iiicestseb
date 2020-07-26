@@ -61,16 +61,16 @@ let constRouter = [
                 path: 'rank/experts',
                 name: 'ExpertsRankPage',
                 component: ()=>import('@/views/rank/ExpertsRank'),
-                redirect: 'rank/experts/',
+                redirect: 'rank/experts/overview',
                 children: [
                     {
-                        path: '/',
+                        path: 'overview',
                         name: 'ExpertsRankOverviewPage',
                         component: ()=>import('@/views/rank/ExpertsRankOverview'),
                         meta: {activeMenu: '/rank/experts'}
                     },
                     {
-                        path: '/:rankType',
+                        path: ':rankType',
                         name: 'ExpertsRankViewPage',
                         component: ()=>import('@/views/rank/ExpertsRankView'),
                         meta: {activeMenu: '/rank/experts'}
