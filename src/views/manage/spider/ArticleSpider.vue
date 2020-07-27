@@ -110,8 +110,8 @@
 </script>
 
 <style scoped lang="less">
-.execute-container{
-    display: flex;
-    justify-content: space-between;
-}
+    .execute-container {
+        display: flex;
+        justify-content: space-between;
+    }
 </style>

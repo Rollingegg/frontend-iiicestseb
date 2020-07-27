@@ -1,6 +1,7 @@
 'use strict';
 
 import Vue from 'vue';
+import db from '@/utils/localstorage'
 import Router from 'vue-router';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -77,14 +78,14 @@ let constRouter = [
     }
 ];
 
-let router = new Router({
+const createRouter = () => new Router({
     mode: 'history',
     routes: constRouter,
     scrollBehavior(to, from, savedPosition) {
         return {x: 0, y: 0}
     }
 });
-
+let router = createRouter()
 const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult'];
 
 let asyncRouter;
@@ -100,18 +101,20 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
     // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
     NProgress.inc(); //这会以随机数量递增，且永远达不到100%，也可以设指定增量
-    let user = get('USER');
-
+    let user = db.get('USER');
+    console.log(user)
     // 检测白名单
-    if (!user && whiteList.indexOf(to.path)!== -1) {
+    if (!user.id&&whiteList.indexOf(to.path)!== -1) {
         next();
         return;
     }
 
     let userRouter = get('USER_ROUTER');
-    if (user) {
+    if (user.id) {
         if (!asyncRouter) {
+            // console.log('!asyncRouter')
             if (!userRouter) {
+                // console.log('!userRouter')
                 asyncRouter = [
                     {
                         path: 'authorDetail',
@@ -147,8 +150,10 @@ router.beforeEach((to, from, next) => {
                     });
                 }
                 save('USER_ROUTER', asyncRouter);
+                // console.log(router)
                 go(to, next);
             } else {
+                // console.log('userRouter')
                 asyncRouter = userRouter;
                 go(to, next);
             }
@@ -167,10 +172,13 @@ router.afterEach(() => {
 
 function go(to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
-    asyncRouter.forEach((r) => {
-                router.options.routes[1].children.push(r);
-            }
-    );
+    if (router.options.routes[1].children && router.options.routes[1].children.length < 3) {
+        asyncRouter.forEach((r) => {
+                    router.options.routes[1].children.push(r);
+                }
+        );
+    }
+    // console.log(asyncRouter)
     router.options.routes.push({
         path: '*',
         name: '404',
@@ -212,6 +220,10 @@ function get(name) {
 
 function save(name, data) {
     localStorage.setItem(name, JSON.stringify(data));
+}
+
+export function resetRouter() {
+    router.options.routes = constRouter // reset router
 }
 
 export default router;

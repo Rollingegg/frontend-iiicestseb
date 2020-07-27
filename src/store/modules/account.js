@@ -30,5 +30,12 @@ export default {
             db.save('ROLES', val);
             state.roles = val;
         }
+    },
+    actions: {
+        // user logout
+        logout({ commit, state, dispatch }) {
+            commit('setUser', {})
+            db.clear()
+        }
     }
 };

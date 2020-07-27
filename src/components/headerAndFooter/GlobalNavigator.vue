@@ -40,7 +40,7 @@
      */
     export default {
         name: 'GlobalNav',
-        data () {
+        data() {
             return {
                 isTabBar: false
             };
@@ -49,19 +49,19 @@
             ...mapState({
                 user: state => state.account.user
             }),
-            hasLogin () {
+            hasLogin() {
                 return !this.$isEmpty(this.user);
             }
         },
         methods: {
-            doLogin () {
+            doLogin() {
                 this.$router.push('/login');
             },
-            doRegister () {
+            doRegister() {
                 this.$router.push({name: 'LoginPage', params: {register: 'Register'}});
             },
-            handleUserClick (command) {
-                if (command === 'logout') {
+            handleUserClick(command) {
+                if (command==='logout') {
                     this.logout();
                 } else {
                     this.$message({
@@ -71,18 +71,19 @@
                     });
                 }
             },
-            logout () {
+            logout() {
+                this.$store.dispatch('account/logout')
                 this.$router.push('/login');
             },
-            handleScroll () {
+            handleScroll() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                this.isTabBar=(scrollTop > 400);
+                this.isTabBar = (scrollTop > 400);
             }
         },
-        mounted () {
+        mounted() {
             window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
         },
-        destroyed () {
+        destroyed() {
             window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
         },
         components: {
@@ -120,6 +121,7 @@
         align-items: center;
         justify-content: space-between;
     }
+
     .isFixed {
         position: fixed;
         width: 100%;

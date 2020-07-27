@@ -62,6 +62,7 @@
 
 <script>
     import {mapMutations, mapState} from "vuex";
+    import {resetRouter} from "@/router";
 
     /**
      * @description 登陆页面
@@ -71,9 +72,8 @@
      */
     export default {
         name: "Login",
-        data () {
+        data() {
             return {
-                isReload: false,
                 loading: false,
                 activeTab: "username",
                 loginForm: {
@@ -95,38 +95,35 @@
                 user: state => state.account.user
             })
         },
-        created () {
+        created() {
             this.$db.clear();
-            if (this.user.username) {
-                return window.location.reload();
-            }
-            this.isReload = true;
+            resetRouter()
         },
         methods: {
-            doLogin (formName) {
-                if (this.activeTab === "username") {
+            doLogin(formName) {
+                if (this.activeTab==="username") {
                     this.$refs[formName].validate(async valid => {
                         if (valid) {
                             this.loading = true;
                             let name = this.loginForm.username;
                             let password = this.loginForm.password;
                             if (
-                                !(
-                                    this.handleUsernameCheck(name) &&
-                                    this.handlePasswordLevel(password)
-                                )
+                                    !(
+                                            this.handleUsernameCheck(name) &&
+                                            this.handlePasswordLevel(password)
+                                    )
                             ) {
                                 this.setMessageAndBtnLoading("用户名或者密码错误");
                                 return;
                             }
 
                             // 使用了async/await改写原先的promise链式调用写法
-                            try{
+                            try {
                                 const r = await this.$postJson("user/login", {
                                     username: name,
                                     password: password
                                 });
-                                if(r.data.status){
+                                if (r.data.status) {
                                     let data = r.data.result;
                                     this.saveLoginData(data);
                                     this.setMessageAndBtnLoading();
@@ -140,49 +137,49 @@
                         }
                     });
                 }
-                if (this.activeTab === "phone") {
+                if (this.activeTab==="phone") {
                     // 手机验证码登录
                     this.$message.warning("暂未开发");
                 }
             },
-            setMessageAndBtnLoading (message) {
+            setMessageAndBtnLoading(message) {
                 setTimeout(() => {
                     this.loading = false;
                     message && this.$message.error(message);
                 }, 500);
             },
-            register () {
+            register() {
                 this.$emit("register", "Register");
             },
-            noRegister () {
+            noRegister() {
                 this.$router.push("/searchFrame/searchHome");
             },
-            getCaptcha () {
+            getCaptcha() {
                 this.$message.warning("暂未开发");
             },
-            handleUsernameCheck (name) {
+            handleUsernameCheck(name) {
                 return (
-                    name.length &&
-                    name.length < 21 &&
-                    name.length > 3 &&
-                    name.indexOf(" ") === -1
+                        name.length &&
+                        name.length < 21 &&
+                        name.length > 3 &&
+                        name.indexOf(" ")=== -1
                 );
             },
-            handlePasswordLevel (value) {
+            handlePasswordLevel(value) {
                 if (value.length < 6 || value.length > 20) return !1;
                 let level = 0;
                 return (
-                    /[0-9]/.test(value) && level++,
-                    /[a-zA-Z]/.test(value) && level++,
-                    /[^0-9a-zA-Z_]/.test(value) && level++,
-                    level >= 1
+                        /[0-9]/.test(value) && level++,
+                        /[a-zA-Z]/.test(value) && level++,
+                        /[^0-9a-zA-Z_]/.test(value) && level++,
+                        level >= 1
                 );
             },
             ...mapMutations({
                 setExpireTime: "account/setExpireTime",
                 setUser: "account/setUser"
             }),
-            saveLoginData (data) {
+            saveLoginData(data) {
                 this.setExpireTime(Date.now() + 3600000);
                 this.setUser(data);
             }
