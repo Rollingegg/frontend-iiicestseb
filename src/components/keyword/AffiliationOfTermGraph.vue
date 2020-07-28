@@ -71,7 +71,8 @@
                         show: true,
                         splitLine: {
                             show: false
-                        }
+                        },
+                        minInterval: 1
                     },
                     yAxis: [
                         {

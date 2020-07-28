@@ -5,7 +5,9 @@
                 <el-avatar shape="square" :size="90" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             </div>
             <div class="rank-experts-card-content">
-                <el-link class="rank-experts-card-author-name" :underline="false">{{authorInfo.name}}</el-link>
+                <el-link class="rank-experts-card-author-name"
+                         :href="`/authorDetail?id=${authorInfo.id}`"
+                         :underline="false">{{authorInfo.name}}</el-link>
                 <div class="rank-experts-card-stat-line">
                     <span class="rank-experts-card-stat-des"><em>h</em>-index：</span>
                     <span>{{authorInfo.hIndex}}</span>
@@ -17,6 +19,7 @@
                     <span>{{authorInfo.references}}</span>
                 </div>
                 <el-link :underline="false"
+                         :href="`/affiliationDetail?id=${authorInfo.affiliationId}`"
                          icon="el-icon-school">
                     {{authorInfo.affiliation}}
                 </el-link>

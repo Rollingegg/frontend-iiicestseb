@@ -38,6 +38,8 @@ for (let i = 0; i < len; i++) {
     }
     let newRankItem = {
         name: Random.name(),
+        id: i+1,
+        affiliationId: i+1,
         hIndex: Random.integer(1, 100),
         paperNum: Random.integer(1, 100),
         references: Random.integer(100, 1000),
