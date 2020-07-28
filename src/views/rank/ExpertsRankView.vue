@@ -1,21 +1,21 @@
 <template>
     <div class="rank-container">
         <div class="rank-list">
-            <div class="rank-list-title">
+            <div class="rank-list-title" v-loading="loading">
                 <div class="rank-experts-card-row1">
                     <span class="rank-experts-card-text"></span>
                 </div>
-                <div class="rank-experts-card-row2"><span class="rank-experts-card-text">h-index</span></div>
+                <div class="rank-experts-card-row2"><span class="rank-experts-card-text">{{statisticsTitle}}</span></div>
                 <div class="rank-experts-card-row3"><span class="rank-experts-card-text">排名</span></div>
             </div>
-            <rank-author-item v-for="(v,i) in rankList" :key="i" :author-info="v"/>
+            <rank-author-item v-for="(v,i) in rankList" :key="i" :author-info="v" :rank="i+1+(pageNum-1)*pageSize"/>
         </div>
         <el-pagination background
                        :hide-on-single-page="true"
                        @current-change="handleCurrentChange"
                        layout="prev, pager, next, jumper"
-                       :page-size="20"
-                       :current-page="pageNum+1"
+                       :page-size="pageSize"
+                       :current-page="pageNum"
                        :total="total"></el-pagination>
     </div>
 </template>
@@ -31,7 +31,8 @@
         },
         data() {
             return {
-                loading: true
+                loading: true,
+                pageSize: 20
             }
         },
         computed: {
@@ -40,15 +41,32 @@
                 rankType: state => state.rank.currentRankType,
                 pageNum: state => state.rank.currentPageNum,
                 total: state => state.rank.currentTotalNum
-            })
+            }),
+            statisticsTitle(){
+                if(!this.rankType){
+                    return ''
+                }
+                const dict={
+                    "H_INDEX": "h-index",
+                    "G_INDEX": "g-index",
+                    "AVG_CITE": "平均被引",
+                    "PAPER_NUM": "论文数",
+                    "SOCIABILITY": "社交性",
+                }
+                return dict[this.rankType]
+            }
         },
-        mounted() {
+        async mounted() {
             this.setRankType(this.$route.params.rankType);
-            this.getRankList()
+            this.loading=true
+            await this.getRankList()
+            this.loading=false
         },
-        beforeRouteUpdate(to, from, next) {
+        async beforeRouteUpdate(to, from, next) {
             this.setRankType(to.params.rankType);
-            this.getRankList();
+            this.loading=true
+            await this.getRankList()
+            this.loading=false
             next();
         },
         methods: {
@@ -61,7 +79,7 @@
             }),
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-                this.setPageNum(val-1)
+                this.setPageNum(val)
                 this.getRankList()
             }
         }

@@ -7,7 +7,7 @@ const rank = {
         currentRankType: '',
         currentTotalNum: 0,
         currentRankList: [],
-        currentPageNum: 0,
+        currentPageNum: 1,
     },
     mutations: {
         set_currentRankType: function (state, val) {
@@ -26,15 +26,18 @@ const rank = {
     actions: {
         getRankList: async ({state, commit}) => {
             try {
-                const res = await request.postJson('rank/get', {
+                const res = await request.post('rank/get', {
                     page: state.currentPageNum,
                     size: 20,
                     rankType: state.currentRankType
                 })
-                if (res.status) {
-                    commit('set_currentRankList', res.data.records)
-                    commit('set_currentTotalNum', res.data.total)
+                console.log(res)
+                if (res.status&&res.data.status) {
+                    commit('set_currentRankList', res.data.result.authorRankDataVOList)
+                    commit('set_currentTotalNum', res.data.result.total)
                 } else {
+                    commit('set_currentRankList', [])
+                    commit('set_currentTotalNum', 0)
                     Message.error(e)
                 }
             } catch (e) {

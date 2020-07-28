@@ -2,13 +2,13 @@
     <div class="rank-experts-card">
         <div class="rank-experts-card-row1">
             <div class="rank-experts-card-img-box">
-                <el-avatar shape="square" :size="90" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                <el-avatar shape="square" :size="90" fit="fill" src="\static\img\avatar_default.jpg"></el-avatar>
             </div>
             <div class="rank-experts-card-content">
                 <el-link class="rank-experts-card-author-name"
                          :href="`/authorDetail?id=${authorInfo.id}`"
                          :underline="false">{{authorInfo.name}}</el-link>
-                <div class="rank-experts-card-stat-line">
+                <div class="rank-experts-card-stat-line" v-if="authorInfo.hIndex">
                     <span class="rank-experts-card-stat-des"><em>h</em>-index：</span>
                     <span>{{authorInfo.hIndex}}</span>
                     <el-divider direction="vertical"></el-divider>
@@ -18,11 +18,13 @@
                     <span class="rank-experts-card-stat-des">引用数：</span>
                     <span>{{authorInfo.references}}</span>
                 </div>
-                <el-link :underline="false"
-                         :href="`/affiliationDetail?id=${authorInfo.affiliationId}`"
-                         icon="el-icon-school">
-                    {{authorInfo.affiliation}}
-                </el-link>
+                <div>
+                    <el-link :underline="false"
+                             :href="`/affiliationDetail?id=${authorInfo.affiliationId}`"
+                             icon="el-icon-school">
+                        {{authorInfo.affiliationName}}
+                    </el-link>
+                </div>
                 <div>
                     <el-button size="mini"
                                type="primary"
@@ -34,8 +36,8 @@
                 </div>
             </div>
         </div>
-        <div class="rank-experts-card-row2">{{authorInfo.statisticNum}}</div>
-        <div class="rank-experts-card-row3">{{authorInfo.rank}}</div>
+        <div class="rank-experts-card-row2">{{authorInfo.value}}</div>
+        <div class="rank-experts-card-row3">{{rank}}</div>
     </div>
 </template>
 
@@ -43,26 +45,8 @@
     export default {
         name: "RankAuthorItem",
         props: {
-            authorInfo: {
-                type: Object,
-                default() {
-                    return {
-                        name: 'G. Boudoul',
-                        hIndex: 249,
-                        paperNum: 1000,
-                        references: 31283,
-                        affiliation: 'Harvard School of Public Health',
-                        keywords: ['Physics',
-                            'Background',
-                            'Particle Physics',
-                            'Lhc',
-                            'Supersymmetry',
-                            'Particle',
-                            'Monte Carlo',
-                            'Cross Section']
-                    }
-                }
-            }
+            authorInfo: Object,
+            rank: Number
         }
     }
 </script>

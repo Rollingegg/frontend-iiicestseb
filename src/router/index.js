@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
     // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
     NProgress.inc(); //这会以随机数量递增，且永远达不到100%，也可以设指定增量
     let user = db.get('USER');
-    console.log(user)
+    // console.log(user)
     // 检测白名单
     if (!user.id&&whiteList.indexOf(to.path)!== -1) {
         next();
