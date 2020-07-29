@@ -103,6 +103,20 @@
                     </el-card>
                 </a>
 
+                <a href="https://element.eleme.cn/#/zh-CN" target="_blank">
+                    <el-card class="data-card">
+                        <div class="card-header">
+                            <div class="card-header-title">ElementUI</div>
+                            <img style="width: 40px;height: 40px"
+                                 src="https://element.eleme.cn/favicon.ico"/>
+                        </div>
+                        <div class="card-info-item">
+                            Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库。使用前端框架封装的代码帮助工程师快速开发；
+                            在线主题编辑器，可视化定制和管理站点主题、组件样式；下载相关资源，用其快速搭建页面原型或高保真视觉稿，提升产品设计效率
+                        </div>
+                    </el-card>
+                </a>
+
                 <a href="https://www.jenkins.io/zh/" target="_blank">
                     <el-card class="data-card">
                         <div class="card-header">
@@ -113,6 +127,21 @@
                         <div class="card-info-item">
                             Jenkins是一个开源的、提供友好操作界面的持续集成(CI)工具，起源于Hudson（Hudson是商用的），主要用于持续、自动的构建/测试软件项目、监控外部任务的运行。
                             Jenkins用Java语言编写，可在Tomcat等流行的servlet容器中运行，也可独立运行。通常与版本管理工具(SCM)、构建工具结合使用。
+                        </div>
+                    </el-card>
+                </a>
+
+                <a href="https://scrapy.org/" target="_blank">
+                    <el-card class="data-card">
+                        <div class="card-header">
+                            <div class="card-header-title">Scrapy</div>
+                            <img style="width: 40px;height: 40px"
+                                 src="https://scrapy.org/favicons/favicon-160x160.png"/>
+                        </div>
+                        <div class="card-info-item">
+                            Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 可以应用在包括数据挖掘，信息处理或存储历史数据等一系列的程序中。
+                            其最初是为了 页面抓取 (更确切来说, 网络抓取 )所设计的， 也可以应用在获取API所返回的数据(例如 Amazon Associates Web Services )
+                            或者通用的网络爬虫
                         </div>
                     </el-card>
                 </a>
@@ -148,7 +177,7 @@
                     {
                         label: 'ICSE',
                         name: 'International Conference on Software Engineering (ICSE)',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000691/all-proceedings'
                     },
                     {
                         label: 'ASE',
@@ -158,37 +187,37 @@
                     {
                         label: 'CVPR',
                         name: 'Computer Vision and Pattern Recognition (CVPR)',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000147/all-proceedings'
                     },
                     {
                         label: 'ICCV',
                         name: 'Computer Vision (ICCV)',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000149/all-proceedings'
                     },
                     {
                         label: 'VTS',
                         name: 'VLSI Test Symposium',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000804/all-proceedings'
                     },
                     {
                         label: 'ICMLA',
                         name: 'International Conference on Machine Learning and Applications (ICMLA)',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1001544/all-proceedings'
                     },
                     {
                         label: 'ISCA',
                         name: 'Annual International Symposium on Computer Architecture',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000123/all-proceedings'
                     },
                     {
                         label: 'ICIP',
                         name: 'IEEE International Conference Image Processing',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000349/all-proceedings'
                     },
                     {
                         label: 'DSN',
                         name: 'Dependable Systems and Networks',
-                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000064/all-proceedings'
+                        url: 'https://ieeexplore.ieee.org/xpl/conhome/1000192/all-proceedings'
                     }
                 ]
             }
@@ -230,6 +259,7 @@
                         cursor: pointer;
                         background-color: #1890ff;
                         color: #fff;
+                        border: none;
                     }
 
                     .card-header {
