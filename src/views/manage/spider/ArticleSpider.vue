@@ -25,19 +25,28 @@
 
             <div>
                 <el-button type="primary" @click="addCrawler">启动任务</el-button>
-                <el-button type="success" @click="fetchRecords">刷新</el-button>
+<!--                <el-button type="success" @click="fetchRecords">刷新</el-button>-->
             </div>
         </div>
         <el-dialog title="爬虫任务输出日志"
                    :visible.sync="dialogVisible">
             <div v-html="logInfo"></div>
         </el-dialog>
+        <el-alert
+                style="margin: 20px 0"
+                type="success"
+                :closable="false"
+                show-icon>
+            <div slot="title">
+                数据获取时间 {{this.time}}
+                <el-button type="text" style="margin-left: 24px" @click="fetchRecords">点击刷新</el-button>
+            </div>
+        </el-alert>
         <el-table
                 :data="recordList"
                 stripe
                 border
-                v-loading="loading"
-                style="margin-top: 40px">
+                v-loading="loading">
             <el-table-column
                     prop="crawlerId"
                     width="40"
@@ -188,7 +197,8 @@
                 recordList: [],
                 loading: true,
                 dialogVisible: false,
-                logInfo: ''
+                logInfo: '',
+                time: ''
             }
         },
         mounted() {
@@ -196,6 +206,7 @@
         },
         methods: {
             async fetchRecords() {
+                this.time=this.$moment().format('YYYY年MM月DD日 HH时mm分ss秒')
                 this.loading = true
                 try {
                     const r = await this.$get('crawler/all')
