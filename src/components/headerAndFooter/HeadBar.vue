@@ -7,22 +7,23 @@
              text-color="#ffffff"
              active-text-color="#CDB737">
         <el-menu-item index="/searchFrame/searchHome">首页</el-menu-item>
-        <el-submenu index="2">
-            <template slot="title">文献数据库</template>
-            <el-menu-item index="/ase">ASE会议</el-menu-item>
-            <el-menu-item index="/icse">ICSE会议</el-menu-item>
-        </el-submenu>
+<!--        <el-submenu index="2">-->
+<!--            <template slot="title">文献数据库</template>-->
+<!--            <el-menu-item index="/ase">ASE会议</el-menu-item>-->
+<!--            <el-menu-item index="/icse">ICSE会议</el-menu-item>-->
+<!--        </el-submenu>-->
         <el-submenu index="3">
             <template slot="title">排行榜</template>
             <el-menu-item index="/rank/experts">学者排名</el-menu-item>
-            <el-menu-item index="/rank/affiliations">机构排名</el-menu-item>
+<!--            <el-menu-item index="/rank/affiliations">机构排名</el-menu-item>-->
         </el-submenu>
         <el-submenu index="/admin" v-if="isAdmin">
             <template slot="title">后台管理</template>
             <el-menu-item index="/articleManage">文献管理</el-menu-item>
-            <el-menu-item index="/user/manage">用户管理</el-menu-item>
+<!--            <el-menu-item index="/user/manage">用户管理</el-menu-item>-->
             <el-menu-item index="/upload">上传数据</el-menu-item>
         </el-submenu>
+        <el-menu-item index="/about">关于我们</el-menu-item>
         <el-menu-item index="4">
             <div>帮助</div>
         </el-menu-item>

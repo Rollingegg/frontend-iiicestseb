@@ -1,12 +1,22 @@
 <template>
-    <div id="oasis">
+    <div id="oasis" @click="clicked">
         <router-view/>
     </div>
 </template>
 
 <script>
+    import {mapMutations} from "vuex";
+
     export default {
-        name: 'oasis'
+        name: 'oasis',
+        methods: {
+            ...mapMutations({
+                setExpireTime: "account/setExpireTime"
+            }),
+            clicked(){
+                this.setExpireTime(Date.now() + 3600000);
+            }
+        }
     }
 </script>
 

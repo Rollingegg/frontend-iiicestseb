@@ -56,6 +56,11 @@ let constRouter = [
                 ]
             },
             {
+                path: 'about',
+                name: 'AboutPage',
+                component: () => import('@/views/About')
+            },
+            {
                 path: 'rank/experts',
                 name: 'ExpertsRankPage',
                 component: () => import('@/views/rank/ExpertsRank'),
@@ -86,7 +91,7 @@ const createRouter = () => new Router({
     }
 });
 let router = createRouter()
-const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult'];
+const whiteList = ['/login', '/searchFrame/searchHome', '/searchFrame/searchResult', '/about'];
 
 let asyncRouter;
 
@@ -104,13 +109,13 @@ router.beforeEach((to, from, next) => {
     let user = db.get('USER');
     // console.log(user)
     // 检测白名单
-    if (!user.id&&whiteList.indexOf(to.path)!== -1) {
+    if (!user && whiteList.indexOf(to.path)!== -1) {
         next();
         return;
     }
 
     let userRouter = get('USER_ROUTER');
-    if (user.id) {
+    if (user) {
         if (!asyncRouter) {
             // console.log('!asyncRouter')
             if (!userRouter) {
@@ -172,7 +177,7 @@ router.afterEach(() => {
 
 function go(to, next) {
     asyncRouter = filterAsyncRouter(asyncRouter);
-    if (router.options.routes[1].children && router.options.routes[1].children.length < 3) {
+    if (router.options.routes[1].children) {
         asyncRouter.forEach((r) => {
                     router.options.routes[1].children.push(r);
                 }
