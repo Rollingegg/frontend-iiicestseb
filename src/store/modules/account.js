@@ -33,9 +33,9 @@ export default {
     },
     actions: {
         // user logout
-        logout({ commit, state, dispatch }) {
+        async logout({ commit, state, dispatch }) {
             commit('setUser', {})
-            db.clear()
+            await db.clear()
         }
     }
 };

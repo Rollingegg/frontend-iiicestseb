@@ -106,9 +106,9 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
     // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
     NProgress.inc(); //这会以随机数量递增，且永远达不到100%，也可以设指定增量
-    console.log(router)
+    // console.log(router)
     let user = db.get('USER');
-    console.log(user)
+    // console.log(user)
     // 检测白名单
     if (!user.id && whiteList.indexOf(to.path)!== -1) {
         next();
@@ -118,9 +118,9 @@ router.beforeEach((to, from, next) => {
     let userRouter = get('USER_ROUTER');
     if (user && user.id) {
         if (!asyncRouter) {
-            console.log('!asyncRouter')
+            // console.log('!asyncRouter')
             if (!userRouter) {
-                console.log('!userRouter')
+                // console.log('!userRouter')
                 asyncRouter = [
                     {
                         path: 'authorDetail',
@@ -144,7 +144,7 @@ router.beforeEach((to, from, next) => {
                     }
                 ];
                 if (user.privilegeLevel==='管理员') {
-                    console.log('管理员')
+                    // console.log('管理员')
                     asyncRouter.push({
                         path: 'upload',
                         name: 'UploadPage',
@@ -160,7 +160,7 @@ router.beforeEach((to, from, next) => {
                 // console.log(router)
                 go(to, next);
             } else {
-                console.log('userRouter')
+                // console.log('userRouter')
                 asyncRouter = userRouter;
                 go(to, next);
             }

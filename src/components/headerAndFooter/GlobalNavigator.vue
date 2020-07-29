@@ -71,9 +71,9 @@
                     });
                 }
             },
-            logout() {
-                this.$store.dispatch('account/logout')
-                this.$router.push('/login');
+            async logout() {
+                await this.$store.dispatch('account/logout')
+                await this.$router.push('/login');
             },
             handleScroll() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
