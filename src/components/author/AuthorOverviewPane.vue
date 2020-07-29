@@ -153,6 +153,7 @@
         },
         computed: {
             conferenceStatistics () {
+                // TODO 需要添加多个会议的统计
                 return [
                     {count: this.statisticInfo.asePaperNum, name: "ASE"},
                     {count: this.statisticInfo.icsePaperNum, name: "ICSE"}

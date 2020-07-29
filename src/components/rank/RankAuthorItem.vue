@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="rank-experts-card-row2">{{authorInfo.value}}</div>
+        <div class="rank-experts-card-row2">{{parseFloat(Number(authorInfo.value).toFixed(2))}}</div>
         <div class="rank-experts-card-row3">{{rank}}</div>
     </div>
 </template>

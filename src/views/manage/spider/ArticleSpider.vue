@@ -23,9 +23,15 @@
                             placeholder="结束年份"
             ></el-date-picker>
 
-            <el-button type="primary" @click="addCrawler">启动任务</el-button>
-
+            <div>
+                <el-button type="primary" @click="addCrawler">启动任务</el-button>
+                <el-button type="success" @click="fetchRecords">刷新</el-button>
+            </div>
         </div>
+        <el-dialog title="爬虫任务输出日志"
+                   :visible.sync="dialogVisible">
+            <div v-html="logInfo"></div>
+        </el-dialog>
         <el-table
                 :data="recordList"
                 stripe
@@ -34,7 +40,7 @@
                 style="margin-top: 40px">
             <el-table-column
                     prop="crawlerId"
-                    width="60"
+                    width="40"
                     label="编号">
             </el-table-column>
             <el-table-column
@@ -73,7 +79,7 @@
             <el-table-column
                     prop="state"
                     width="80"
-                    label="状态"
+                    label="任务状态"
                     column-key="state"
                     :filters="[{text: '等待中', value: '等待中'}, {text: '运行中', value: '运行中'}, {text: '已完成', value: '已完成'}, {text: '已取消', value: '已取消'}, {text: '失败', value: '失败'}]"
                     :filter-method="filterHandler">
@@ -81,7 +87,8 @@
                     <el-tag
                             :type="stateTag(scope.row.state)"
                             effect="dark"
-                            disable-transitions>{{scope.row.state}}</el-tag>
+                            disable-transitions>{{scope.row.state}}
+                    </el-tag>
                 </template>
             </el-table-column>
             <el-table-column
@@ -101,14 +108,30 @@
                     label="错误记录数">
             </el-table-column>
             <el-table-column label="操作"
-                             width="80">
+                             width="190">
                 <template slot-scope="scope">
+                    <el-popconfirm
+                            confirmButtonText='确定'
+                            cancelButtonText='返回'
+                            icon="el-icon-info"
+                            iconColor="red"
+                            title="您确定取消本次爬虫任务吗？"
+                            @onConfirm="handleCancel(scope.row)"
+                    >
+                        <el-button size="mini"
+                                   type="danger"
+                                   plain
+                                   slot="reference"
+                                   :disabled="scope.row.state!=='等待中'&&scope.row.state!=='运行中'">
+                            撤销
+                        </el-button>
+                    </el-popconfirm>
+                    <el-divider direction="vertical"></el-divider>
                     <el-button size="mini"
-                               type="danger"
+                               type="primary"
                                plain
-                               @click="handleCancel(scope.$index, scope.row)"
-                               :disabled="scope.row.state!=='等待中'&&scope.row.state!=='运行中'">
-                        取消
+                               @click="openLogDialog(scope.row)">
+                        查看日志
                     </el-button>
                 </template>
             </el-table-column>
@@ -163,41 +186,43 @@
                 startYear: '',
                 endYear: '',
                 recordList: [],
-                loading: true
+                loading: true,
+                dialogVisible: false,
+                logInfo: ''
             }
         },
         mounted() {
             this.fetchRecords()
         },
         methods: {
-            async fetchRecords(){
-                this.loading=true
+            async fetchRecords() {
+                this.loading = true
                 try {
-                    const r=await this.$get('crawler/all')
+                    const r = await this.$get('crawler/all')
                     // console.log(r)
-                    if(r.status&&r.data.status){
-                        this.recordList=r.data.result
-                    }else{
+                    if (r.status && r.data.status) {
+                        this.recordList = r.data.result
+                    } else {
                         this.$message({
                             showClose: true,
                             message: r.data.result,
                             type: "warning"
                         });
                     }
-                }catch (e) {
+                } catch (e) {
                     this.$message({
                         showClose: true,
                         message: e,
                         type: "warning"
                     });
                 }
-                this.loading=false
+                this.loading = false
             },
             filterHandler(value, row, column) {
                 const property = column['property'];
-                return row[property] === value;
+                return row[property]===value;
             },
-            stateTag(state){
+            stateTag(state) {
                 switch (state) {
                     case '等待中':
                         return 'info'
@@ -213,11 +238,62 @@
                         return ''
                 }
             },
-            handleCancel(index, row) {
-                console.log(index, row);
+            async handleCancel(row) {
+                // console.log(row);
+                try {
+                    const r = await this.$post('crawler/cancel', {
+                        crawlerId: row.crawlerId
+                    })
+                    if (r.status && r.data.status) {
+                        this.$message({
+                            showClose: true,
+                            message: '成功取消本次爬虫任务',
+                            type: "success"
+                        });
+                        await this.fetchRecords()
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: "warning"
+                        });
+                    }
+                } catch (e) {
+                    this.$message({
+                        showClose: true,
+                        message: e,
+                        type: "warning"
+                    });
+                }
             },
-            async addCrawler(){
-                if(!this.conference){
+            async openLogDialog(row) {
+                // console.log(row)
+                try {
+                    const r = await this.$get('crawler/log', {
+                        crawlerId: row.crawlerId
+                    })
+                    if (r.status && r.data.status) {
+                        const logStr = r.data.result
+                        this.logInfo = logStr.replace(/\n/g, '<br/>')
+                        // console.log(logStr)
+                        this.dialogVisible = true
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: r.data.result,
+                            type: "warning"
+                        });
+                    }
+                } catch (e) {
+                    this.$message({
+                        showClose: true,
+                        message: e,
+                        type: "warning"
+                    });
+                }
+            },
+            async addCrawler() {
+                if (!this.conference) {
                     this.$message({
                         showClose: true,
                         message: '请选择正确的会议名称',
@@ -225,7 +301,7 @@
                     });
                     return ''
                 }
-                if(!this.startYear||!this.endYear||this.startYear>this.endYear){
+                if (!this.startYear || !this.endYear || this.startYear > this.endYear) {
                     this.$message({
                         showClose: true,
                         message: '请选择合法的年份起止范围',
@@ -235,22 +311,22 @@
                 }
                 // console.log(this.startYear,this.endYear)
                 try {
-                    const r=await this.$postJson('crawler/add',{
-                        conferenceName:  this.conference,
+                    const r = await this.$postJson('crawler/add', {
+                        conferenceName: this.conference,
                         startYear: this.startYear,
                         endYear: this.endYear
                     })
                     // console.log(r)
-                    if(r.status&&r.data.status){
+                    if (r.status && r.data.status) {
                         await this.fetchRecords()
-                    }else{
+                    } else {
                         this.$message({
                             showClose: true,
                             message: r.data.result,
                             type: "warning"
                         });
                     }
-                }catch (e) {
+                } catch (e) {
                     this.$message({
                         showClose: true,
                         message: e,
