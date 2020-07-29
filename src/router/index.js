@@ -106,20 +106,21 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
     // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
     NProgress.inc(); //这会以随机数量递增，且永远达不到100%，也可以设指定增量
+    console.log(router)
     let user = db.get('USER');
-    // console.log(user)
+    console.log(user)
     // 检测白名单
-    if (!user && whiteList.indexOf(to.path)!== -1) {
+    if (!user.id && whiteList.indexOf(to.path)!== -1) {
         next();
         return;
     }
 
     let userRouter = get('USER_ROUTER');
-    if (user) {
+    if (user && user.id) {
         if (!asyncRouter) {
-            // console.log('!asyncRouter')
+            console.log('!asyncRouter')
             if (!userRouter) {
-                // console.log('!userRouter')
+                console.log('!userRouter')
                 asyncRouter = [
                     {
                         path: 'authorDetail',
@@ -143,6 +144,7 @@ router.beforeEach((to, from, next) => {
                     }
                 ];
                 if (user.privilegeLevel==='管理员') {
+                    console.log('管理员')
                     asyncRouter.push({
                         path: 'upload',
                         name: 'UploadPage',
@@ -158,7 +160,7 @@ router.beforeEach((to, from, next) => {
                 // console.log(router)
                 go(to, next);
             } else {
-                // console.log('userRouter')
+                console.log('userRouter')
                 asyncRouter = userRouter;
                 go(to, next);
             }
@@ -183,12 +185,12 @@ function go(to, next) {
                 }
         );
     }
-    // console.log(asyncRouter)
-    router.options.routes.push({
-        path: '*',
-        name: '404',
-        component: view('error/404')
-    });
+    router.options.routes.push(
+            {
+                path: '*',
+                name: '404',
+                component: view('error/404')
+            })
     router.addRoutes(router.options.routes);
     next({
         ...to,
@@ -228,7 +230,9 @@ function save(name, data) {
 }
 
 export function resetRouter() {
-    router.options.routes = constRouter // reset router
+    const tmpRouter = createRouter()
+    router.options.routes = constRouter
+    router.matcher = tmpRouter.matcher // reset router
 }
 
 export default router;
